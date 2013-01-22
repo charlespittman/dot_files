@@ -112,11 +112,13 @@ set pastetoggle=<F2>    " Toggle paste while in Insert mode
 set showmode
 
 "-- Syntax options (begin) --"
-let g:tex_fold_enabled = 1    " LaTeX
-let g:sh_fold_enabled = 7     " function, heredoc, and if/do/for folding
+let perl_fold = 1
+let perl_fold_blocks = 1      " Fold if blocks
 let python_highlight_all = 1  " highlight numbers, builtin functions, standard
                               " exceptions, and whitespace errors
 let ruby_operators = 1        " Highlight operators
 let ruby_space_errors = 1
 let ruby_fold = 1
+let g:sh_fold_enabled = 7     " function, heredoc, and if/do/for folding
+let g:tex_fold_enabled = 1    " LaTeX
 "-- Syntax options (end) --"
