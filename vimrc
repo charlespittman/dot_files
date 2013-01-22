@@ -6,12 +6,13 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " original repos on github
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'Townk/vim-autoclose'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'ervandew/supertab'
 Bundle 'gmarik/vundle'
 Bundle 'godlygeek/tabular'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'Lokaltog/vim-powerline'
 Bundle 'majutsushi/tagbar'
 Bundle 'mattn/zencoding-vim'
 Bundle 'nathanaelkane/vim-indent-guides'
@@ -21,8 +22,8 @@ Bundle 'scrooloose/syntastic'
 Bundle 'skammer/vim-css-color'
 Bundle 'tomasr/molokai'
 Bundle 'tomtom/tcomment_vim'
-Bundle 'Townk/vim-autoclose'
 Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-sensible'
 Bundle 'tpope/vim-surround'
@@ -32,15 +33,15 @@ Bundle 'xuhdev/SingleCompile'
 
 " vim-scripts repos
 Bundle 'Align'
+Bundle 'DfrankUtil'
+Bundle 'ScrollColors'
+Bundle 'Zenburn'
 Bundle 'bash-support.vim'
 Bundle 'camelcasemotion'
-Bundle 'DfrankUtil'
 Bundle 'indexer.tar.gz'
 Bundle 'matchit.zip'
 Bundle 'mimicpak'
-Bundle 'ScrollColors'
 Bundle 'vimprj'
-Bundle 'Zenburn'
 
 " non github repos
 "Bundle 'git://git.wincent.com/command-t.git'
@@ -56,17 +57,17 @@ set textwidth=79
 colorscheme solarized
 
 set autoindent
-set showcmd         " Show (partial) command in status line
-set showmatch       " Show matching brackets
-set ignorecase      " Do case insensitive matching
-set smartcase       " Do smart case matching
-set incsearch       " Incremental search
-set hlsearch        " Highlight the search
+set expandtab       " I HATE tabs.  Expand to appropriate number of spaces
 set hidden          " Hide buffers when they are abandoned
+set hlsearch        " Highlight the search
+set ignorecase      " Do case insensitive matching
+set incsearch       " Incremental search
 set noautowrite     " Don't automatically write when going to :next
 set number          " Show line numbers in margin
+set showcmd         " Show (partial) command in status line
+set showmatch       " Show matching brackets
+set smartcase       " Do smart case matching
 set smarttab        " tab and backspace are smart
-set expandtab       " I HATE tabs.  Expand to appropriate number of spaces
 
 set foldmethod=syntax " Create folds based on the file's syntax
 
