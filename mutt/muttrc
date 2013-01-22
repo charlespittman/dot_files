@@ -1,0 +1,69 @@
+# Set up mutt to use our local maildir:
+set mbox_type=Maildir
+set folder=$HOME/Mail
+
+set sendmail = "/usr/bin/msmtp"
+set editor = "vim -c 'set spell spelllang=en'"
+# realname, from, record, and signature are all set in
+# ~/.mutt_local/muttrc_local
+
+set hidden_host                           # Hide host details.
+set alias_file = ~/.mutt_local/aliases    # Keep aliases in this file.
+set include                               # Include the message in replies.
+set sort_aux = date-received              # Sort threads by date received.
+set tilde                                 # Fill out messages with '~'.
+set arrow_cursor                          # Use arrow as indicator
+set read_inc=100                          # Read counter ticks every 100 msgs.
+set write_inc=100                         # Write counter ticks every 100 msgs.
+set mime_forward                          # Forward message as MIME attachments.
+set nostrict_threads                      # Lets have some fuzzy threading.
+set fcc_clear                             # Keep fcc's clear of signatues and encryption.
+
+source ~/.mutt/auto_views            # Define auto_views.
+source ~/.mutt_local/aliases         # Load in my aliases.
+#source ~/.mutt/subscriptions        # Define the list of subscribed mailing lists.
+source ~/.mutt_local/mailboxes       # Define the list of folders that receive mail.
+source ~/.mutt/headers               # Configure header display.
+#source ~/.mutt/macros               # Define macros.
+source ~/.mutt/colors                # Define colors.
+source ~/.mutt/sidebar               # Sidebar Settings
+
+# html IS the last option.
+alternative_order text/enriched text/plain text/html 
+
+# Formatting
+set index_format = "%4C %Z %{%a, %b %d %H:%M} %-20.20L %4c %s"
+#set compose_format="-- %v-- Compose  [Approximate Message Size: %l   Attachments: %a]%>-"
+#set attach_format="%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] "
+#set alias_format="%4n %2f %t %-12a  %r"
+#set status_format="-%r-%v--[%?M?%M/?%m msgs%?n?, %n new?%?d?, %d del?%?F?, %F flag?%?t?, %t tag?%?p?, %p postp?%?b?, %b inc?%?l?, %l?]--(%f)--%s-%>-%P-"
+#set folder_format="%3C %t%N %F %-8.8u %-8.8g %8s %d %f"
+#set message_format="%-.16n: %s"
+#set pager_format="~~~~~~~~~ On %{%a, %d %b %Y} at [%[%H:%M]]: %s %|~"
+#set attribution='On %{%a, %d %b %Y}, %n wrote:\n'
+#set forward_format = "[%s]"
+
+
+#### Macros and such
+
+# get the url view working
+macro index \cb |urlview\n 'call urlview to extract URLs out of a message'
+macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
+
+# h will take you to the folder list in the index
+macro index h "c?t"
+
+set timeout=10        # Simulate a keypress every 10s
+set mail_check=5      # Mutt checks on each keypress, but not more than 5s
+set beep_new          # Beep on new message
+unset collapse_unread # Don't collapse threads with unread messages
+unset confirmappend   # Don't prompt when saving to another box.
+unset help            # Remove help bar
+unset mark_old        # Leave msgs marked new after changing the mailbox
+set delete=yes        # Don't prompt when syncing a folder with deleted text
+set fast_reply        # Don't prompt for recipient/subject for replies
+set pager_stop        # Prevent accidentally paging to nex msg
+
+# We want mutt to attach form=flowed plaintext attachments.  Otherwise some
+# clients get weird newlines.
+set text_flowed
