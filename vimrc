@@ -31,9 +31,6 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'xuhdev/SingleCompile'
 
 " vim-scripts repos
-"Bundle 'L9'
-"Bundle 'FuzzyFinder'
-"Bundle 'rails.vim'
 Bundle 'Align'
 Bundle 'bash-support.vim'
 Bundle 'camelcasemotion'
@@ -56,7 +53,7 @@ set softtabstop=2
 set shiftwidth=2
 set textwidth=79
 
-colorscheme elflord
+colorscheme solarized
 
 set autoindent
 set showcmd         " Show (partial) command in status line
@@ -109,9 +106,17 @@ set printoptions=paper:letter,left:5pc,right:5pc,top:5pc,bottom:5pc,syntax:y,wra
 python from powerline.ext.vim import source_plugin; source_plugin()
 set laststatus=2
 
-let g:tex_fold_enabled = 1    " Enable automated folding of LaTeX files
-
 " Toggle 'paste' with notification
 nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>    " Toggle paste while in Insert mode
 set showmode
+
+"-- Syntax options (begin) --"
+let g:tex_fold_enabled = 1    " LaTeX
+let g:sh_fold_enabled = 7     " function, heredoc, and if/do/for folding
+let python_highlight_all = 1  " highlight numbers, builtin functions, standard
+                              " exceptions, and whitespace errors
+let ruby_operators = 1        " Highlight operators
+let ruby_space_errors = 1
+let ruby_fold = 1
+"-- Syntax options (end) --"
