@@ -1,5 +1,9 @@
 set nocompatible    " It's Vi IMproved!  We don't need to be compatible.
 
+" NOTE : You'll need to install the vundle plugin for Vim before using this
+" file.  The plugins also require Exuberant Ctags and the Powerline module for
+" Python
+
 "-- Vundle options (begin) --"
 filetype off
 set rtp+=~/.vim/bundle/vundle/
