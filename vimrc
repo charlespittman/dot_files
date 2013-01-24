@@ -33,15 +33,15 @@ Bundle 'xuhdev/SingleCompile'
 
 " vim-scripts repos
 Bundle 'Align'
-Bundle 'DfrankUtil'
-Bundle 'ScrollColors'
-Bundle 'Zenburn'
 Bundle 'bash-support.vim'
 Bundle 'camelcasemotion'
+Bundle 'DfrankUtil'
 Bundle 'indexer.tar.gz'
 Bundle 'matchit.zip'
 Bundle 'mimicpak'
+Bundle 'ScrollColors'
 Bundle 'vimprj'
+Bundle 'Zenburn'
 
 " non github repos
 "Bundle 'git://git.wincent.com/command-t.git'

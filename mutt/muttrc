@@ -5,7 +5,7 @@ set folder=$HOME/Mail
 set sendmail = "/usr/bin/msmtp"
 set editor = "vim -c 'set spell spelllang=en filetype=mail'"
 set print_command="muttprint"
-# realname, from, record, and signature are all set in
+# realname, from, record, postponed, and signature are all set in
 # ~/.mutt_local/muttrc_local
 
 set hidden_host                           # Hide host details.
@@ -28,6 +28,7 @@ source ~/.mutt/headers               # Configure header display.
 #source ~/.mutt/macros               # Define macros.
 source ~/.mutt/colors                # Define colors.
 source ~/.mutt/sidebar               # Sidebar Settings
+source ~/.mutt_local/muttrc_local
 
 # html IS the last option.
 alternative_order text/enriched text/plain text/html 
