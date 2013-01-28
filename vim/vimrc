@@ -78,6 +78,13 @@ Bundle 'vimprj'
 "Bundle 'git://git.wincent.com/command-t.git'
 
 "Behavior {{{1
+" Disable backup/swap files {{{2
+set nobackup
+set noswapfile
+
+" Change mapleader from \ to , {{{2
+let mapleader = ','
+
 " Expand <Tab> to appropriate number of spaces {{{2
 set expandtab
 
@@ -87,7 +94,7 @@ set smarttab
 " Don't automatically save when switching buffers {{{2
 set noautowrite
 
-" Hide empty buffers {{{2
+" Hide buffers instead of closing {{{2
 set hidden
 
 " Enable omni completion {{{2
@@ -152,6 +159,7 @@ set background=dark
 
 "Search Options {{{1
 " Do case insensitive matching if only given lowercase {{{2
+set ignorecase
 set smartcase
 
 " Start the search as we type {{{2
