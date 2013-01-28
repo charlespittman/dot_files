@@ -1,3 +1,5 @@
+set nocompatible
+
 "**NOTE** {{{1
 " You'll need to install the vundle plugin for Vim before using this file.  The
 " plugins also require Exuberant Ctags and the Powerline module for Python.
@@ -37,7 +39,6 @@ call vundle#rc()
 "original repos on github {{{4
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'Lokaltog/vim-powerline'
-Bundle 'Townk/vim-autoclose'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'coot/atp_vim'
 Bundle 'ervandew/supertab'
@@ -77,9 +78,6 @@ Bundle 'vimprj'
 "Bundle 'git://git.wincent.com/command-t.git'
 
 "Behavior {{{1
-" Disable vi compatibility {{{2
-set nocompatible
-
 " Expand <Tab> to appropriate number of spaces {{{2
 set expandtab
 
@@ -132,7 +130,8 @@ let ruby_fold = 1
 let g:sh_fold_enabled = 7
 
 " TeX {{{2
-let g:tex_fold_enabled = 1    " LaTeX
+let g:atp_folding = 1         " LaTeX folding from ATP plugin
+let g:atp_fold_environments = ['_all_']
 
 "Layout {{{1
 set number
