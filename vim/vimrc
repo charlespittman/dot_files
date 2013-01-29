@@ -1,3 +1,11 @@
+" vim: set foldmethod=marker :
+
+" Source .vimrc.local, if it exists {{{
+if filereadable(glob("~/.vimrc.local"))
+    source ~/.vimrc.local
+endif
+" }}}
+
 set nocompatible
 
 "**NOTE** {{{1
@@ -214,11 +222,4 @@ endfunction "}}}
 "}}}3
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
-"Mode line{{{
-" vim: set foldmethod=marker :
-" }}}
-
-"Printer Options {{{1
-set printdevice=KM-3050
-set printoptions=paper:letter,left:5pc,right:5pc,top:5pc,bottom:5pc,syntax:y,wrap:y,duplex:long
 
