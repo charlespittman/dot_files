@@ -3,6 +3,9 @@ set nocompatible
 "**NOTE** {{{1
 " You'll need to install the vundle plugin for Vim before using this file.  The
 " plugins also require Exuberant Ctags and the Powerline module for Python.
+"
+" It would also be a good idea to check out the 'Key Mappings' section to see
+" what has been changed.
 
 " Installing Vundle {{{
 " $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
@@ -81,9 +84,6 @@ Bundle 'vimprj'
 " Disable backup/swap files {{{2
 set nobackup
 set noswapfile
-
-" Change mapleader from \ to , {{{2
-let mapleader = ','
 
 " Expand <Tab> to appropriate number of spaces {{{2
 set expandtab
@@ -168,14 +168,30 @@ set incsearch
 " Highlight our search term in the text {{{2
 set hlsearch
 
-"Printer Options {{{1
-set printdevice=KM-3050
-set printoptions=paper:letter,left:5pc,right:5pc,top:5pc,bottom:5pc,syntax:y,wrap:y,duplex:long
+"Key Mappings {{{1
+" Use jj to exit insert mode {{{2
+imap jj <ESC>
 
-"Etc. {{{1
-imap jj <ESC>   " Exit insert mode by typing jj
-nmap q :q<CR>   " Exit normal mode by typing q
-nmap Q :q!<CR>  " Exit normal mode without saving
+" Use q to exit normal mode {{{2
+nmap q :q<CR>
+
+" Use ; in place of : {{{2
+nnoremap ; :
+
+" Clear search highlighting with ,/ {{{2
+nmap <silent> ,/ :nohlsearch<CR>
+
+" Change mapleader from \ to , {{{2
+let mapleader = ','
+
+" Use w!! to save using sudo {{{2
+cnoreabbrev <expr> w!!
+                \((getcmdtype() == ':' && getcmdline() == 'w!!')
+                \?('!sudo tee % >/dev/null'):('w!!'))
+
+" Use Q for formatting the current paragraph (or selection) {{{2
+vmap Q gq
+nmap Q gqap
 
 " Hit <F4> to remove trailing whitespace {{{2
 nnoremap <silent> <F4> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
@@ -201,3 +217,8 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 "Mode line{{{
 " vim: set foldmethod=marker :
 " }}}
+
+"Printer Options {{{1
+set printdevice=KM-3050
+set printoptions=paper:letter,left:5pc,right:5pc,top:5pc,bottom:5pc,syntax:y,wrap:y,duplex:long
+
