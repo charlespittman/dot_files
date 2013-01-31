@@ -75,23 +75,25 @@ Bundle 'xuhdev/SingleCompile'
 
 "vim-scripts repos {{{4
 Bundle 'Align'
-Bundle 'DfrankUtil'
-Bundle 'ScrollColors'
-Bundle 'Zenburn'
 Bundle 'bash-support.vim'
 Bundle 'camelcasemotion'
+Bundle 'DfrankUtil'
 Bundle 'indexer.tar.gz'
 Bundle 'matchit.zip'
 Bundle 'mimicpak'
+Bundle 'ScrollColors'
 Bundle 'vimprj'
+Bundle 'Zenburn'
 
 "non github repos {{{4
 "Bundle 'git://git.wincent.com/command-t.git'
 
 "Behavior {{{1
-" Disable backup/swap files {{{2
+" Disable backup files {{{2
 set nobackup
-set noswapfile
+
+" Save swapfiles to /var/tmp {{{2
+set directory=/var/tmp
 
 " Expand <Tab> to appropriate number of spaces {{{2
 set expandtab
@@ -107,6 +109,23 @@ set hidden
 
 " Enable omni completion {{{2
 set ofu=syntaxcomplete#Complete
+
+" Y yanks from cursor to end of line {{{2
+nnoremap Y y$
+
+" Set vsplit to right and hsplit to below {{{2
+set splitbelow
+set splitright
+
+" Wildmenu (filename completion) {{{2
+if has("wildmenu")
+    set wildignore+=*.a,*.o
+    set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png
+    set wildignore+=.DS_Store,.git,.hg,.svn
+    set wildignore+=*~,*.swp,*.tmp
+    set wildmenu
+    set wildmode=longest,list
+endif
 
 "Filetype Detection {{{1
 filetype on         " Enable filetype detection
@@ -176,6 +195,10 @@ set incsearch
 " Highlight our search term in the text {{{2
 set hlsearch
 
+" Jumping with n puts the term in the middle of the screen {{{2
+nnoremap n nzz
+nnoremap N Nzz
+
 "Key Mappings {{{1
 " Use jj to exit insert mode {{{2
 imap jj <ESC>
@@ -222,4 +245,5 @@ endfunction "}}}
 "}}}3
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
-
+"GVim Settings {{{1
+set gfn=Inconsolata\ for\ Powerline\ Medium\ 11
