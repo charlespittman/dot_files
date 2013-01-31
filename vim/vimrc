@@ -247,3 +247,9 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
 "GVim Settings {{{1
 set gfn=Inconsolata\ for\ Powerline\ Medium\ 11
+
+"Asymptote Stuff {{{1
+augroup filetypedetect
+au BufNewFile,BufRead *.asy     setf asy
+augroup END
+filetype plugin on
