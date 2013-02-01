@@ -51,7 +51,6 @@ call vundle#rc()
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'coot/atp_vim'
 Bundle 'ervandew/supertab'
 Bundle 'gmarik/vundle'
 Bundle 'godlygeek/tabular'
