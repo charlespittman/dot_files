@@ -48,12 +48,13 @@ call vundle#rc()
 
 " Packages {{{3
 "original repos on github {{{4
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'Lokaltog/vim-powerline'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'ervandew/supertab'
 Bundle 'gmarik/vundle'
 Bundle 'godlygeek/tabular'
+Bundle 'jcf/vim-latex'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'Lokaltog/vim-powerline'
 Bundle 'majutsushi/tagbar'
 Bundle 'mattn/zencoding-vim'
 Bundle 'nathanaelkane/vim-indent-guides'
@@ -161,10 +162,6 @@ let ruby_fold = 1
 
 " Shell: and fold functions, heredoc, and if/do/for blocks {{{2
 let g:sh_fold_enabled = 7
-
-" TeX {{{2
-let g:atp_folding = 1         " LaTeX folding from ATP plugin
-let g:atp_fold_environments = ['_all_']
 
 "Layout {{{1
 set number
