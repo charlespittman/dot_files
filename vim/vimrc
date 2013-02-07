@@ -1,6 +1,5 @@
 " vim: set foldmethod=marker :
 
-
 set nocompatible
 
 "**NOTE** {{{1
@@ -14,6 +13,9 @@ set nocompatible
 " $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 " }}}
 
+" Pathogen {{{1
+execute pathogen#infect()
+
 "Plugin Options {{{1
 "==SingleCompile== {{{2
 " Compile with <F8> {{{3
@@ -23,14 +25,12 @@ nmap <F8> :SCCompile<CR>
 nmap <F9> :SCCompileRun<CR>
 
 "==Tagbar== {{{2
-" Toggle the tagbar with <F7> {{{3
-nmap <F7> :TagbarToggle<CR>
-
 " Omit helpbar and saves screen space {{{3
 let g:tagbar_compact = 1
 
 " Set icons for open/closed folds {{{3
-let g:tagbar_iconchars = ['▸', '▾']
+let g:tagbar_iconchars = ['+', '-']     " Fallback, if no utf-8
+silent! let g:tagbar_iconchars = ['▸', '▾']
 
 " Unfold scopes  to show tag under the cursor {{{3
 let g:tagbar_autoshowtag = 1  " Open closed folds for tag under cursor
@@ -46,39 +46,40 @@ call vundle#rc()
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'ervandew/supertab'
 Bundle 'gmarik/vundle'
-Bundle 'godlygeek/tabular'
+Bundle 'wincent/Command-T'
+"Bundle 'godlygeek/tabular'
 Bundle 'jcf/vim-latex'
-Bundle 'Lokaltog/vim-easymotion'
+"Bundle 'Lokaltog/vim-easymotion'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'majutsushi/tagbar'
-Bundle 'mattn/zencoding-vim'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'oblitum/cSyntaxAfter'
-Bundle 'scrooloose/nerdtree'
+"Bundle 'mattn/zencoding-vim'
+"Bundle 'nathanaelkane/vim-indent-guides'
+"Bundle 'oblitum/cSyntaxAfter'
+"Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
-Bundle 'skammer/vim-css-color'
-Bundle 'tomasr/molokai'
-Bundle 'tomtom/tcomment_vim'
+"Bundle 'skammer/vim-css-color'
+"Bundle 'tomasr/molokai'
+"Bundle 'tomtom/tcomment_vim'
 Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-markdown'
+"Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-sensible'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-unimpaired'
+"Bundle 'tpope/vim-surround'
+"Bundle 'tpope/vim-unimpaired'
 Bundle 'vim-ruby/vim-ruby'
-Bundle 'xuhdev/SingleCompile'
+"Bundle 'xuhdev/SingleCompile'
 
 "vim-scripts repos {{{4
-Bundle 'Align'
-Bundle 'bash-support.vim'
-Bundle 'camelcasemotion'
+"Bundle 'Align'
+"Bundle 'bash-support.vim'
+"Bundle 'camelcasemotion'
 Bundle 'DfrankUtil'
 Bundle 'indexer.tar.gz'
 Bundle 'matchit.zip'
 Bundle 'mimicpak'
-Bundle 'ScrollColors'
+"Bundle 'ScrollColors'
 Bundle 'vimprj'
-Bundle 'Zenburn'
+"Bundle 'Zenburn'
 
 "non github repos {{{4
 "Bundle 'git://git.wincent.com/command-t.git'
@@ -114,12 +115,12 @@ set splitright
 
 " Wildmenu (filename completion) {{{2
 if has("wildmenu")
-    set wildignore+=*.a,*.o
-    set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png
-    set wildignore+=.DS_Store,.git,.hg,.svn
-    set wildignore+=*~,*.swp,*.tmp
-    set wildmenu
-    set wildmode=longest,list
+  set wildignore+=*.a,*.o
+  set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png
+  set wildignore+=.DS_Store,.git,.hg,.svn
+  set wildignore+=*~,*.swp,*.tmp
+  set wildmenu
+  set wildmode=longest,list
 endif
 
 "Filetype Detection {{{1
@@ -136,7 +137,8 @@ if has("syntax")
   set showmatch
 
   " Print <Tab> and trailing spaces {{{2
-  set list listchars=tab:▷⋅,trail:⋅,nbsp:⋅    " Print tabs and trailing spaces
+  set list listchars=tab:\|_,eol:¶    " Fallback, if no utf-8
+  silent! set list listchars=tab:▷⋅,trail:⋅,nbsp:⋅    " Print tabs and trailing spaces
 
   " Python: Highlight numbers, builtins, std exceptions, & whitespace errors {{{2
   let python_highlight_all = 1
@@ -178,7 +180,7 @@ set laststatus=2
 "Color Options {{{1
 set background=dark
 let g:solarized_termtrans = 1
-colorscheme solarized
+silent! colorscheme solarized
 
 "Search Options {{{1
 " Do case insensitive matching if only given lowercase {{{2
@@ -213,8 +215,8 @@ let mapleader = ','
 
 " Use w!! to save using sudo {{{2
 cnoreabbrev <expr> w!!
-                \((getcmdtype() == ':' && getcmdline() == 'w!!')
-                \?('!sudo tee % >/dev/null'):('w!!'))
+      \((getcmdtype() == ':' && getcmdline() == 'w!!')
+      \?('!sudo tee % >/dev/null'):('w!!'))
 
 " Use Q for formatting the current paragraph (or selection) {{{2
 vmap Q gq
@@ -241,16 +243,33 @@ endfunction "}}}
 "}}}3
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
+" Toggle the tagbar with <F7> {{{2
+nmap <F7> :TagbarToggle<CR>
+
+" Command-t functions {{{2
+noremap <leader>o <Esc>:CommandT<CR>
+noremap <leader>O <Esc>:CommandTFlush<CR>
+noremap <leader>m <Esc>:CommandTBuffer<CR>
+
 "GVim Settings {{{1
 set gfn=Inconsolata\ for\ Powerline\ Medium\ 11
 
-"Asymptote Stuff {{{1
-augroup filetypedetect
-au BufNewFile,BufRead *.asy     setf asy
-augroup END
-filetype plugin on
+" File type specific Settings {{{1
+if has('autocmd')
+  " Debugging {{{2
+  "set verbose=9
+
+  " Automatically cd to current file {{{2
+  autocmd BufEnter * lcd %:p:h
+
+  "Asymptote Stuff {{{2
+  augroup filetypedetect
+    au BufNewFile,BufRead *.asy     setf asy
+  augroup END
+  filetype plugin on
+endif
 
 " Source .vimrc.local, if it exists {{{1
 if filereadable(glob("~/.vimrc.local"))
-    source ~/.vimrc.local
+  source ~/.vimrc.local
 endif
