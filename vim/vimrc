@@ -1,10 +1,5 @@
 " vim: set foldmethod=marker :
 
-" Source .vimrc.local, if it exists {{{
-if filereadable(glob("~/.vimrc.local"))
-    source ~/.vimrc.local
-endif
-" }}}
 
 set nocompatible
 
@@ -133,35 +128,39 @@ filetype indent on  " Enable filetype-specific indenting
 filetype plugin on  " Enable filetype-specific plugins
 
 "Syntax Highlighting {{{1
-" Let Vim pick colors for the highlighting {{{2
-syntax on
+if has("syntax")
+  " Let Vim pick colors for the highlighting {{{2
+  syntax on
 
-" Flash a bracket's match {{{2
-set showmatch
+  " Flash a bracket's match {{{2
+  set showmatch
 
-" Print <Tab> and trailing spaces {{{2
-set list listchars=tab:▷⋅,trail:⋅,nbsp:⋅    " Print tabs and trailing spaces
+  " Print <Tab> and trailing spaces {{{2
+  set list listchars=tab:▷⋅,trail:⋅,nbsp:⋅    " Print tabs and trailing spaces
 
-" Python: Highlight numbers, builtins, std exceptions, & whitespace errors {{{2
-let python_highlight_all = 1
+  " Python: Highlight numbers, builtins, std exceptions, & whitespace errors {{{2
+  let python_highlight_all = 1
 
-" Ruby: Highlight operators & space errors {{{2
-let ruby_operators = 1
-let ruby_space_errors = 1
+  " Ruby: Highlight operators & space errors {{{2
+  let ruby_operators = 1
+  let ruby_space_errors = 1
+endif
 
 "Folding Options {{{1
-" Enable syntax folding {{{2
-set foldmethod=syntax
+if has("folding")
+  " Enable syntax folding {{{2
+  set foldmethod=syntax
 
-" Perl: and fold if blocks {{{2
-let perl_fold = 1
-let perl_fold_blocks = 1
+  " Perl- and fold if blocks {{{2
+  let perl_fold = 1
+  let perl_fold_blocks = 1
 
-" Ruby {{{2
-let ruby_fold = 1
+  " Ruby {{{2
+  let ruby_fold = 1
 
-" Shell: and fold functions, heredoc, and if/do/for blocks {{{2
-let g:sh_fold_enabled = 7
+  " Shell- and fold functions, heredoc, and if/do/for blocks {{{2
+  let g:sh_fold_enabled = 7
+endif
 
 "Layout {{{1
 set number
@@ -177,19 +176,20 @@ set textwidth=79
 set laststatus=2
 
 "Color Options {{{1
-colorscheme slate
 set background=dark
+let g:solarized_termtrans = 1
+colorscheme solarized
 
 "Search Options {{{1
 " Do case insensitive matching if only given lowercase {{{2
 set ignorecase
 set smartcase
 
-" Start the search as we type {{{2
-set incsearch
-
-" Highlight our search term in the text {{{2
-set hlsearch
+" Search as we type, plus highlight {{{2
+if has("extra_search")
+  set incsearch
+  set hlsearch
+endif
 
 " Jumping with n puts the term in the middle of the screen {{{2
 nnoremap n nzz
@@ -249,3 +249,8 @@ augroup filetypedetect
 au BufNewFile,BufRead *.asy     setf asy
 augroup END
 filetype plugin on
+
+" Source .vimrc.local, if it exists {{{1
+if filereadable(glob("~/.vimrc.local"))
+    source ~/.vimrc.local
+endif
