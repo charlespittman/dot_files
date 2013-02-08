@@ -64,10 +64,10 @@ Bundle 'tpope/vim-fugitive'
 "Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-sensible'
-"Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-surround'
 "Bundle 'tpope/vim-unimpaired'
 Bundle 'vim-ruby/vim-ruby'
-"Bundle 'xuhdev/SingleCompile'
+Bundle 'xuhdev/SingleCompile'
 
 "vim-scripts repos {{{4
 "Bundle 'Align'
@@ -105,6 +105,8 @@ set hidden
 
 " Enable omni completion {{{2
 set ofu=syntaxcomplete#Complete
+let g:SuperTabDefaultCompletionType = "context"
+
 
 " Y yanks from cursor to end of line {{{2
 nnoremap Y y$
@@ -243,8 +245,8 @@ endfunction "}}}
 "}}}3
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
-" Toggle the tagbar with <F7> {{{2
-nmap <F7> :TagbarToggle<CR>
+" Toggle the tagbar with <leader>l {{{2
+nmap <leader>l :TagbarToggle<CR>
 
 " Command-t functions {{{2
 noremap <leader>o <Esc>:CommandT<CR>
