@@ -1,28 +1,21 @@
 # vim: filetype=muttrc
 
-# make sure that you are using mutt linked against slang, not ncurses, or
-# suffer the consequences of weird color issues. use "mutt -v" to check this.
-
-# for background in 16 color terminal, valid background colors include:
-# base03, bg, black, any of the non brights
-
 # basic colors ---------------------------------------------------------
-color normal      white           default
+color normal      brightyellow    default
 color error       red             default
-color tilde       yellow          default
-color message     brightcyan      default
+color tilde       black           default
+color message     cyan            default
 color markers     red             white
-color attachment  magenta         default
-color search      brightmagenta   default
-#color status      J_black         J_status
-color status      yellow          black
-#color indicator   brightwhite     brightblack
-color tree        default         default                                     # arrow in threads
+color attachment  cyan            default
+color search      magenta         default
+color status      yellow          brightblack
+color indicator   brightwhite     brightblack
+#color tree        default         default                                     # arrow in threads
 
 # basic monocolor screen
 mono  bold        bold
 mono  underline   underline
-#mono  indicator   reverse
+mono  indicator   reverse
 mono  error       bold
 
 # index ----------------------------------------------------------------
@@ -30,8 +23,8 @@ mono  error       bold
 #color index       J_base          default         "~A~N!~T!~p!~Q!~F!~D"      # the rest, new
 color index       default         default         "~A"                        # all messages
 #color index       brightred       default         "~E"                        # expired messages
-#color index       brightwhite     default         "~N"                        # new messages
-#color index       blue            default         "~O"                        # old messages
+color index       brightcyan      default         "~N"                        # new messages
+#color index       brightwhite     default         "~O"                        # old messages
 #color index       brightmagenta   default         "~Q"                        # messages that have been replied to
 #color index       brightgreen     default         "~R"                        # read messages
 #color index       blue            default         "~U"                        # unread messages
@@ -42,12 +35,12 @@ color index       default         default         "~A"                        # 
 #color index       cyan            default         "~N~p!~F"                   # new messages to me
 #color index       cyan            default         "~U~p!~F"                   # unread messages to me
 #color index       brightgreen     default         "~R~p!~F"                   # messages to me
-color index       brightred       default         "~F"                        # flagged messages
+#color index       brightred       default         "~F"                        # flagged messages
 #color index       red             default         "~F~p"                      # flagged messages to me
 #color index       red             default         "~N~F"                      # new flagged messages
 #color index       red             default         "~N~F~p"                    # new flagged messages to me
 #color index       red             default         "~U~F~p"                    # new flagged messages to me
-color index       black           red             "~D"                        # deleted messages
+color index       red             magenta         "~D"                        # deleted messages
 #color index       brightcyan      default         "~v~(!~N)"                  # collapsed thread with no unread
 #color index       yellow          default         "~v~(~N)"                   # collapsed thread with some unread
 #color index       green           default         "~N~v~(~N)"                 # collapsed thread with unread parent
@@ -62,14 +55,15 @@ color index       black           red             "~D"                        # 
 #color index       yellow          default         "~(~N)"                    # messages in threads with some unread
 #color index       green           default         "~S"                       # superseded messages
 color index       black           brightwhite     "~T"                       # tagged messages
-color index       brightyellow    red             "~="                       # duplicated messages
+#color index       brightyellow    red             "~="                       # duplicated messages
 
 
 # message headers ------------------------------------------------------
-#color header      green           default         "^"
-color hdrdefault  yellow          default
-color header      brightwhite     default         "^(From)"
-color header      brightwhite     default         "^(Subject)"
+color hdrdefault  green           default
+color header      brightyellow    default         "^(From)"
+color header      brightblue      default         "^(Subject)"
+color header      brightwhite     default         "^(Date)"
+color header      brightgreen     default         "^(To)"
 
 # body -----------------------------------------------------------------
 color quoted      blue            default
@@ -82,13 +76,13 @@ color signature   brightcyan      default
 color normal      default         default
 
 ## pgp
-color body        red             default         "(BAD signature)"
-color body        cyan            default         "(Good signature)"
-color body        brightblack     default         "^gpg: Good signature .*"
-color body        brightyellow    default         "^gpg: "
-color body        brightyellow    red             "^gpg: BAD signature from.*"
-mono  body        bold                            "^gpg: Good signature"
-mono  body        bold                            "^gpg: BAD signature from.*"
+#color body        red             default         "(BAD signature)"
+#color body        cyan            default         "(Good signature)"
+#color body        brightblack     default         "^gpg: Good signature .*"
+#color body        brightyellow    default         "^gpg: "
+#color body        brightyellow    red             "^gpg: BAD signature from.*"
+#mono  body        bold                            "^gpg: Good signature"
+#mono  body        bold                            "^gpg: BAD signature from.*"
 
 # yes, an insance URL regex
 color body        red             default         "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
@@ -109,20 +103,22 @@ color body        blue            default         "( *[-+=#*~_]){3,}"
 
 
 # Some highlights to help wade through error msgs
-color index       black           green           "~s'\\<(PASSED)|(No errors)|(SUCCESS)|(OK)'"
-color index       default         red             "~s'\\<(FAIL)|(ERROR)|([0-9] errors)'"
-color index       default         red             "~s'\\<(PROBLEM)'"
-color index       black           yellow          "~s'\\<WARN'
-color index       magenta         default         "~s'UNATTENDED'"
-color index       blue            default         "~s'OLDBORG_ROOT'"
-color index       brightblue      default         "~s'BINDIR'"
-color index       brightmagenta   default         "~s'_BIN'"
+color index       black           green           "~s'\\<(PASSED)|(SUCCESS)'"
+color index       black           red             "~s'\\<(FAIL)|(ERROR)|([0-9] errors)'"
+color index       brightred       default         "~s'errors'"
+color index       brightgreen     default         "~s'(No errors)|(OK)'"
+color index       brightred       default         "~s'\\<(PROBLEM)'"
+color index       yellow          default         "~s'\\<WARN'
+#color index       magenta         default         "~s'UNATTENDED'"
+#color index       blue            default         "~s'OLDBORG_ROOT'"
+#color index       brightblue      default         "~s'BINDIR'"
+#color index       brightmagenta   default         "~s'_BIN'"
 color index       green           default         "~s'Done Trading'"
 
-color body        default         red             "FAIL((ED)|(URES?))?"
-color body        default         red             "PROBLEMS?"
-color body        default         red             "\\[?((CRITICAL)|(LM_)?(ERROR))\\]?"
-color body        default         red             "BAD"
-color body        black           green           "(GOOD)|(SUCCESS)"
-color body        black           yellow          "\\[?WARNING\\]?"
-color body        yellow          default         "pops[-.][[:alpha:]]+[[:digit:]]+(\.pops\.atdesk\.com)?"
+color body        red             default         "FAIL((ED)|(URES?))?"
+color body        red             default         "PROBLEMS?"
+color body        red             default         "\\[?((CRITICAL)|(LM_)?(ERROR))\\]?"
+color body        red             default         "BAD"
+color body        green           default         "(GOOD)|(SUCCESS)"
+color body        yellow          default         "\\[?WARNING\\]?"
+#color body        yellow          default         "pops[-.][[:alpha:]]+[[:digit:]]+(\.pops\.atdesk\.com)?"

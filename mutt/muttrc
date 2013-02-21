@@ -22,7 +22,7 @@ set fcc_clear                             # Keep fcc's clear of signatues and en
 
 source ~/.mutt/auto_views            # Define auto_views.
 source ~/.mutt_local/aliases         # Load in my aliases.
-#source ~/.mutt/subscriptions        # Define the list of subscribed mailing lists.
+source ~/.mutt/subscriptions        # Define the list of subscribed mailing lists.
 source ~/.mutt_local/mailboxes       # Define the list of folders that receive mail.
 source ~/.mutt/headers               # Configure header display.
 #source ~/.mutt/macros               # Define macros.
@@ -34,15 +34,15 @@ source ~/.mutt_local/muttrc_local
 alternative_order text/enriched text/plain text/html 
 
 # Formatting
-set index_format = "%4C %Z %{%a, %b %d %H:%M} %-20.20L %4c %s"
-set attribution = "* %n <%a> [%(%F %R)]:"
+set index_format = "%4C  %Z  %[%a, %b %d %H:%M]  %-20.20n  %4c  %s"
+#set attribution = "* %n <%a> [%(%F %R)]:"
 #set compose_format="-- %v-- Compose  [Approximate Message Size: %l   Attachments: %a]%>-"
 #set attach_format="%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] "
-#set alias_format="%4n %2f %t %-12a  %r"
-#set status_format="-%r-%v--[%?M?%M/?%m msgs%?n?, %n new?%?d?, %d del?%?F?, %F flag?%?t?, %t tag?%?p?, %p postp?%?b?, %b inc?%?l?, %l?]--(%f)--%s-%>-%P-"
-#set folder_format="%3C %t%N %F %-8.8u %-8.8g %8s %d %f"
+set alias_format="%4n %2f %t %-12a  %r"
+set status_format="-%r-%v--[%?M?%M/?%m msgs%?n?, %n new?%?d?, %d del?%?F?, %F flag?%?t?, %t tag?%?p?, %p postp?%?b?, %b inc?%?l?, %l?]--(%f)--%s-%>-%P-"
+set folder_format="%3C %t%N %F %-8.8u %-8.8g %8s %d %f"
 #set message_format="%-.16n: %s"
-#set pager_format="~~~~~~~~~ On %{%a, %d %b %Y} at [%[%H:%M]]: %s %|~"
+set pager_format="~~~~~~~~~ On %{%a, %d %b %Y} at [%[%H:%M]]: %s %|~"
 #set forward_format = "[%s]"
 
 
@@ -65,6 +65,8 @@ unset mark_old        # Leave msgs marked new after changing the mailbox
 set delete=yes        # Don't prompt when syncing a folder with deleted text
 set fast_reply        # Don't prompt for recipient/subject for replies
 set pager_stop        # Prevent accidentally paging to nex msg
+set auto_tag=yes      # Commands apply to tagged msgs (if any)
+
 
 # We want mutt to attach form=flowed plaintext attachments.  Otherwise some
 # clients get weird newlines.
