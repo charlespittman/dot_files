@@ -1,0 +1,23 @@
+# vim: filetype=muttrc
+
+# get the url view working
+macro index \cb |urlview\n 'call urlview to extract URLs out of a message'
+macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
+
+# h will take you to the folder list in the index
+macro index h "c?t"
+
+# Several to quickly move messages around (whennot filtered correctly)
+macro index ",c" "s=ATDesk/INBOX.Cron\n"
+macro index ",i" "s=ATDesk/Incoming\n"
+macro index ",l" "s=ATDesk/INBOX.OOTO-BITO\n"
+macro index ",nc" "s=ATDesk/INBOX.Nagios.Canada\n"
+macro index ",np" "s=ATDesk/INBOX.Nagios.Prod\n"
+macro index ",no" "s=ATDesk/INBOX.Nagios.POPS\n"
+macro index ",o" "s=ATDesk/INBOX.Operations\n"
+macro index ",qd" "s=ATDesk/INBOX.Q.Dev\n"
+macro index ",qo" "s=ATDesk/INBOX.Q.Operations\n"
+
+# Not sure why these aren't included by default...
+macro pager <F8> "<enter-command>unset wait_key<enter><shell-escape>notmuch-mutt -r --prompt search<enter><change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>" "notmuch: search mail"
+macro pager <F9> "<enter-command>unset wait_key<enter><pipe-message>notmuch-mutt -r thread<enter><change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter><enter-command>set wait_key<enter>" "notmuch: reconstruct thread"

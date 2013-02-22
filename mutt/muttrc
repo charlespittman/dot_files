@@ -25,13 +25,10 @@ source ~/.mutt_local/aliases         # Load in my aliases.
 source ~/.mutt/subscriptions        # Define the list of subscribed mailing lists.
 source ~/.mutt_local/mailboxes       # Define the list of folders that receive mail.
 source ~/.mutt/headers               # Configure header display.
-#source ~/.mutt/macros               # Define macros.
+source ~/.mutt/macros               # Define macros.
 source ~/.mutt/colors                # Define colors.
 source ~/.mutt/sidebar               # Sidebar Settings
 source ~/.mutt_local/muttrc_local
-
-# html IS the last option.
-alternative_order text/enriched text/plain text/html 
 
 # Formatting
 set index_format = "%4C  %Z  %[%a, %b %d %H:%M]  %-20.20n  %4c  %s"
@@ -45,15 +42,9 @@ set folder_format="%3C %t%N %F %-8.8u %-8.8g %8s %d %f"
 set pager_format="~~~~~~~~~ On %{%a, %d %b %Y} at [%[%H:%M]]: %s %|~"
 #set forward_format = "[%s]"
 
-
-#### Macros and such
-
-# get the url view working
-macro index \cb |urlview\n 'call urlview to extract URLs out of a message'
-macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
-
-# h will take you to the folder list in the index
-macro index h "c?t"
+# We want mutt to attach form=flowed plaintext attachments.  Otherwise some
+# clients get weird newlines.
+set text_flowed = yes
 
 set timeout=10        # Simulate a keypress every 10s
 set mail_check=5      # Mutt checks on each keypress, but not more than 5s
@@ -66,8 +57,3 @@ set delete=yes        # Don't prompt when syncing a folder with deleted text
 set fast_reply        # Don't prompt for recipient/subject for replies
 set pager_stop        # Prevent accidentally paging to nex msg
 set auto_tag=yes      # Commands apply to tagged msgs (if any)
-
-
-# We want mutt to attach form=flowed plaintext attachments.  Otherwise some
-# clients get weird newlines.
-set text_flowed = yes

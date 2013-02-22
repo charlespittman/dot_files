@@ -4,13 +4,13 @@
 color normal      brightyellow    default
 color error       red             default
 color tilde       black           default
-color message     cyan            default
+color message     brightgreen     default
 color markers     red             white
-color attachment  cyan            default
-color search      magenta         default
-color status      yellow          brightblack
-color indicator   brightwhite     brightblack
-#color tree        default         default                                     # arrow in threads
+color attachment  white           brightmagenta
+color search      default         magenta
+color status      green           default
+color indicator   brightwhite     default
+color tree        green           default                                     # arrow in threads
 
 # basic monocolor screen
 mono  bold        bold
@@ -23,7 +23,7 @@ mono  error       bold
 #color index       J_base          default         "~A~N!~T!~p!~Q!~F!~D"      # the rest, new
 color index       default         default         "~A"                        # all messages
 #color index       brightred       default         "~E"                        # expired messages
-color index       brightcyan      default         "~N"                        # new messages
+color index       brightmagenta   default         "~N"                        # new messages
 #color index       brightwhite     default         "~O"                        # old messages
 #color index       brightmagenta   default         "~Q"                        # messages that have been replied to
 #color index       brightgreen     default         "~R"                        # read messages
@@ -55,7 +55,7 @@ color index       red             magenta         "~D"                        # 
 #color index       yellow          default         "~(~N)"                    # messages in threads with some unread
 #color index       green           default         "~S"                       # superseded messages
 color index       black           brightwhite     "~T"                       # tagged messages
-#color index       brightyellow    red             "~="                       # duplicated messages
+color index       brightyellow    brightred       "~="                       # duplicated messages
 
 
 # message headers ------------------------------------------------------
@@ -72,7 +72,7 @@ color quoted2     yellow          default
 color quoted3     red             default
 color quoted4     brightred       default
 
-color signature   brightcyan      default
+color signature   red             default
 color normal      default         default
 
 ## pgp
@@ -84,8 +84,6 @@ color normal      default         default
 #mono  body        bold                            "^gpg: Good signature"
 #mono  body        bold                            "^gpg: BAD signature from.*"
 
-# yes, an insance URL regex
-color body        red             default         "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
 # Catch email addresses
 color body        magenta         default         "\<<?[[:print:]]+@*\.com>?\>"
 
@@ -103,22 +101,25 @@ color body        blue            default         "( *[-+=#*~_]){3,}"
 
 
 # Some highlights to help wade through error msgs
-color index       black           green           "~s'\\<(PASSED)|(SUCCESS)'"
-color index       black           red             "~s'\\<(FAIL)|(ERROR)|([0-9] errors)'"
+color index       black           green           "~s'\\<(passed)|(success)'"
+color index       black           red             "~s'\\<(fail)|([0-9]? errors?)'"
 color index       brightred       default         "~s'errors'"
-color index       brightgreen     default         "~s'(No errors)|(OK)'"
-color index       brightred       default         "~s'\\<(PROBLEM)'"
-color index       yellow          default         "~s'\\<WARN'
+color index       brightgreen     default         "~s'(no errors)|(\\<ok\\>)'"
+color index       brightred       default         "~s'\\<(problem)'"
+color index       brightyellow    default         "~s'\\<warn'
+color index       brightwhite     brightred       "~s'urgent'
+color index       brightcyan      default         "~s'recovery'"
 #color index       magenta         default         "~s'UNATTENDED'"
 #color index       blue            default         "~s'OLDBORG_ROOT'"
 #color index       brightblue      default         "~s'BINDIR'"
 #color index       brightmagenta   default         "~s'_BIN'"
-color index       green           default         "~s'Done Trading'"
+color index       brightyellow    brightblue      "~s'Done Trading'"
 
 color body        red             default         "FAIL((ED)|(URES?))?"
 color body        red             default         "PROBLEMS?"
-color body        red             default         "\\[?((CRITICAL)|(LM_)?(ERROR))\\]?"
+color body        red             default         "\\[?((CRITICAL)|(LM_)?(ERROR)S?)\\]?"
 color body        red             default         "BAD"
-color body        green           default         "(GOOD)|(SUCCESS)"
-color body        yellow          default         "\\[?WARNING\\]?"
+color body        green           default         "(GOOD)|(SUCCESS)|(\\<OK\\>)"
+color body        yellow          default         "\\[?(LM_)?WARNINGS?\\]?"
+color body        cyan            default         "RECOVERY"
 #color body        yellow          default         "pops[-.][[:alpha:]]+[[:digit:]]+(\.pops\.atdesk\.com)?"
