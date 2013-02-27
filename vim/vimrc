@@ -182,7 +182,7 @@ set laststatus=2
 "Color Options {{{1
 set background=dark
 let g:solarized_termtrans = 1
-"silent! colorscheme solarized
+silent! colorscheme solarized
 
 "Search Options {{{1
 " Do case insensitive matching if only given lowercase {{{2

@@ -1,8 +1,8 @@
 # vim: filetype=muttrc
 
-set sidebar_width=34
+set sidebar_width=36
 set sidebar_visible=yes
-set sidebar_delim=' | '
+set sidebar_delim=' ║ '
 color sidebar_new brightmagenta default
 
 # New keybindings to move around
