@@ -204,7 +204,7 @@ nnoremap N Nzz
 imap jj <ESC>
 
 " Use q to exit normal mode {{{2
-nmap q :q<CR>
+"nmap q :q<CR>
 
 " Use ; in place of : {{{2
 nnoremap ; :

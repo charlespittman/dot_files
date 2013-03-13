@@ -115,11 +115,12 @@ color index       brightwhite     brightred       "~s'urgent'
 #color index       brightmagenta   default         "~s'_BIN'"
 color index       brightyellow    brightblue      "~s'Done Trading'"
 
+color body        brightyellow    red             "!"
 color body        red             default         "FAIL((ED)|(URES?))?"
-color body        red             default         "PROBLEMS?"
+color body        red             default         "PROBLEMS?!?"
 color body        red             default         "\\[?((CRITICAL)|(LM_)?(ERROR)S?)\\]?"
-color body        red             default         "BAD"
-color body        green           default         "(GOOD)|(SUCCESS)|(\\<OK\\>)"
+color body        red             default         "\\<BAD"
+color body        green           default         "(GOOD)|(SUCCESS)|(\\<OK\\>)!?"
 color body        yellow          default         "\\[?(LM_)?WARNINGS?\\]?"
 color body        cyan            default         "RECOVERY"
 #color body        yellow          default         "pops[-.][[:alpha:]]+[[:digit:]]+(\.pops\.atdesk\.com)?"
@@ -129,7 +130,8 @@ color body        default         red             "returned[[:blank:]]+1"
 color body        default         green           "returned[[:blank:]]+0"
 
 ## Nagios
+color body        cyan            default         "ACKNOWLEDGEMENT"
 # Time elapsed
 color body        brightcyan      blue            "[0-9]d [0-9]{1,2}h [0-9]{1,2}m [0-9]{1,2}s elapsed"
 # Date/Time
-color body        brightcyan      blue            "[0-9]{2}-[0-9]{2}-[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}"
+color body        brightwhite     blue            "[0-9]{2}-[0-9]{2}-[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}"

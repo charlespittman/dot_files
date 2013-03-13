@@ -7,14 +7,17 @@ macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 # h will take you to the folder list in the index
 macro index h "c?t"
 
-# Several to quickly move messages around (whennot filtered correctly)
+# Several to quickly move messages around (when not filtered correctly)
 macro index ",c" "s=ATDesk/INBOX.Cron\n"
+macro index ",C" "s=ATDesk/Calendar\n"
 macro index ",i" "s=ATDesk/Incoming\n"
 macro index ",l" "s=ATDesk/INBOX.OOTO-BITO\n"
+macro index ",m" "s=ATDesk/INBOX.mutt-users\n"
 macro index ",nc" "s=ATDesk/INBOX.Nagios.Canada\n"
 macro index ",np" "s=ATDesk/INBOX.Nagios.Prod\n"
 macro index ",no" "s=ATDesk/INBOX.Nagios.POPS\n"
 macro index ",o" "s=ATDesk/INBOX.Operations\n"
+macro index ",r" "s=ATDesk/INBOX.ruby-talk\n"
 macro index ",qd" "s=ATDesk/INBOX.Q.Dev\n"
 macro index ",qo" "s=ATDesk/INBOX.Q.Operations\n"
 
