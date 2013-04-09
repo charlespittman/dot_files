@@ -6,29 +6,35 @@ set sendmail = "/usr/bin/msmtp"
 set editor = "vim -c 'set spell spelllang=en filetype=mail'"
 set print_command="muttprint"
 # realname, from, record, postponed, and signature are all set in
-# ~/.mutt_local/muttrc_local
+# ~/.mutt_local/muttrc.local
 
-set hidden_host                           # Hide host details.
 set alias_file = ~/.mutt_local/aliases    # Keep aliases in this file.
-set include                               # Include the message in replies.
-set sort_aux = date-received              # Sort threads by date received.
-set tilde                                 # Fill out messages with '~'.
 set arrow_cursor                          # Use arrow as indicator
-set read_inc=100                          # Read counter ticks every 100 msgs.
-set write_inc=100                         # Write counter ticks every 100 msgs.
+set auto_tag=yes                          # Commands apply to tagged msgs (if any)
+set beep_new                              # Beep on new message
+set delete=yes                            # Don't prompt when syncing a folder with deleted text
+set fast_reply                            # Don't prompt for recipient/subject for replies
+set fcc_clear                             # Keep fcc's clear of signatues and encryption.
+set hidden_host                           # Hide host details.
+set include                               # Include the message in replies.
+set mail_check=5                          # Mutt checks on each keypress, but not more than 5s
 set mime_forward                          # Forward message as MIME attachments.
 set nostrict_threads                      # Lets have some fuzzy threading.
-set fcc_clear                             # Keep fcc's clear of signatues and encryption.
+set pager_stop                            # Prevent accidentally paging to next msg
+set read_inc=100                          # Read counter ticks every 100 msgs.
+set sort_aux = date-received              # Sort threads by date received.
+set tilde                                 # Fill out messages with '~'.
+set timeout=10                            # Simulate a keypress every 10s
+set write_inc=100                         # Write counter ticks every 100 msgs.
+unset collapse_unread                     # Don't collapse threads with unread messages
+unset confirmappend                       # Don't prompt when saving to another box.
+unset help                                # Remove help bar
+unset markers                             # Don't show line continuation marker
+unset mark_old                            # Leave msgs marked new after changing the mailbox
 
-source ~/.mutt/auto_views            # Define auto_views.
-source ~/.mutt_local/aliases         # Load in my aliases.
-source ~/.mutt/subscriptions        # Define the list of subscribed mailing lists.
-source ~/.mutt_local/mailboxes       # Define the list of folders that receive mail.
-source ~/.mutt/headers               # Configure header display.
-source ~/.mutt/macros               # Define macros.
-source ~/.mutt/colors                # Define colors.
-source ~/.mutt/sidebar               # Sidebar Settings
-source ~/.mutt_local/muttrc_local
+# Cache (These dirs may need to be created)
+set header_cache="~/.cache/mutt/headers"
+set message_cachedir="~/.cache/mutt/bodies"
 
 # Formatting
 set index_format = "%4C  %Z  %[%a, %b %d %H:%M]  %-20.20n  %4c  %s"
@@ -46,14 +52,14 @@ set pager_format="~~~~~~~~~ On %{%a, %d %b %Y} at [%[%H:%M]]: %s %|~"
 # clients get weird newlines.
 set text_flowed = yes
 
-set timeout=10        # Simulate a keypress every 10s
-set mail_check=5      # Mutt checks on each keypress, but not more than 5s
-set beep_new          # Beep on new message
-unset collapse_unread # Don't collapse threads with unread messages
-unset confirmappend   # Don't prompt when saving to another box.
-unset help            # Remove help bar
-unset mark_old        # Leave msgs marked new after changing the mailbox
-set delete=yes        # Don't prompt when syncing a folder with deleted text
-set fast_reply        # Don't prompt for recipient/subject for replies
-set pager_stop        # Prevent accidentally paging to nex msg
-set auto_tag=yes      # Commands apply to tagged msgs (if any)
+alternative_order text/enriched text/plain text/html
+
+source ~/.mutt/auto_views            # Define auto_views.
+source ~/.mutt/colors                # Define colors.
+source ~/.mutt/headers               # Configure header display.
+source ~/.mutt/macros                # Define macros.
+source ~/.mutt/sidebar               # Sidebar Settings
+source ~/.mutt/subscriptions         # Define the list of subscribed mailing lists.
+
+# Aliases, mailboxes, and notmuch (mail indexer) settings are in ~/.mutt_local
+source ~/.mutt_local/muttrc.local
