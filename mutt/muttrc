@@ -5,10 +5,9 @@ set folder=$HOME/Mail
 set sendmail = "/usr/bin/msmtp"
 set editor = "vim -c 'set spell spelllang=en filetype=mail'"
 set print_command="muttprint"
-# realname, from, record, postponed, and signature are all set in
-# ~/.mutt_local/muttrc.local
+# realname, from, record, postponed, and signature are all set in muttrc.local
 
-set alias_file = ~/.mutt_local/aliases    # Keep aliases in this file.
+set alias_file = ~/aliases.local          # Keep aliases in this file.
 set arrow_cursor                          # Use arrow as indicator
 set auto_tag=yes                          # Commands apply to tagged msgs (if any)
 set beep_new                              # Beep on new message
@@ -37,29 +36,26 @@ set header_cache="~/.cache/mutt/headers"
 set message_cachedir="~/.cache/mutt/bodies"
 
 # Formatting
-set index_format = "%4C  %Z  %[%a, %b %d %H:%M]  %-20.20n  %4c  %s"
+#set index_format = "%4C  %Z  %[%a, %b %d %H:%M]  %-20.20n  %4c  %s"
 #set attribution = "* %n <%a> [%(%F %R)]:"
 #set compose_format="-- %v-- Compose  [Approximate Message Size: %l   Attachments: %a]%>-"
-#set attach_format="%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] "
-set alias_format="%4n %2f %t %-12a  %r"
-set status_format="-%r-%v--[%?M?%M/?%m msgs%?n?, %n new?%?d?, %d del?%?F?, %F flag?%?t?, %t tag?%?p?, %p postp?%?b?, %b inc?%?l?, %l?]--(%f)--%s-%>-%P-"
-set folder_format="%3C %t%N %F %-8.8u %-8.8g %8s %d %f"
+#set attach_format="%u%D%I %t%6n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] "
+#set alias_format="%4n %2f %t %-12a  %r"
+#set status_format="-%r-%v--[%?M?%M/?%m msgs%?n?, %n new?%?d?, %d del?%?F?, %F flag?%?t?, %t tag?%?p?, %p postp?%?b?, %b inc?%?l?, %l?]--(%f)--%s-%>-%P-"
+#set folder_format="%3C %t%N %F %-8.8u %-8.8g %8s %d %f"
 #set message_format="%-.16n: %s"
-set pager_format="~~~~~~~~~ On %{%a, %d %b %Y} at [%[%H:%M]]: %s %|~"
+#set pager_format="~~~~~~~~~ On %{%a, %d %b %Y} at [%[%H:%M]]: %s %|~"
 #set forward_format = "[%s]"
 
 # We want mutt to attach form=flowed plaintext attachments.  Otherwise some
 # clients get weird newlines.
-set text_flowed = yes
+set text_flowed=yes
 
 alternative_order text/enriched text/plain text/html
 
-source ~/.mutt/auto_views            # Define auto_views.
 source ~/.mutt/colors                # Define colors.
 source ~/.mutt/headers               # Configure header display.
 source ~/.mutt/macros                # Define macros.
-source ~/.mutt/sidebar               # Sidebar Settings
-source ~/.mutt/subscriptions         # Define the list of subscribed mailing lists.
+source ~/.mutt/sidebar               # Sidebar settings
 
-# Aliases, mailboxes, and notmuch (mail indexer) settings are in ~/.mutt_local
-source ~/.mutt_local/muttrc.local
+source ~/.mutt/muttrc.local          # Local settings
