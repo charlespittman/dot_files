@@ -14,7 +14,7 @@ set nocompatible
 " }}}
 
 " Pathogen {{{1
-execute pathogen#infect()
+silent! execute pathogen#infect()
 
 "Plugin Options {{{1
 "==SingleCompile== {{{2
