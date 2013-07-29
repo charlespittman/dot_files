@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
 # Return the number of new mails in a maildir.
 
-inbox="$HOME/.mail/inbox/new"
+maildir="$HOME/.mail/ATDesk"
 
 cd "$(dirname $0)"
 
-if [ ! -d "$inbox" ]; then
-	exit 1
-fi
+nbr_new=0
+boxes=$(find $maildir -type d -wholename "*INBOX*new")
 
-nbr_new=$(ls "$inbox" | wc -l)
+for x in $boxes; do
+  ((nbr_new += $(ls $x | wc -l) ))
+done
 
 if [ "$nbr_new" -gt "0" ]; then
-	echo "✉ ${nbr_new}"
+  echo "✉ ${nbr_new}"
 fi
 
 exit 0;

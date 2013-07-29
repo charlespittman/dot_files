@@ -1,6 +1,7 @@
 " vim: set foldmethod=marker :
 
 set nocompatible
+set fileformats=unix
 
 "**NOTE** {{{1
 " You'll need to install the vundle plugin for Vim before using this file.  The
@@ -44,16 +45,16 @@ call vundle#rc()
 " Packages {{{3
 "original repos on github {{{4
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'ecomba/vim-ruby-refactoring'
 Bundle 'ervandew/supertab'
 Bundle 'gmarik/vundle'
 Bundle 'wincent/Command-T'
-"Bundle 'godlygeek/tabular'
+Bundle 'godlygeek/tabular'
 Bundle 'jcf/vim-latex'
 "Bundle 'Lokaltog/vim-easymotion'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'majutsushi/tagbar'
 "Bundle 'mattn/zencoding-vim'
-"Bundle 'nathanaelkane/vim-indent-guides'
 "Bundle 'oblitum/cSyntaxAfter'
 "Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
@@ -78,6 +79,7 @@ Bundle 'DfrankUtil'
 Bundle 'indexer.tar.gz'
 Bundle 'matchit.zip'
 Bundle 'mimicpak'
+"Bundle 'mpage'
 "Bundle 'ScrollColors'
 Bundle 'vimprj'
 "Bundle 'Zenburn'
@@ -86,6 +88,10 @@ Bundle 'vimprj'
 "Bundle 'git://git.wincent.com/command-t.git'
 
 "Behavior {{{1
+" Treat long lines as break lines {{{2
+map j gj
+map k gk
+
 " Disable backup files {{{2
 set nobackup
 
@@ -107,7 +113,6 @@ set hidden
 " Enable omni completion {{{2
 set ofu=syntaxcomplete#Complete
 let g:SuperTabDefaultCompletionType = "context"
-
 
 " Y yanks from cursor to end of line {{{2
 nnoremap Y y$
@@ -182,8 +187,11 @@ set laststatus=2
 
 "Color Options {{{1
 set background=dark
-let g:solarized_termtrans = 1
-silent! colorscheme solarized
+"let g:solarized_termtrans = 1
+"silent! colorscheme solarized
+let mimic_font_style  = 2              " use italic fonts
+let mimic_anokha_alt = 1              " use alternative background
+silent! colorscheme anokha
 
 "Search Options {{{1
 " Do case insensitive matching if only given lowercase {{{2
@@ -204,9 +212,6 @@ nnoremap N Nzz
 " Use jj to exit insert mode {{{2
 imap jj <ESC>
 
-" Use q to exit normal mode {{{2
-"nmap q :q<CR>
-
 " Use ; in place of : {{{2
 nnoremap ; :
 
@@ -216,17 +221,25 @@ nmap <silent> ,/ :nohlsearch<CR>
 " Change mapleader from \ to , {{{2
 let mapleader = ','
 
-" Use w!! to save using sudo {{{2
-cnoreabbrev <expr> w!!
-      \((getcmdtype() == ':' && getcmdline() == 'w!!')
-      \?('!sudo tee % >/dev/null'):('w!!'))
-
 " Use Q for formatting the current paragraph (or selection) {{{2
 vmap Q gq
 nmap Q gqap
 
 " Hit <F4> to remove trailing whitespace {{{2
 nnoremap <silent> <F4> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+" Hit <F5> to remove doubled empty lines
+nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let _s=@/<Bar>:%s/^$\n^$//e<Bar>:let @/=_s<Bar>:nohl<CR><CR>
+
+" Remove ^M
+nnoremap <silent> <F6> :let _s=@/<Bar>:%s/\r//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+" Line visual selection at vertical bars
+vmap <Leader>at :Tab /\|\|\?<cr>
+nmap <Leader>at :Tab /\|\|\?<cr>
+
+" <Space> runs macro 'q' {{{2
+:nnoremap <Space> @q
 
 " Toggle 'paste' with notification {{{2
 nnoremap <F2> :set invpaste paste?<CR>
@@ -239,7 +252,7 @@ set showmode
 function! AppendModeline() " {{{3
   "{{{
   let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
-        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+    \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
   let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
   call append(line("$"), l:modeline)
 endfunction "}}}
@@ -256,6 +269,9 @@ noremap <leader>m <Esc>:CommandTBuffer<CR>
 
 "GVim Settings {{{1
 set gfn=Inconsolata\ for\ Powerline\ Medium\ 11
+if has("gui")
+  let g:indent_guides_enable_on_vim_startup = 1
+endif
 
 " File type specific Settings {{{1
 if has('autocmd')

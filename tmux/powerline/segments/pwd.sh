@@ -2,7 +2,7 @@
 # Print the current working directory (trimmed to max length).
 # NOTE The trimming code's stolen from the web. Courtesy to who ever wrote it.
 
-pwdmaxlen=60		# Max output length.
+pwdmaxlen=60    # Max output length.
 
 segment_cwd=$(dirname $0)
 source "$segment_cwd/../lib.sh"
@@ -18,8 +18,8 @@ pwdmaxlen=$(( ( pwdmaxlen < ${#dir} ) ? ${#dir} : pwdmaxlen ))
 ttcwd=${tcwd/#$HOME/\~}
 pwdoffset=$(( ${#ttcwd} - pwdmaxlen ))
 if [ ${pwdoffset} -gt "0" ]; then
-	ttcwd=${ttcwd:$pwdoffset:$pwdmaxlen}
-	ttcwd=${trunc_symbol}/${ttcwd#*/}
+  ttcwd=${ttcwd:$pwdoffset:$pwdmaxlen}
+  ttcwd=${trunc_symbol}/${ttcwd#*/}
 fi
 
 echo "$ttcwd"

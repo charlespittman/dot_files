@@ -2,11 +2,11 @@
 
 # basic colors ---------------------------------------------------------
 color normal      brightyellow    default
-color error       red             default
+color error       brightred       default
 color tilde       black           default
-color message     brightgreen     default
+color message     green           default
 color markers     red             white
-color attachment  white           brightmagenta
+color attachment  brightwhite     blue
 color search      default         magenta
 color status      green           default
 color indicator   brightwhite     default

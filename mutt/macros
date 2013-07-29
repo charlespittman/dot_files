@@ -1,7 +1,7 @@
 # vim: filetype=muttrc
 
 # Reload .muttrc without restarting
-macro pager,editor,index <F2> :source\ ~/.mutt/muttrc<enter>
+macro index <F2> :source\ ~/.mutt/muttrc<enter>
 
 # get the url view working
 macro index,pager \cb |urlview\n 'call urlview to extract URLs out of a message'
