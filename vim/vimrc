@@ -52,7 +52,6 @@ Bundle 'wincent/Command-T'
 Bundle 'godlygeek/tabular'
 Bundle 'jcf/vim-latex'
 "Bundle 'Lokaltog/vim-easymotion'
-Bundle 'Lokaltog/vim-powerline'
 Bundle 'majutsushi/tagbar'
 "Bundle 'mattn/zencoding-vim'
 "Bundle 'oblitum/cSyntaxAfter'
@@ -82,7 +81,7 @@ Bundle 'mimicpak'
 "Bundle 'mpage'
 "Bundle 'ScrollColors'
 Bundle 'vimprj'
-"Bundle 'Zenburn'
+Bundle 'Zenburn'
 
 "non github repos {{{4
 "Bundle 'git://git.wincent.com/command-t.git'
@@ -181,6 +180,7 @@ set textwidth=79
 
 " Super fancy status line {{{2
 "python from powerline.ext.vim import source_plugin; source_plugin()
+set rtp+=~/.powerline/powerline/bindings/vim
 
 " Always show the status line {{{2
 set laststatus=2

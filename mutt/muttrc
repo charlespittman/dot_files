@@ -18,10 +18,12 @@ set hidden_host                           # Hide host details.
 set include                               # Include the message in replies.
 set mail_check=5                          # Mutt checks on each keypress, but not more than 5s
 set mime_forward                          # Forward message as MIME attachments.
-set nostrict_threads                      # Lets have some fuzzy threading.
+#nset nostrict_threads                      # Let's have some fuzzy threading.
+set strict_threads
 set pager_stop                            # Prevent accidentally paging to next msg
 set read_inc=100                          # Read counter ticks every 100 msgs.
-set sort_aux = date-received              # Sort threads by date received.
+set sort=threads                          # Sort by threads
+set sort_aux=last-date-received           # Move threads with recent replies to bottom
 set tilde                                 # Fill out messages with '~'.
 set timeout=10                            # Simulate a keypress every 10s
 set write_inc=100                         # Write counter ticks every 100 msgs.
@@ -47,7 +49,7 @@ set status_format="-%r-%v--[%?M?%M/?%m msgs%?n?, %n new?%?d?, %d del?%?F?, %F fl
 set folder_format="%3C %t%N %F %-8.8u %-8.8g %8s %d %f"
 set message_format="%-.16n: %s"
 set pager_format="~~~~~~~~~ On %{%a, %d %b %Y} at [%[%H:%M]]: %s %|~"
-set forward_format = "[%s]"
+set forward_format = "Fwd: [%s]"
 
 # We want mutt to attach form=flowed plaintext attachments.  Otherwise some
 # clients get weird newlines.

@@ -90,7 +90,7 @@ declare -A pwd
 pwd+=(["script"]="${segments_path}/pwd.sh")
 pwd+=(["foreground"]="black")
 pwd+=(["background"]="magenta")
-pwd+=(["separator"]="${separator_right_bold}")
+#pwd+=(["separator"]="${separator_right_bold}")
 register_segment "pwd"
 
 # Print the status line in the order of registration above.
