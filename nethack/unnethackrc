@@ -1,9 +1,12 @@
 # Descriptions of these options can be found in the in-game help.
 
 # Visuals
-OPTION=UTF8graphics, color, lit_corridor, menu_headings:bold, menustyle:full
+#OPTION=UTF8graphics
+OPTION=color, lit_corridor, menu_headings:bold, menustyle:full
 OPTION=msg_window:full, popup_dialog, showborn, showexp, sparkle, splash_screen
 OPTION=time, timed_delay
+# Curses-only
+OPTION=windowtype:curses, cursesgraphics, guicolor, petattr:ubi
 
 # Special characters
 OPTION=boulder:0
