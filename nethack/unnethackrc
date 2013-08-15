@@ -1,0 +1,20 @@
+# Descriptions of these options can be found in the in-game help.
+
+# Visuals
+OPTION=UTF8graphics, color, lit_corridor, menu_headings:bold, menustyle:full
+OPTION=msg_window:full, popup_dialog, showborn, showexp, sparkle, splash_screen
+OPTION=time, timed_delay
+
+# Special characters
+OPTION=boulder:0
+
+# Pet stuff
+OPTION=hilite_pet, pettype:cat, safe_pet
+
+# Behavior
+OPTION=autodig, autopickup, autoquiver, checkpoint, confirm, pickup_thrown
+OPTION=pickup_burden:U, pickup_types:$?!/, pushweapon, quiver_fired
+OPTION=!rest_on_space
+
+# Inventory
+OPTION=fixinv, lootabc, sortpack
