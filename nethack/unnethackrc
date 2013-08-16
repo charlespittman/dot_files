@@ -16,8 +16,8 @@ OPTION=hilite_pet, pettype:cat, safe_pet
 
 # Behavior
 OPTION=autodig, autopickup, autoquiver, checkpoint, confirm, pickup_thrown
-OPTION=pickup_burden:U, pickup_types:$?!/, pushweapon, quiver_fired
+OPTION=pickup_burden:U, pickup_types:$"?+!=/, pushweapon, quiver_fired
 OPTION=!rest_on_space
 
 # Inventory
-OPTION=fixinv, lootabc, sortpack
+OPTION=fixinv, sortpack
