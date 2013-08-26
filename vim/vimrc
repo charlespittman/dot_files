@@ -61,7 +61,7 @@ Bundle 'scrooloose/syntastic'
 "Bundle 'tomasr/molokai'
 "Bundle 'tomtom/tcomment_vim'
 Bundle 'tpope/vim-fugitive'
-"Bundle 'tpope/vim-markdown'
+Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-sensible'
 Bundle 'tpope/vim-surround'
@@ -228,10 +228,10 @@ nmap Q gqap
 " Hit <F4> to remove trailing whitespace {{{2
 nnoremap <silent> <F4> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
-" Hit <F5> to remove doubled empty lines
+" Hit <F5> to remove trailing whitespace and compact empty lines
 nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let _s=@/<Bar>:%s/^$\n^$//e<Bar>:let @/=_s<Bar>:nohl<CR><CR>
 
-" Remove ^M
+" <F6> to remove Dos line endings.
 nnoremap <silent> <F6> :let _s=@/<Bar>:%s/\r//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
 " Line visual selection at vertical bars
@@ -266,6 +266,10 @@ nmap <leader>l :TagbarToggle<CR>
 noremap <leader>o <Esc>:CommandT<CR>
 noremap <leader>O <Esc>:CommandTFlush<CR>
 noremap <leader>m <Esc>:CommandTBuffer<CR>
+
+" <Enter> and <Shift>+<Enter> to add blank lines without staying in insert mode
+map <Enter> o<ESC>
+map <S-Enter> O<ESC>
 
 "GVim Settings {{{1
 set gfn=Inconsolata\ for\ Powerline\ Medium\ 11
