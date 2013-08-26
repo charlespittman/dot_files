@@ -57,7 +57,6 @@ color index       red             magenta         "~D"                        # 
 color index       black           brightwhite     "~T"                       # tagged messages
 color index       brightyellow    brightred       "~="                       # duplicated messages
 
-
 # message headers ------------------------------------------------------
 color hdrdefault  green           default
 color header      brightyellow    default         "^(From)"
@@ -85,7 +84,7 @@ color normal      default         default
 #mono  body        bold                            "^gpg: BAD signature from.*"
 
 # Catch email addresses
-color body        magenta         default         "\<<?[[:print:]]+@*\.com>?\>"
+#color body        magenta         default         "\<<?[[:print:]]+@*\.com>?\>"
 
 # Various smilies and the like
 color body        yellow          default         " [;:]-*[})>{(<|]"                  # :-) etc...
@@ -98,3 +97,13 @@ mono  body        underline                       "(^|[[:space:][:punct:]])_[^_]
 
 # Border lines.
 color body        blue            default         "( *[-+=#*~_]){3,}"
+
+# URLs
+color body brightgreen black "(http[s]|ftp|news|telnet|finger)://[^ \"\t\r\n]*"
+color body brightgreen black "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
+mono  body bold              "(http[s]|ftp|news|telnet|finger)://[^ \"\t\r\n]*"
+mono  body bold              "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
+
+# email addresses
+color body brightgreen black "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+mono  body bold              "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
