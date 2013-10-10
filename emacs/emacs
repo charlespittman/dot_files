@@ -1,0 +1,87 @@
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(blink-cursor-mode nil)
+ '(column-number-mode t)
+ '(custom-enabled-themes (quote (tango-dark)))
+ '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" "8929dd273403545672d27fe0d4d84038fd262723a80bed08fa820d52ac14cd3b" default)))
+ '(menu-bar-mode nil)
+ '(save-place t nil (saveplace))
+ '(size-indication-mode t)
+ '(text-mode-hook (quote (text-mode-hook-identify)))
+ '(tool-bar-mode nil)
+ '(uniquify-buffer-name-style (quote forward) nil (uniquify))
+ '(whitespace-style (quote (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Inconsolata" :foundry "unknown" :slant normal :weight normal :height 103 :width normal)))))
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+
+(add-to-list 'load-path "~/.emacs.d/elisp")
+
+;; show line numbers in leftmost column
+(global-linum-mode t)
+
+;; Turn on syntax highlighting globally
+ (global-font-lock-mode t)
+
+;; Changing colors in diff-mode
+;(eval-after-load 'diff-mode '(progn (set-face-foreground 'diff-added "green4") (set-face-foreground 'diff-removed "red3")))
+
+; Shorten confirmation prompts
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+; Don't make *.~ files
+(setq make-backup-files nil)
+
+(show-paren-mode t)
+(eldoc-mode t)
+(define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
+
+; Removing trailing whitespace every time a file is saved.
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+; Macro for regexp search/replace
+(global-set-key (kbd "M-#") 'query-replace-regexp)
+
+(autoload 'Lorem-ipsum-insert-paragraphs "lorem-ipsum" "" t)
+(autoload 'Lorem-ipsum-insert-sentences "lorem-ipsum" "" t)
+(autoload 'Lorem-ipsum-insert-list "lorem-ipsum" "" t)
+
+(setq TeX-PDF-mode t)
+
+; No tabs.  Just use spaces.
+(setq-default indent-tabs-mode nil)
+
+;; make typing overwrite text selection
+(delete-selection-mode 1)
+
+;; turn on automatic bracket insertion by pairs.
+(electric-pair-mode 1)
+
+(global-visual-line-mode 1)
+
+(global-set-key (kbd "<f9> <f8>") 'whitespace-mode)
+(global-set-key (kbd "<f9> <f7>") 'linum-mode)
+(global-set-key (kbd "<f9> <f10>") 'align)
+
+(setq make-backup-files nil) ; stop creating those backup~ files
+(setq auto-save-default nil) ; stop creating those #auto-save# files
+
+;;; Lisp (SLIME) interaction
+(setq inferior-lisp-program "clisp")
+(add-to-list 'load-path "~/.slime")
+(require 'slime)
+(slime-setup)
+
+(add-hook 'lisp-mode-hook '(lambda ()
+      (local-set-key (kbd "RET") 'newline-and-indent)))
+
+
+(server-start)
