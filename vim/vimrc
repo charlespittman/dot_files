@@ -180,7 +180,7 @@ set textwidth=79
 
 " Super fancy status line {{{2
 "python from powerline.ext.vim import source_plugin; source_plugin()
-set rtp+=~/.powerline/powerline/bindings/vim
+"set rtp+=~/.powerline/powerline/bindings/vim
 
 " Always show the status line {{{2
 set laststatus=2

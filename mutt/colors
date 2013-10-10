@@ -107,3 +107,7 @@ mono  body bold              "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
 # email addresses
 color body brightgreen black "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
 mono  body bold              "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+
+# diff-style coloring
+color body green default "^ +\\+.*"
+color body red default "^ +\\-.*"
