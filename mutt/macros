@@ -13,3 +13,5 @@ macro index h "c?t"
 # Not sure why these aren't included by default...
 macro pager <F8> "<enter-command>unset wait_key<enter><shell-escape>notmuch-mutt -r --prompt search<enter><change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>" "notmuch: search mail"
 macro pager <F9> "<enter-command>unset wait_key<enter><pipe-message>notmuch-mutt -r thread<enter><change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter><enter-command>set wait_key<enter>" "notmuch: reconstruct thread"
+
+macro index <esc>r "<tag-pattern>~N|~O<enter><tag-prefix-cond><tag-prefix><clear-flag>N<tag-prefix><clear-flag>O<untag-pattern>~T<enter>" "mark all messages read"

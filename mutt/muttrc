@@ -3,7 +3,8 @@ set mbox_type=Maildir
 set folder=$HOME/.mail
 
 set sendmail = "/usr/bin/msmtp"
-set editor = "vim -c 'set spell spelllang=en filetype=mail'"
+set editor="emacsclient -nw"
+#set editor = "vim -c 'set spell spelllang=en tw=0'"
 set print_command="muttprint"
 # realname, from, record, postponed, and signature are all set in muttrc.local
 
@@ -34,13 +35,16 @@ unset confirmappend                       # Don't prompt when saving to another 
 unset help                                # Remove help bar
 unset markers                             # Don't show line continuation marker
 unset mark_old                            # Leave msgs marked new after changing the mailbox
+unset wait_key                            # When piping, only ask for key when exit is nonzero
+set indent_str="> "                       # Preface indented text with string
 
 # Cache (These dirs may need to be created)
 set header_cache="~/.cache/mutt/headers"
 set message_cachedir="~/.cache/mutt/bodies"
 
 # Formatting
-set index_format = "%4C  %Z  %[%a, %b %d %H:%M]  %-20.20n  %4c  %s"
+#set index_format = "%4C  %Z  %[%a, %b %d %H:%M]  %-20.20n  %4c  %s"
+set index_format = "%4C %Z %?X?@& ? %{%b%d %H:%M} %-20.20n (%?M?»%3M&%4c?) %s"
 set attribution = "* %n <%a> [%(%F %R)]:"
 set compose_format="-- %v-- Compose  [Approximate Message Size: %l   Attachments: %a]%>-"
 set attach_format="%u%D%I %t%6n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] "
