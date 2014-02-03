@@ -87,6 +87,9 @@ Bundle 'Zenburn'
 "Bundle 'git://git.wincent.com/command-t.git'
 
 "Behavior {{{1
+" Use soft linebreaks {{{2
+set wrap linebreak textwidth=0 nolist
+
 " Treat long lines as break lines {{{2
 map j gj
 map k gk
@@ -187,11 +190,11 @@ set laststatus=2
 
 "Color Options {{{1
 set background=dark
-"let g:solarized_termtrans = 1
-"silent! colorscheme solarized
-let mimic_font_style  = 2              " use italic fonts
-let mimic_anokha_alt = 1              " use alternative background
-silent! colorscheme anokha
+let g:solarized_termtrans = 1
+silent! colorscheme solarized
+"let mimic_font_style  = 2              " use italic fonts
+"let mimic_anokha_alt = 1              " use alternative background
+"silent! colorscheme anokha
 
 "Search Options {{{1
 " Do case insensitive matching if only given lowercase {{{2
