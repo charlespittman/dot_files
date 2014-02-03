@@ -7,7 +7,6 @@
  '(column-number-mode t)
  '(custom-enabled-themes (quote (tango-dark)))
  '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" "8929dd273403545672d27fe0d4d84038fd262723a80bed08fa820d52ac14cd3b" default)))
- '(menu-bar-mode nil)
  '(save-place t nil (saveplace))
  '(size-indication-mode t)
  '(text-mode-hook (quote (text-mode-hook-identify)))
@@ -25,14 +24,11 @@
 
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
-;; show line numbers in leftmost column
+; show line numbers in leftmost column
 (global-linum-mode t)
 
-;; Turn on syntax highlighting globally
+; Turn on syntax highlighting globally
  (global-font-lock-mode t)
-
-;; Changing colors in diff-mode
-;(eval-after-load 'diff-mode '(progn (set-face-foreground 'diff-added "green4") (set-face-foreground 'diff-removed "red3")))
 
 ; Shorten confirmation prompts
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -59,29 +55,39 @@
 ; No tabs.  Just use spaces.
 (setq-default indent-tabs-mode nil)
 
-;; make typing overwrite text selection
-(delete-selection-mode 1)
+; make typing overwrite text selection
+(delete-selection-mode t)
 
-;; turn on automatic bracket insertion by pairs.
-(electric-pair-mode 1)
+; turn on automatic bracket insertion by pairs.
+(electric-pair-mode t)
 
-(global-visual-line-mode 1)
+(global-visual-line-mode t)
 
 (global-set-key (kbd "<f9> <f8>") 'whitespace-mode)
 (global-set-key (kbd "<f9> <f7>") 'linum-mode)
 (global-set-key (kbd "<f9> <f10>") 'align)
+(global-set-key (kbd "<f9> <f11>") 'delete-trailing-whitespace)
 
 (setq make-backup-files nil) ; stop creating those backup~ files
 (setq auto-save-default nil) ; stop creating those #auto-save# files
 
 ;;; Lisp (SLIME) interaction
-(setq inferior-lisp-program "clisp")
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+;; Replace "sbcl" with the path to your implementation
+(setq inferior-lisp-program "sbcl")
 (add-to-list 'load-path "~/.slime")
 (require 'slime)
-(slime-setup)
+(slime-setup '(slime-fancy))
 
 (add-hook 'lisp-mode-hook '(lambda ()
       (local-set-key (kbd "RET") 'newline-and-indent)))
 
+;;; emacs-for-python
+(load-file "~/.emacs.d/emacs-for-python/epy-init.el")
+; Configuring the flymake checker
+(epy-setup-checker "pyflakes %f")
+; ipython integration
+(epy-setup-ipython)
 
+; Start the emacs server
 (server-start)
