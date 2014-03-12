@@ -3,10 +3,10 @@ set mbox_type=Maildir
 set folder=$HOME/.mail
 
 set sendmail = "/usr/bin/msmtp"
-set editor="emacsclient -nw"
+set editor="emacsclient -c"
 #set editor = "vim -c 'set spell spelllang=en tw=0'"
 set print_command="muttprint"
-# realname, from, record, postponed, and signature are all set in muttrc.local
+# realname, from, record, my_hdr, postponed, and signature are all set in muttrc.local
 
 set alias_file = ~/.mutt/aliases.local    # Keep aliases in this file.
 set arrow_cursor                          # Use arrow as indicator
@@ -36,7 +36,8 @@ unset help                                # Remove help bar
 unset markers                             # Don't show line continuation marker
 unset mark_old                            # Leave msgs marked new after changing the mailbox
 unset wait_key                            # When piping, only ask for key when exit is nonzero
-set indent_str="> "                       # Preface indented text with string
+set reverse_alias
+set status_on_top
 
 # Cache (These dirs may need to be created)
 set header_cache="~/.cache/mutt/headers"
