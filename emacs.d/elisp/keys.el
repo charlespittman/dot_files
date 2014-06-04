@@ -3,10 +3,11 @@
 ; Macro for regexp search/replace
 (global-set-key (kbd "M-#") 'query-replace-regexp)
 
-(global-set-key (kbd "<f9> <f8>") 'whitespace-mode)
-(global-set-key (kbd "<f9> <f7>") 'linum-mode)
-(global-set-key (kbd "<f9> <f10>") 'align)
-(global-set-key (kbd "<f9> <f11>") 'delete-trailing-whitespace)
+(global-set-key (kbd "<f5>") 'revert-this-buffer)
+(global-set-key (kbd "<f6>") 'align)
+(global-set-key (kbd "<f7>") 'delete-trailing-whitespace)
+(global-set-key (kbd "<f8>") 'whitespace-mode)
+(global-set-key (kbd "<f9>") 'linum-mode)
 
 ; Quickly switch windows
 (global-set-key (kbd "M-o") 'other-window)
@@ -35,7 +36,6 @@
   (interactive)
   (revert-buffer nil t t)
   (message (concat "Reverted buffer " (buffer-name))))
-(global-set-key (kbd "<f6>") 'revert-this-buffer)
 
 ; Git status of current directory
 (global-set-key (kbd "<f10>") 'magit-status)

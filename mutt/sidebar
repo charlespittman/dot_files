@@ -2,8 +2,9 @@
 
 set sidebar_width=36
 set sidebar_visible=yes
-set sidebar_delim=' ║ '
+set sidebar_delim='║'
 color sidebar_new brightmagenta default
+#color sidebar yellow default
 
 # New keybindings to move around
 bind index \CP sidebar-prev
