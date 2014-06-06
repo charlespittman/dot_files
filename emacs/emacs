@@ -3,7 +3,12 @@
 (load custom-file)
 
 (add-to-list 'load-path "~/.emacs.d/elisp/")
-;(load-library "keys")
+(load-library "keys")
+
+(require 'gas-mode)
+(add-to-list 'auto-mode-alist '("\\.asm\\'" . gas-mode))
+
+(require 'site-gentoo)
 
 ;; Set repos for package manager
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -11,38 +16,34 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 
-; show line numbers in leftmost column
-(global-linum-mode t)
+Turn on syntax highlighting globally
+(global-font-lock-mode t)
 
-
-; Turn on syntax highlighting globally
- (global-font-lock-mode t)
-
-; Shorten confirmation prompts
+;; Shorten confirmation prompts
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-; Don't make *.~ files
+;; Don't make *.~ files
 (setq make-backup-files nil)
 
 (show-paren-mode t)
 (eldoc-mode t)
 
-; Removing trailing whitespace every time a file is saved.
+;; Removing trailing whitespace every time a file is saved.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(autoload 'Lorem-ipsum-insert-paragraphs "lorem-ipsum" "" t)
-(autoload 'Lorem-ipsum-insert-sentences "lorem-ipsum" "" t)
-(autoload 'Lorem-ipsum-insert-list "lorem-ipsum" "" t)
+;; (autoload 'Lorem-ipsum-insert-paragraphs "lorem-ipsum" "" t)
+;; (autoload 'Lorem-ipsum-insert-sentences "lorem-ipsum" "" t)
+;; (autoload 'Lorem-ipsum-insert-list "lorem-ipsum" "" t)
 
 (setq TeX-PDF-mode t)
 
-; No tabs.  Just use spaces.
+;; No tabs.  Just use spaces.
 (setq-default indent-tabs-mode nil)
 
-; make typing overwrite text selection
+;; make typing overwrite text selection
 (delete-selection-mode t)
 
-; turn on automatic bracket insertion by pairs.
+;; turn on automatic bracket insertion by pairs.
 (electric-pair-mode t)
 
 (global-visual-line-mode t)
@@ -55,17 +56,14 @@
 ;; Replace "sbcl" with the path to your implementation
 (setq inferior-lisp-program "sbcl")
 (add-to-list 'load-path "~/.slime")
-(require 'slime)
-(slime-setup '(slime-fancy))
 
-;(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
+;; (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
+;; (load-theme 'sanityinc-solarized-dark)
 
-(load-theme 'sanityinc-solarized-dark)
+(load-theme 'ample-zen)
 
-;(smart-tabs-advice vhdl-indent-line vhdl-basic-offset)
-;(setq vhdl-indent-tabs-mode t)
-
-(put 'downcase-region 'disabled nil)
+;; (smart-tabs-advice vhdl-indent-line vhdl-basic-offset)
+;; (setq vhdl-indent-tabs-mode t)
 
 (require 'use-package)
 
@@ -88,5 +86,10 @@
           python-shell-completion-string-code
           "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
 
-; Start the emacs server
-(server-start)
+;; Start mail-mode for any file with 'mutt' in the name.
+(add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
+
+(global-set-key "\C-c\C-c" 'comment-region)
+(global-set-key "\C-c\C-u" 'uncomment-region)
+
+(global-set-key (kbd "C-c c") 'org-capture)
