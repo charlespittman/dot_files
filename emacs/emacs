@@ -21,7 +21,7 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 
-Turn on syntax highlighting globally
+;; Turn on syntax highlighting globally
 (global-font-lock-mode t)
 
 ;; Shorten confirmation prompts
@@ -94,7 +94,9 @@ Turn on syntax highlighting globally
 ;; Start mail-mode for any file with 'mutt' in the name.
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 
-(global-set-key "\C-c\C-c" 'comment-region)
-(global-set-key "\C-c\C-u" 'uncomment-region)
+(global-set-key "\C-c \C-c" 'comment-region)
+(global-set-key "\C-c \C-u" 'uncomment-region)
 
 (global-set-key (kbd "C-c c") 'org-capture)
+
+(add-to-list 'auto-mode-alist '("\\zsh\\'" . shell-script-mode))
