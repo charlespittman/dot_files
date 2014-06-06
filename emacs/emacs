@@ -3,12 +3,7 @@
 (load custom-file)
 
 (add-to-list 'load-path "~/.emacs.d/elisp/")
-(load-library "keys")
-
-;; Annoying web proxy ) :
-(setq url-proxy-services '(("no_proxy" . "^\\(localhost\\)")
-                           ("http" . "webproxy.atdesk.com:8080")
-                           ("https" . "webproxy.atdesk.com:8080")))
+;(load-library "keys")
 
 ;; Set repos for package manager
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
