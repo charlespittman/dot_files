@@ -73,13 +73,23 @@
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :config
-  (use-package elpy
-    :ensure t
-    :config
-    (progn
-      (elpy-enable)
-      (elpy-use-ipython)
-      (elpy-clean-modeline))))
+  (progn
+    (use-package elpy
+      :ensure t
+      :init
+      (setq elpy-rpc-backend "jedi")
+      :config
+      (progn
+        (elpy-enable)
+        (elpy-use-ipython)
+        (elpy-clean-modeline)))
+    (use-package flymake-python-pyflakes
+      :init
+      (setq flymake-python-pyflakes-executable "flake8")
+      :config
+      (add-hook 'python-mode-hook 'flymake-python-pyflakes-load))))
+
+(use-package nyan-mode)
 
 ;; Start mail-mode for any file with 'mutt' in the name.
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
