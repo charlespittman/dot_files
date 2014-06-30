@@ -1,18 +1,21 @@
 ;; Use a separate file for customizations made through Customize
-(setq custom-file "~/.emacs.d/elisp/custom.el")
+(setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
-(add-to-list 'load-path "~/.emacs.d/elisp/")
-(load-library "keys")
+;; Turn off mouse interface early in startup to avoid momentary display
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
-(require 'gas-mode)
-(add-to-list 'auto-mode-alist '("\\.asm\\'" . gas-mode))
+(setq inhibit-startup-screen t)
 
 ;; Set repos for package manager
+(require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
+
+(require 'site-gentoo)
 
 ;; Turn on syntax highlighting globally
 (global-font-lock-mode t)
@@ -42,7 +45,7 @@
 (delete-selection-mode t)
 
 ;; turn on automatic bracket insertion by pairs.
-(electric-pair-mode t)
+;;(electric-pair-mode t)
 
 (global-visual-line-mode t)
 
@@ -56,40 +59,42 @@
 (add-to-list 'load-path "~/.slime")
 
 ;; (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
-;; (load-theme 'sanityinc-solarized-dark)
-
-(load-theme 'ample-zen)
-
-;; (smart-tabs-advice vhdl-indent-line vhdl-basic-offset)
-;; (setq vhdl-indent-tabs-mode t)
 
 (require 'use-package)
+
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t
+  :config (load-theme 'sanityinc-tomorrow-bright))
 
 (use-package ruby-mode
   :mode "\\.rb\\'"
   :interpreter "ruby")
 
-;; The package is "python" but the mode is "python-mode":
 (use-package python
   :mode ("\\.py\\'" . python-mode)
-  :init  (setq
-          python-shell-interpreter "ipython3"
-          python-shell-interpreter-args ""
-          python-shell-prompt-regexp "In \\[[0-9]+\\]: "
-          python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
-          python-shell-completion-setup-code
-          "from IPython.core.completerlib import module_completion"
-          python-shell-completion-module-string-code
-          "';'.join(module_completion('''%s'''))\n"
-          python-shell-completion-string-code
-          "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
+  :config
+  (progn
+    (use-package elpy
+      :ensure t
+      :init
+      (setq elpy-rpc-backend "jedi")
+      :config
+      (progn
+        (elpy-enable)
+        (elpy-use-ipython)
+        (elpy-clean-modeline)))
+    (use-package flymake-python-pyflakes
+      :init
+      (setq flymake-python-pyflakes-executable "flake8")
+      :config
+      (add-hook 'python-mode-hook 'flymake-python-pyflakes-load))))
+
+(use-package nyan-mode)
 
 ;; Start mail-mode for any file with 'mutt' in the name.
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 
-(global-set-key "\C-c \C-c" 'comment-region)
-(global-set-key "\C-c \C-u" 'uncomment-region)
-
-(global-set-key (kbd "C-c c") 'org-capture)
-
 (add-to-list 'auto-mode-alist '("\\zsh\\'" . shell-script-mode))
+
+(add-to-list 'load-path "~/.emacs.d/elisp/")
+(load-library "keys")

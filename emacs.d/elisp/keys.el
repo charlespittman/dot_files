@@ -29,7 +29,6 @@
 ; Repeat last command
 (global-set-key (kbd "C-z") 'repeat)
 
-
 ;; Revert active buffer without prompt
 (defun revert-this-buffer ()
   "Reverts the current buffer from disk without prompting for confirmation."
@@ -42,3 +41,24 @@
 
 ;(global-set-key (kbd "C-x C-b") 'ibuffer)
 (defalias 'list-buffers 'ibuffer)
+
+(define-key text-mode-map (kbd "C-c C-c") 'center-paragraph)
+
+(defun duplicate-line ()
+  "Duplicate the line containing point."
+  (interactive)
+  (save-excursion
+    (let (line-text)
+      (goto-char (line-beginning-position))
+      (let ((beg (point)))
+        (goto-char (line-end-position))
+        (setq line-text (buffer-substring beg (point))))
+      (if (eobp)
+          (insert ?\n)
+        (forward-line))
+      (open-line 1)
+      (insert line-text))))
+
+(bind-key "C-x C-d" 'duplicate-line)
+
+(bind-key "s-SPC" 'just-one-space)
