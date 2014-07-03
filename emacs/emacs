@@ -93,7 +93,10 @@
               :config (add-hook 'haskell-mode-hook 'flymake-haskell-multi-load))
             (add-hook 'haskell-mode-hook 'capitalized-words-mode)
             (add-hook 'haskell-mode-hook 'turn-on-eldoc-mode)
-            (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
+            (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+            (require 'w3m-haddock)
+            (add-hook 'w3m-display-hook 'w3m-haddock-display)
+            (define-key haskell-mode-map (kbd "C-c C-d") 'haskell-w3m-open-haddock)))
 
 (use-package w3m
   :init (setq w3m-mode-map (make-sparse-keymap))
