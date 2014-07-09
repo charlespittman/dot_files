@@ -32,12 +32,6 @@
 ;; Removing trailing whitespace every time a file is saved.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; (autoload 'Lorem-ipsum-insert-paragraphs "lorem-ipsum" "" t)
-;; (autoload 'Lorem-ipsum-insert-sentences "lorem-ipsum" "" t)
-;; (autoload 'Lorem-ipsum-insert-list "lorem-ipsum" "" t)
-
-(setq TeX-PDF-mode t)
-
 ;; No tabs.  Just use spaces.
 (setq-default indent-tabs-mode nil)
 
