@@ -10,7 +10,6 @@
 
 ;; Set repos for package manager
 (require 'package)
-(require 'use-package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
@@ -55,6 +54,7 @@
 
 ;; (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
 
+(require 'use-package)
 
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
