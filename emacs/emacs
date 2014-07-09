@@ -73,18 +73,12 @@
               :config (progn
                         (elpy-enable)
                         (elpy-use-ipython)
-                        (elpy-clean-modeline)))
-            (use-package flymake-python-pyflakes
-              :init (setq flymake-python-pyflakes-executable "flake8")
-              :config (add-hook 'python-mode-hook 'flymake-python-pyflakes-load))))
+                        (elpy-clean-modeline)))))
 
 (use-package nyan-mode)
 
 (use-package haskell-mode
   :config (progn
-            (use-package flymake-haskell-multi
-              :ensure t
-              :config (add-hook 'haskell-mode-hook 'flymake-haskell-multi-load))
             (add-hook 'haskell-mode-hook 'capitalized-words-mode)
             (add-hook 'haskell-mode-hook 'turn-on-eldoc-mode)
             (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
