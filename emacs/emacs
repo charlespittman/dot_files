@@ -52,8 +52,6 @@
 (setq inferior-lisp-program "sbcl")
 (add-to-list 'load-path "~/.slime")
 
-;; (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
-
 (require 'use-package)
 
 (use-package color-theme-sanityinc-tomorrow
@@ -77,8 +75,22 @@
 
 (use-package nyan-mode)
 
+(use-package flycheck
+  :config (progn
+            (use-package flycheck-color-mode-line
+              :config (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+            (use-package flycheck-pos-tip
+              :config (eval-after-load 'flycheck
+                        '(custom-set-variables
+                          '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
+            (use-package flycheck-haskell
+              :config (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))))
+
 (use-package haskell-mode
   :config (progn
+            (use-package ghc)
+            (use-package ghci-completion
+              :config (add-hook 'inferior-haskell-mode-hook 'turn-on-ghci-completion))
             (add-hook 'haskell-mode-hook 'capitalized-words-mode)
             (add-hook 'haskell-mode-hook 'turn-on-eldoc-mode)
             (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
@@ -94,14 +106,14 @@
             (define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
             (define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
             (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
-            (custom-set-variables '(haskell-stylish-on-save t))
-            (require 'w3m-haddock)
-            (add-hook 'w3m-display-hook 'w3m-haddock-display)
-            (define-key haskell-mode-map (kbd "C-c C-d") 'haskell-w3m-open-haddock)))
+            (custom-set-variables '(haskell-stylish-on-save t))))
 
 (use-package w3m
   :init (setq w3m-mode-map (make-sparse-keymap))
   :config (progn
+            (require 'w3m-haddock)
+            (add-hook 'w3m-display-hook 'w3m-haddock-display)
+            (define-key haskell-mode-map (kbd "C-c C-d") 'haskell-w3m-open-haddock)
             (define-key w3m-mode-map (kbd "RET") 'w3m-view-this-url)
             (define-key w3m-mode-map (kbd "q") 'bury-buffer)
             (define-key w3m-mode-map (kbd "<mouse-1>") 'w3m-maybe-url)
