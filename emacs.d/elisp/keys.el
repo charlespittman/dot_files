@@ -72,3 +72,8 @@
 ,(rx (or "}" "]" "end")) ; Block end
 ,(rx (or "#" "=begin")) ; Comment start
 ruby-forward-sexp nil)))
+=======
+(bind-key "M-SPC" 'just-one-space)
+
+(global-auto-complete-mode)
+(define-key ac-mode-map (kbd "s-<tab>") 'auto-complete)

@@ -32,12 +32,6 @@
 ;; Removing trailing whitespace every time a file is saved.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; (autoload 'Lorem-ipsum-insert-paragraphs "lorem-ipsum" "" t)
-;; (autoload 'Lorem-ipsum-insert-sentences "lorem-ipsum" "" t)
-;; (autoload 'Lorem-ipsum-insert-list "lorem-ipsum" "" t)
-
-(setq TeX-PDF-mode t)
-
 ;; No tabs.  Just use spaces.
 (setq-default indent-tabs-mode nil)
 
@@ -58,8 +52,6 @@
 (setq inferior-lisp-program "sbcl")
 (add-to-list 'load-path "~/.slime")
 
-;; (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
-
 (require 'use-package)
 
 (use-package color-theme-sanityinc-tomorrow
@@ -79,18 +71,27 @@
               :config (progn
                         (elpy-enable)
                         (elpy-use-ipython)
-                        (elpy-clean-modeline)))
-            (use-package flymake-python-pyflakes
-              :init (setq flymake-python-pyflakes-executable "flake8")
-              :config (add-hook 'python-mode-hook 'flymake-python-pyflakes-load))))
+                        (elpy-clean-modeline)))))
 
 (use-package nyan-mode)
 
-(use-package haskell-mode
+(use-package flycheck
   :config (progn
-            (use-package flymake-haskell-multi
-              :ensure t
-              :config (add-hook 'haskell-mode-hook 'flymake-haskell-multi-load))
+            (use-package flycheck-color-mode-line
+              :config (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+            (use-package flycheck-pos-tip
+              :config (eval-after-load 'flycheck
+                        '(custom-set-variables
+                          '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
+            (use-package flycheck-haskell
+              :config (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))))
+
+(use-package haskell-mode
+  :ensure t
+  :config (progn
+            (use-package ghc)
+            (use-package ghci-completion
+              :config (add-hook 'inferior-haskell-mode-hook 'turn-on-ghci-completion))
             (add-hook 'haskell-mode-hook 'capitalized-words-mode)
             (add-hook 'haskell-mode-hook 'turn-on-eldoc-mode)
             (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
@@ -106,14 +107,14 @@
             (define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
             (define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
             (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
-            (custom-set-variables '(haskell-stylish-on-save t))
-            (require 'w3m-haddock)
-            (add-hook 'w3m-display-hook 'w3m-haddock-display)
-            (define-key haskell-mode-map (kbd "C-c C-d") 'haskell-w3m-open-haddock)))
+            (custom-set-variables '(haskell-stylish-on-save t))))
 
 (use-package w3m
   :init (setq w3m-mode-map (make-sparse-keymap))
   :config (progn
+            (require 'w3m-haddock)
+            (add-hook 'w3m-display-hook 'w3m-haddock-display)
+            (define-key haskell-mode-map (kbd "C-c C-d") 'haskell-w3m-open-haddock)
             (define-key w3m-mode-map (kbd "RET") 'w3m-view-this-url)
             (define-key w3m-mode-map (kbd "q") 'bury-buffer)
             (define-key w3m-mode-map (kbd "<mouse-1>") 'w3m-maybe-url)
@@ -128,6 +129,46 @@
               (if (or (equal '(w3m-anchor) (get-text-property (point) 'face))
                       (equal '(w3m-arrived-anchor) (get-text-property (point) 'face)))
                   (w3m-view-this-url)))))
+
+(use-package tuareg
+  :init (progn
+          (setq auto-mode-alist
+                (append '(("\\.ml[ily]?$" . tuareg-mode)
+                          ("\\.topml$" . tuareg-mode))
+                        auto-mode-alist)))
+  :config (progn
+            (use-package merlin
+              :init (progn
+                      ;; Assumes merlin was installed via opam
+                      (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
+                      (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+
+                      (setq merlin-use-auto-complete-mode t)
+                      (setq merlin-error-after-save nil))
+              :config (progn
+                        (set-face-background 'merlin-type-face "#88FF44")
+                        (add-hook 'tuareg-mode-hook 'merlin-mode)
+
+                        ;; So you can do it on a mac, where `C-<up>` and `C-<down>` are used
+                        ;; by spaces.
+                        (define-key merlin-mode-map
+                          (kbd "C-c <up>") 'merlin-type-enclosing-go-up)
+                        (define-key merlin-mode-map
+                          (kbd "C-c <down>") 'merlin-type-enclosing-go-down)))
+
+            (use-package utop
+              :config (progn
+                        (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
+                        (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
+
+            (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+
+            ;; Change tuareg's indentation to use ocp-indent.  Also assumes it was installed via opam
+            (add-to-list 'load-path (concat
+                                     (replace-regexp-in-string "\n$" ""
+                                                               (shell-command-to-string "opam config var share"))
+                                     "/emacs/site-lisp"))
+            (require 'ocp-indent)))
 
 ;; Start mail-mode for any file with 'mutt' in the name.
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))

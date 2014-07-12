@@ -1,3 +1,5 @@
 *~
 ~.swp
 *.local
+emacs.d/eshell
+emacs.d/ac-comphist.dat
