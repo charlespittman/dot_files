@@ -66,12 +66,12 @@
   :mode ("\\.py\\'" . python-mode)
   :config (progn
             (use-package elpy
-              :ensure t
+              :commands (elpy-enable)
+              :commands (elpy-use-ipython)
+
               :init (setq elpy-rpc-backend "jedi")
-              :config (progn
-                        (elpy-enable)
-                        (elpy-use-ipython)
-                        (elpy-clean-modeline)))))
+
+              :config (elpy-clean-modeline))))
 
 (use-package nyan-mode)
 
@@ -88,6 +88,7 @@
 
 (use-package haskell-mode
   :ensure t
+
   :config (progn
             (use-package ghc)
             (use-package ghci-completion
@@ -99,83 +100,86 @@
             (custom-set-variables '(haskell-process-suggest-remove-import-lines t)
                                   '(haskell-process-auto-import-loaded-modules t)
                                   '(haskell-process-log t))
-            (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
-            (define-key haskell-mode-map (kbd "C-`") 'haskell-interactive-bring)
-            (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
-            (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
-            (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
-            (define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
-            (define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
-            (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
-            (custom-set-variables '(haskell-stylish-on-save t))))
+            (custom-set-variables '(haskell-stylish-on-save t)))
+
+  :bind (("C-c C-l" . haskell-process-load-or-reload)
+         ("C-`" . haskell-interactive-bring)
+         ("C-c C-t" . haskell-process-do-type)
+         ("C-c C-i" . haskell-process-do-info)
+         ("C-c C-c" . haskell-process-cabal-build)
+         ("C-c C-k" . haskell-interactive-mode-clear)
+         ("C-c c" . haskell-process-cabal)
+         ("SPC" . haskell-mode-contextual-space)
+         ("C-c C-d" . haskell-w3m-open-haddock)))
 
 (use-package w3m
   :init (setq w3m-mode-map (make-sparse-keymap))
+
   :config (progn
             (require 'w3m-haddock)
             (add-hook 'w3m-display-hook 'w3m-haddock-display)
-            (define-key haskell-mode-map (kbd "C-c C-d") 'haskell-w3m-open-haddock)
-            (define-key w3m-mode-map (kbd "RET") 'w3m-view-this-url)
-            (define-key w3m-mode-map (kbd "q") 'bury-buffer)
-            (define-key w3m-mode-map (kbd "<mouse-1>") 'w3m-maybe-url)
-            (define-key w3m-mode-map [f5] 'w3m-reload-this-page)
-            (define-key w3m-mode-map (kbd "C-c C-d") 'haskell-w3m-open-haddock)
-            (define-key w3m-mode-map (kbd "M-<left>") 'w3m-view-previous-page)
-            (define-key w3m-mode-map (kbd "M-<right>") 'w3m-view-next-page)
-            (define-key w3m-mode-map (kbd "M-.") 'w3m-haddock-find-tag)
 
             (defun w3m-maybe-url ()
               (interactive)
               (if (or (equal '(w3m-anchor) (get-text-property (point) 'face))
                       (equal '(w3m-arrived-anchor) (get-text-property (point) 'face)))
-                  (w3m-view-this-url)))))
+                  (w3m-view-this-url))))
 
-(use-package tuareg
-  :init (progn
-          (setq auto-mode-alist
-                (append '(("\\.ml[ily]?$" . tuareg-mode)
-                          ("\\.topml$" . tuareg-mode))
-                        auto-mode-alist)))
-  :config (progn
-            (use-package merlin
-              :init (progn
-                      ;; Assumes merlin was installed via opam
-                      (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
-                      (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+  :bind (("RET" . w3m-view-this-url)
+         ("q" . bury-buffer)
+         ("<mouse-1>" . w3m-maybe-url)
+         ("<f5>" . w3m-reload-this-page)
+         ("C-c C-d" . haskell-w3m-open-haddock)
+         ("M-<left>" . w3m-view-previous-page)
+         ("M-<right>" . w3m-view-next-page)
+         ("M-." . w3m-haddock-find-tag)))
 
-                      (setq merlin-use-auto-complete-mode t)
-                      (setq merlin-error-after-save nil))
+  (use-package tuareg
+    :init (progn
+            (setq auto-mode-alist
+                  (append '(("\\.ml[ily]?$" . tuareg-mode)
+                            ("\\.topml$" . tuareg-mode))
+                          auto-mode-alist)))
+    :config (progn
+              (use-package merlin
+                :init (progn
+                        ;; Assumes merlin was installed via opam
+                        (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
+                        (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
 
-              :config (progn
-                        (set-face-background 'merlin-type-face "#88FF44")
-                        (add-hook 'tuareg-mode-hook 'merlin-mode)
+                        (setq merlin-use-auto-complete-mode t)
+                        (setq merlin-error-after-save nil))
 
-                        ;; So you can do it on a mac, where `C-<up>` and `C-<down>` are used
-                        ;; by spaces.
-                        (define-key merlin-mode-map
-                          (kbd "C-c <up>") 'merlin-type-enclosing-go-up)
-                        (define-key merlin-mode-map
-                          (kbd "C-c <down>") 'merlin-type-enclosing-go-down)))
+                :config (progn
+                          (set-face-background 'merlin-type-face "#88FF44")
+                          (add-hook 'tuareg-mode-hook 'merlin-mode)
 
-            (use-package utop
-              :config (progn
-                        (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
-                        (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
+                          ;; So you can do it on a mac, where `C-<up>` and `C-<down>` are used
+                          ;; by spaces.
+                          (define-key merlin-mode-map
+                            (kbd "C-c <up>") 'merlin-type-enclosing-go-up)
+                          (define-key merlin-mode-map
+                            (kbd "C-c <down>") 'merlin-type-enclosing-go-down)))
 
-            (use-package imenu
-              :config (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu))
+              (use-package utop
+                :config (progn
+                          (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
+                          (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
 
-            ;; Change tuareg's indentation to use ocp-indent.  Also assumes it was installed via opam
-            (add-to-list 'load-path (concat
-                                     (replace-regexp-in-string "\n$" ""
-                                                               (shell-command-to-string "opam config var share"))
-                                     "/emacs/site-lisp"))
-            (require 'ocp-indent)))
+              (use-package imenu
+                :config (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu))
 
-;; Start mail-mode for any file with 'mutt' in the name.
-(add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
+              ;; Change tuareg's indentation to use ocp-indent.  Also assumes it was installed via opam
+              (add-to-list 'load-path (concat
+                                       (replace-regexp-in-string "\n$" ""
+                                                                 (shell-command-to-string "opam config var share"))
+                                       "/emacs/site-lisp"))
+              (require 'ocp-indent)))
 
-(add-to-list 'auto-mode-alist '("\\zsh\\'" . shell-script-mode))
+  ;; Start mail-mode for any file with 'mutt' in the name.
+  (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 
-(add-to-list 'load-path "~/.emacs.d/elisp/")
-(load-library "keys")
+  (add-to-list 'auto-mode-alist '("\\zsh\\'" . shell-script-mode))
+
+  (add-to-list 'load-path "~/.emacs.d/elisp/")
+  (load-library "keys")
