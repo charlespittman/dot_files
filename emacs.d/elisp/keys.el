@@ -62,3 +62,13 @@
 (bind-key "C-x C-d" 'duplicate-line)
 
 (bind-key "s-SPC" 'just-one-space)
+
+(global-set-key (kbd "C-c C-SPC") 'hs-toggle-hiding)
+
+(eval-after-load "hideshow"
+'(add-to-list 'hs-special-modes-alist
+`(ruby-mode
+,(rx (or "def" "class" "module" "{" "[")) ; Block start
+,(rx (or "}" "]" "end")) ; Block end
+,(rx (or "#" "=begin")) ; Comment start
+ruby-forward-sexp nil)))
