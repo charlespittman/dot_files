@@ -87,6 +87,7 @@
               :config (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))))
 
 (use-package haskell-mode
+  :ensure t
   :config (progn
             (use-package ghc)
             (use-package ghci-completion
@@ -128,6 +129,23 @@
               (if (or (equal '(w3m-anchor) (get-text-property (point) 'face))
                       (equal '(w3m-arrived-anchor) (get-text-property (point) 'face)))
                   (w3m-view-this-url)))))
+
+(use-package tuareg
+  :init (setq auto-mode-alist
+              (append '(("\\.ml[ily]?$" . tuareg-mode)
+                        ("\\.topml$" . tuareg-mode))
+                      auto-mode-alist))
+  :config (progn
+            (use-package merlin
+              :init (progn
+                      (setq merlin-use-auto-complete-mode t)
+                      (setq merlin-error-after-save nil))
+              :config (add-hook 'tuareg-mode-hook 'merlin-mode))
+            (use-package utop
+              :config (progn
+                        (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
+                        (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
+            (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)))
 
 ;; Start mail-mode for any file with 'mutt' in the name.
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))

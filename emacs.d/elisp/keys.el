@@ -61,4 +61,7 @@
 
 (bind-key "C-x C-d" 'duplicate-line)
 
-(bind-key "s-SPC" 'just-one-space)
+(bind-key "M-SPC" 'just-one-space)
+
+(global-auto-complete-mode)
+(define-key ac-mode-map (kbd "s-<tab>") 'auto-complete)
