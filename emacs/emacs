@@ -131,21 +131,44 @@
                   (w3m-view-this-url)))))
 
 (use-package tuareg
-  :init (setq auto-mode-alist
-              (append '(("\\.ml[ily]?$" . tuareg-mode)
-                        ("\\.topml$" . tuareg-mode))
-                      auto-mode-alist))
+  :init (progn
+          (setq auto-mode-alist
+                (append '(("\\.ml[ily]?$" . tuareg-mode)
+                          ("\\.topml$" . tuareg-mode))
+                        auto-mode-alist)))
   :config (progn
             (use-package merlin
               :init (progn
+                      ;; Assumes merlin was installed via opam
+                      (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
+                      (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+
                       (setq merlin-use-auto-complete-mode t)
                       (setq merlin-error-after-save nil))
-              :config (add-hook 'tuareg-mode-hook 'merlin-mode))
+              :config (progn
+                        (set-face-background 'merlin-type-face "#88FF44")
+                        (add-hook 'tuareg-mode-hook 'merlin-mode)
+
+                        ;; So you can do it on a mac, where `C-<up>` and `C-<down>` are used
+                        ;; by spaces.
+                        (define-key merlin-mode-map
+                          (kbd "C-c <up>") 'merlin-type-enclosing-go-up)
+                        (define-key merlin-mode-map
+                          (kbd "C-c <down>") 'merlin-type-enclosing-go-down)))
+
             (use-package utop
               :config (progn
                         (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
                         (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
-            (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)))
+
+            (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+
+            ;; Change tuareg's indentation to use ocp-indent.  Also assumes it was installed via opam
+            (add-to-list 'load-path (concat
+                                     (replace-regexp-in-string "\n$" ""
+                                                               (shell-command-to-string "opam config var share"))
+                                     "/emacs/site-lisp"))
+            (require 'ocp-indent)))
 
 ;; Start mail-mode for any file with 'mutt' in the name.
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
