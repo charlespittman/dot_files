@@ -139,10 +139,6 @@
   :config (progn
             (use-package merlin
               :init (progn
-                      ;; Assumes merlin was installed via opam
-                      (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
-                      (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-
                       (setq merlin-use-auto-complete-mode t)
                       (setq merlin-error-after-save nil))
 
@@ -166,10 +162,8 @@
               :config (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu))
 
             ;; Change tuareg's indentation to use ocp-indent.  Also assumes it was installed via opam
-            (add-to-list 'load-path (concat
-                                     (replace-regexp-in-string "\n$" ""
-                                                               (shell-command-to-string "opam config var share"))
-                                     "/emacs/site-lisp"))
+            (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
+            (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
             (require 'ocp-indent)))
 
 ;; Start mail-mode for any file with 'mutt' in the name.
