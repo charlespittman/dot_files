@@ -4,7 +4,7 @@
 (global-set-key (kbd "M-#") 'query-replace-regexp)
 
 (global-set-key (kbd "M-<f4>") 'apply-macro-to-region-lines)
-(global-set-key (kbd "<f5>") 'revert-this-buffer)
+(global-set-key (kbd "<f5>") 'revert-this-buffer) ;Defined below
 (global-set-key (kbd "<f6>") 'align)
 (global-set-key (kbd "<f7>") 'delete-trailing-whitespace)
 (global-set-key (kbd "<f8>") 'whitespace-mode)
@@ -12,6 +12,14 @@
 
 ; Quickly switch windows
 (global-set-key (kbd "M-o") 'other-window)
+
+;; Delete window shortcuts
+(global-set-key (kbd "<kp-multiply>") 'delete-other-windows)
+(global-set-key (kbd "<kp-divide>") 'delete-window)
+
+;; Split window shortcuts
+(global-set-key (kbd "<kp-subtract>") 'split-window-vertically)
+(global-set-key (kbd "<kp-add>") 'split-window-horizontally)
 
 ; Use the forward/back buttons on the mouse
 (global-set-key [mouse-8] 'previous-buffer)
@@ -63,18 +71,17 @@
 (bind-key "C-x C-d" 'duplicate-line)
 
 (bind-key "s-SPC" 'just-one-space)
+(bind-key "M-SPC" 'just-one-space)
 
 (global-set-key (kbd "C-c C-SPC") 'hs-toggle-hiding)
 
 (eval-after-load "hideshow"
-'(add-to-list 'hs-special-modes-alist
-`(ruby-mode
-,(rx (or "def" "class" "module" "{" "[")) ; Block start
-,(rx (or "}" "]" "end")) ; Block end
-,(rx (or "#" "=begin")) ; Comment start
-ruby-forward-sexp nil)))
-
-(bind-key "M-SPC" 'just-one-space)
+  '(add-to-list 'hs-special-modes-alist
+                `(ruby-mode
+                  ,(rx (or "def" "class" "module" "{" "[")) ; Block start
+                  ,(rx (or "}" "]" "end")) ; Block end
+                  ,(rx (or "#" "=begin")) ; Comment start
+                  ruby-forward-sexp nil)))
 
 (global-auto-complete-mode)
 (define-key ac-mode-map (kbd "s-<tab>") 'auto-complete)
