@@ -3,6 +3,7 @@
 ; Macro for regexp search/replace
 (global-set-key (kbd "M-#") 'query-replace-regexp)
 
+(global-set-key (kbd "M-<f4>") 'apply-macro-to-region-lines)
 (global-set-key (kbd "<f5>") 'revert-this-buffer)
 (global-set-key (kbd "<f6>") 'align)
 (global-set-key (kbd "<f7>") 'delete-trailing-whitespace)
