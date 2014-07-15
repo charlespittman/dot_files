@@ -134,8 +134,9 @@
   :init (progn
           (setq auto-mode-alist
                 (append '(("\\.ml[ily]?$" . tuareg-mode)
-                          ("\\.topml$" . tuareg-mode))
-                        auto-mode-alist)))
+                          ("\\.topml$" . tuareg-mode)
+                          ("\\.topscript$" . tuareg-mode))
+                          auto-mode-alist)))
   :config (progn
             (use-package merlin
               :init (progn
@@ -143,7 +144,7 @@
                       (setq merlin-error-after-save nil))
 
               :config (progn
-                        (set-face-background 'merlin-type-face "#88FF44")
+                       ;; (set-face-background 'merlin-type-face "#88FF44")
                         (add-hook 'tuareg-mode-hook 'merlin-mode)
 
                         ;; So you can do it on a mac, where `C-<up>` and `C-<down>` are used
@@ -158,8 +159,8 @@
                         (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
                         (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
 
-            (use-package imenu
-              :config (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu))
+;;            (use-package imenu
+;;              :config (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu))
 
             ;; Change tuareg's indentation to use ocp-indent.  Also assumes it was installed via opam
             (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
