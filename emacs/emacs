@@ -158,15 +158,13 @@
                         (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
                         (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
 
-            (use-package imenu
-              :config (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu))
-
             ;; Change tuareg's indentation to use ocp-indent.  Also assumes it was installed via opam
             (add-to-list 'load-path (concat
                                      (replace-regexp-in-string "\n$" ""
                                                                (shell-command-to-string "opam config var share"))
                                      "/emacs/site-lisp"))
-            (require 'ocp-indent)))
+            (require 'ocp-indent)
+            (ocp-setup-indent)))
 
 ;; Start mail-mode for any file with 'mutt' in the name.
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
