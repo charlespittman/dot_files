@@ -130,20 +130,17 @@
   :init (progn
           (setq auto-mode-alist
                 (append '(("\\.ml[ily]?$" . tuareg-mode)
-                          ("\\.topml$" . tuareg-mode))
-                        auto-mode-alist)))
+                          ("\\.topml$" . tuareg-mode)
+                          ("\\.topscript$" . tuareg-mode))
+                          auto-mode-alist)))
   :config (progn
             (use-package merlin
               :init (progn
-                      ;; Assumes merlin was installed via opam
-                      (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
-                      (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-
                       (setq merlin-use-auto-complete-mode t)
                       (setq merlin-error-after-save nil))
 
               :config (progn
-                        (set-face-background 'merlin-type-face "#88FF44")
+                       ;; (set-face-background 'merlin-type-face "#88FF44")
                         (add-hook 'tuareg-mode-hook 'merlin-mode)
 
                         ;; So you can do it on a mac, where `C-<up>` and `C-<down>` are used
