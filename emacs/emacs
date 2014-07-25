@@ -10,10 +10,23 @@
 
 ;; Set repos for package manager
 (require 'package)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
+(setq package-archives '(;("gnu" . "http://elpa.gnu.org/packages/")
+                         ;("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
+   (unless (package-installed-p 'package+)
+     (package-install 'package+))
+
+   (package-manifest 'auto-complete 'bind-key 'diminish
+                     'distinguished-theme 'elpy 'expand-region
+                     'flycheck 'flycheck-color-mode-line
+                     'flycheck-haskell 'flycheck-pos-tip 'ghc
+                     'ghci-completion 'grandshell-theme
+                     'gruvbox-theme 'haskell-mode 'magit 'merlin
+                     'nyan-mode 'package+ 'python 'rubocop 'ruby-mode
+                     'smart-tabs-mode 'sudo-ext 'tuareg
+                     'use-package 'utop 'w3m 'writegood-mode
+                     'yasnippet)
 
 ;;(require 'site-gentoo)
 
@@ -53,10 +66,6 @@
 (add-to-list 'load-path "~/.slime")
 
 (require 'use-package)
-
-(use-package color-theme-sanityinc-tomorrow
-  :ensure t
-  :config (load-theme 'sanityinc-tomorrow-bright))
 
 (use-package ruby-mode
   :mode "\\.rb\\'"
@@ -161,11 +170,13 @@
                         (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
                         (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
 
-
             ;; Change tuareg's indentation to use ocp-indent.  Also assumes it was installed via opam
-            (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
-            (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-            (require 'ocp-indent)))
+            (add-to-list 'load-path (concat
+                                     (replace-regexp-in-string "\n$" ""
+                                                               (shell-command-to-string "opam config var share"))
+                                     "/emacs/site-lisp"))
+            (require 'ocp-indent)
+            (ocp-setup-indent)))
 
 ;; Start mail-mode for any file with 'mutt' in the name.
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))

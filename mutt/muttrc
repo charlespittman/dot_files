@@ -62,8 +62,6 @@ set forward_format = "Fwd: [%s]"
 # clients get weird newlines.
 set text_flowed=yes
 
-alternative_order text/enriched text/plain text/html
-
 #folder-hook . source ~/.mutt/muttrc
 
 source ~/.mutt/colors                # Define colors.

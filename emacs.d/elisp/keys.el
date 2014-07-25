@@ -84,4 +84,4 @@
                   ruby-forward-sexp nil)))
 
 (global-auto-complete-mode)
-(define-key ac-mode-map (kbd "s-<tab>") 'auto-complete)
+(define-key ac-mode-map (kbd "<tab>") 'auto-complete)
