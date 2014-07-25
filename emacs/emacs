@@ -138,6 +138,8 @@
                           ("\\.topscript$" . tuareg-mode))
                           auto-mode-alist)))
   :config (progn
+            (setq tuareg-lazy-= t)
+            (setq tuareg-lazy-paren t)
             (use-package merlin
               :init (progn
                       (setq merlin-use-auto-complete-mode t)
@@ -159,8 +161,6 @@
                         (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
                         (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
 
-;;            (use-package imenu
-;;              :config (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu))
 
             ;; Change tuareg's indentation to use ocp-indent.  Also assumes it was installed via opam
             (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
