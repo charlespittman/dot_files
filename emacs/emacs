@@ -14,6 +14,19 @@
                          ;("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
+   (unless (package-installed-p 'package+)
+     (package-install 'package+))
+
+   (package-manifest 'auto-complete 'bind-key 'diminish
+                     'distinguished-theme 'elpy 'expand-region
+                     'flycheck 'flycheck-color-mode-line
+                     'flycheck-haskell 'flycheck-pos-tip 'ghc
+                     'ghci-completion 'grandshell-theme
+                     'gruvbox-theme 'haskell-mode 'magit 'merlin
+                     'nyan-mode 'package+ 'python 'rubocop 'ruby-mode
+                     'smart-tabs-mode 'sudo-ext 'tuareg
+                     'use-package 'utop 'w3m 'writegood-mode
+                     'yasnippet)
 
 ;;(require 'site-gentoo)
 
