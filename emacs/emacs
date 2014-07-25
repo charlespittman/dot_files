@@ -10,8 +10,8 @@
 
 ;; Set repos for package manager
 (require 'package)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
+(setq package-archives '(;("gnu" . "http://elpa.gnu.org/packages/")
+                         ;("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 
@@ -53,10 +53,6 @@
 (add-to-list 'load-path "~/.slime")
 
 (require 'use-package)
-
-(use-package color-theme-sanityinc-tomorrow
-  :ensure t
-  :config (load-theme 'sanityinc-tomorrow-bright))
 
 (use-package ruby-mode
   :mode "\\.rb\\'"
