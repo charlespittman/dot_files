@@ -9,6 +9,7 @@
 (global-set-key (kbd "<f7>") 'delete-trailing-whitespace)
 (global-set-key (kbd "<f8>") 'whitespace-mode)
 (global-set-key (kbd "<f9>") 'linum-mode)
+(global-set-key (kbd "<f11>") 'follow-mode)
 
 ; Quickly switch windows
 (global-set-key (kbd "M-o") 'other-window)

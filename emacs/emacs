@@ -11,22 +11,21 @@
 ;; Set repos for package manager
 (require 'package)
 (setq package-archives '(;("gnu" . "http://elpa.gnu.org/packages/")
-                         ;("marmalade" . "http://marmalade-repo.org/packages/")
+                                        ;("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
-   (unless (package-installed-p 'package+)
-     (package-install 'package+))
+(unless (package-installed-p 'package+)
+  (package-install 'package+))
 
-   (package-manifest 'auto-complete 'bind-key 'diminish
-                     'distinguished-theme 'elpy 'expand-region
-                     'flycheck 'flycheck-color-mode-line
-                     'flycheck-haskell 'flycheck-pos-tip 'ghc
-                     'ghci-completion 'grandshell-theme
-                     'gruvbox-theme 'haskell-mode 'magit 'merlin
-                     'nyan-mode 'package+ 'python 'rubocop 'ruby-mode
-                     'smart-tabs-mode 'sudo-ext 'tuareg
-                     'use-package 'utop 'w3m 'writegood-mode
-                     'yasnippet)
+(package-manifest 'auto-complete 'bind-key 'diminish
+                  'distinguished-theme 'elpy 'expand-region
+                  'flycheck 'flycheck-color-mode-line
+                  'flycheck-haskell 'flycheck-pos-tip 'ghc
+                  'ghci-completion 'grandshell-theme
+                  'gruvbox-theme 'haskell-mode 'magit 'package+
+                  'python 'rubocop 'ruby-mode 'smart-tabs-mode
+                  'sudo-ext 'tuareg 'use-package 'w3m
+                  'writegood-mode 'yasnippet)
 
 ;;(require 'site-gentoo)
 
@@ -67,23 +66,6 @@
 
 (require 'use-package)
 
-(use-package ruby-mode
-  :mode "\\.rb\\'"
-  :interpreter "ruby")
-
-(use-package python
-  :mode ("\\.py\\'" . python-mode)
-  :config (progn
-            (use-package elpy
-              :ensure t
-              :init (setq elpy-rpc-backend "jedi")
-              :config (progn
-                        (elpy-enable)
-                        (elpy-use-ipython)
-                        (elpy-clean-modeline)))))
-
-(use-package nyan-mode)
-
 (use-package flycheck
   :config (progn
             (use-package flycheck-color-mode-line
@@ -92,31 +74,7 @@
               :config (eval-after-load 'flycheck
                         '(custom-set-variables
                           '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
-            (use-package flycheck-haskell
-              :config (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))))
-
-(use-package haskell-mode
-  :ensure t
-  :config (progn
-            (use-package ghc)
-            (use-package ghci-completion
-              :config (add-hook 'inferior-haskell-mode-hook 'turn-on-ghci-completion))
-            (add-hook 'haskell-mode-hook 'capitalized-words-mode)
-            (add-hook 'haskell-mode-hook 'turn-on-eldoc-mode)
-            (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-            (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-            (custom-set-variables '(haskell-process-suggest-remove-import-lines t)
-                                  '(haskell-process-auto-import-loaded-modules t)
-                                  '(haskell-process-log t))
-            (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
-            (define-key haskell-mode-map (kbd "C-`") 'haskell-interactive-bring)
-            (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
-            (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
-            (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
-            (define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
-            (define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
-            (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
-            (custom-set-variables '(haskell-stylish-on-save t))))
+            ))
 
 (use-package w3m
   :init (setq w3m-mode-map (make-sparse-keymap))
@@ -139,43 +97,6 @@
                       (equal '(w3m-arrived-anchor) (get-text-property (point) 'face)))
                   (w3m-view-this-url)))))
 
-(use-package tuareg
-  :init (progn
-          (setq auto-mode-alist
-                (append '(("\\.ml[ily]?$" . tuareg-mode)
-                          ("\\.topml$" . tuareg-mode)
-                          ("\\.topscript$" . tuareg-mode))
-                          auto-mode-alist)))
-  :config (progn
-            (use-package merlin
-              :init (progn
-                      (setq merlin-use-auto-complete-mode t)
-                      (setq merlin-error-after-save nil))
-
-              :config (progn
-                       ;; (set-face-background 'merlin-type-face "#88FF44")
-                        (add-hook 'tuareg-mode-hook 'merlin-mode)
-
-                        ;; So you can do it on a mac, where `C-<up>` and `C-<down>` are used
-                        ;; by spaces.
-                        (define-key merlin-mode-map
-                          (kbd "C-c <up>") 'merlin-type-enclosing-go-up)
-                        (define-key merlin-mode-map
-                          (kbd "C-c <down>") 'merlin-type-enclosing-go-down)))
-
-            (use-package utop
-              :config (progn
-                        (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
-                        (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
-
-            ;; Change tuareg's indentation to use ocp-indent.  Also assumes it was installed via opam
-            (add-to-list 'load-path (concat
-                                     (replace-regexp-in-string "\n$" ""
-                                                               (shell-command-to-string "opam config var share"))
-                                     "/emacs/site-lisp"))
-            (require 'ocp-indent)
-            (ocp-setup-indent)))
-
 ;; Start mail-mode for any file with 'mutt' in the name.
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 
@@ -183,3 +104,6 @@
 
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 (load-library "keys")
+(load-library "conf-haskell")
+(load-library "conf-python")
+(load-library "conf-tuareg")
