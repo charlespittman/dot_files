@@ -10,18 +10,20 @@
 
 ;; Set repos for package manager
 (require 'package)
-(setq package-archives '(;("gnu" . "http://elpa.gnu.org/packages/")
-                                        ;("marmalade" . "http://marmalade-repo.org/packages/")
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 (unless (package-installed-p 'package+)
   (package-install 'package+))
 
-(package-manifest 'auto-complete 'bind-key 'diminish
-                  'distinguished-theme 'elpy 'expand-region
-                  'flycheck 'flycheck-color-mode-line
-                  'flycheck-haskell 'flycheck-pos-tip 'ghc
-                  'ghci-completion 'grandshell-theme
+(package-manifest 'auto-complete 'bind-key
+                  'color-theme-sanityinc-solarized
+                  'color-theme-sanityinc-tomorrow 'clues-theme
+                  'diminish 'distinguished-theme 'elpy
+                  'expand-region 'flycheck
+                  'flycheck-color-mode-line 'flycheck-haskell
+                  'flycheck-pos-tip 'ghc 'ghci-completion
                   'gruvbox-theme 'haskell-mode 'magit 'package+
                   'python 'rubocop 'ruby-mode 'smart-tabs-mode
                   'sudo-ext 'tuareg 'use-package 'w3m
@@ -57,12 +59,6 @@
 
 (setq make-backup-files nil) ; stop creating those backup~ files
 (setq auto-save-default nil) ; stop creating those #auto-save# files
-
-;;; Lisp (SLIME) interaction
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-;; Replace "sbcl" with the path to your implementation
-(setq inferior-lisp-program "sbcl")
-(add-to-list 'load-path "~/.slime")
 
 (require 'use-package)
 
