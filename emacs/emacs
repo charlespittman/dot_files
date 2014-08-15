@@ -19,12 +19,13 @@
 
 (package-manifest 'auto-complete 'bind-key
                   'color-theme-sanityinc-solarized
-                  'color-theme-sanityinc-tomorrow 'clues-theme
-                  'diminish 'distinguished-theme 'elpy
-                  'expand-region 'flycheck
+                  'color-theme-sanityinc-tomorrow 'confluence
+                  'clues-theme 'diminish 'distinguished-theme
+                  'elpy 'expand-region 'flycheck
                   'flycheck-color-mode-line 'flycheck-haskell
                   'flycheck-pos-tip 'ghc 'ghci-completion
-                  'gruvbox-theme 'haskell-mode 'magit 'package+
+                  'gruvbox-theme 'haskell-mode 'jira 'magit
+                  'org-ac 'org-bullets 'org-jira 'package+
                   'python 'rubocop 'ruby-mode 'smart-tabs-mode
                   'sudo-ext 'tuareg 'use-package 'w3m
                   'writegood-mode 'yasnippet)
@@ -62,15 +63,6 @@
 
 (require 'use-package)
 
-(use-package flycheck
-  :config (progn
-            (use-package flycheck-color-mode-line
-              :config (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
-            (use-package flycheck-pos-tip
-              :config (eval-after-load 'flycheck
-                        '(custom-set-variables
-                          '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
-            ))
 
 (use-package w3m
   :init (setq w3m-mode-map (make-sparse-keymap))
@@ -101,5 +93,7 @@
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 (load-library "keys")
 (load-library "conf-haskell")
+(load-library "conf-org")
 (load-library "conf-python")
+(load-library "conf-quicklisp")
 (load-library "conf-tuareg")
