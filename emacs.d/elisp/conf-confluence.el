@@ -8,6 +8,18 @@
                       (local-set-key "\M-j" 'confluence-newline-and-indent)
                       (local-set-key "\M-;" 'confluence-list-indent-dwim))))
 
-(use-package jira
+(use-package org-jira
   :ensure t
-  :init (setq jira-url "http://jira.atdesk.com/jira/rpc/xmlrpc"))
+  :init (setq jiralib-url "http://jira/jira"))
+
+
+(defun open-jira-ticket-at-point ()
+  "Open browser with Jira ticket at point."
+  (interactive)
+  (let ((ticket (thing-at-point 'sexp)))
+    (if (eq nil (string-match-p "^[A-z]+-[0-9]+$" ticket))
+        (setq ticket (read-from-minibuffer
+                      "Not sure if this is a ticket: "
+                      ticket)))
+    (browse-url
+     (concat jiralib-url "/browse/" ticket))))
