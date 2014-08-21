@@ -34,7 +34,7 @@
   (interactive)
   (kill-buffer (current-buffer)))
 
-(global-set-key (kbd "C-x C-k") 'kill-this-buffer) ;Kill buffer without prompt
+;(global-set-key (kbd "C-x C-k") 'kill-this-buffer) ;Kill buffer without prompt
 
 (global-set-key (kbd "C-z") 'repeat)    ;Repeat last command
 
