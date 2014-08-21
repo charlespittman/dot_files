@@ -26,15 +26,12 @@
 (global-set-key [mouse-8] 'previous-buffer)
 (global-set-key [mouse-9] 'next-buffer)
 
-(add-hook 'lisp-mode-hook '(lambda ()
-                             (local-set-key (kbd "RET") 'newline-and-indent)))
-
 (defun kill-this-buffer ()
   "Kills the current buffer without prompting for confirmation."
   (interactive)
   (kill-buffer (current-buffer)))
 
-(global-set-key (kbd "C-x C-k") 'kill-this-buffer) ;Kill buffer without prompt
+;(global-set-key (kbd "C-x C-k") 'kill-this-buffer) ;Kill buffer without prompt
 
 (global-set-key (kbd "C-z") 'repeat)    ;Repeat last command
 
@@ -70,8 +67,6 @@
                   ,(rx (or "}" "]" "end")) ; Block end
                   ,(rx (or "#" "=begin")) ; Comment start
                   ruby-forward-sexp nil)))
-
-(global-auto-complete-mode)
 
 ;; Indent line and create new, indented line after current one
 (global-set-key (kbd "C-<return>") (lambda () (interactive)
