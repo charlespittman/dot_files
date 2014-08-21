@@ -6,3 +6,5 @@ emacs.d/ac-comphist.dat
 emacs.d/url
 emacs.d/bookmarks
 emacs.d/abbrev_defs
+emacs.d/default.el
+emacs.d/site-start.el

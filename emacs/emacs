@@ -1,3 +1,6 @@
+;; NOTE: 'site-start.el' is always loaded before '.emacs'.  'default.el' always
+;; loads after '.emacs'.
+
 ;; Use a separate file for customizations made through Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
@@ -6,7 +9,15 @@
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
-(setq inhibit-startup-screen t)
+(setq auto-save-default nil    ; No #auto-save# files
+      inhibit-startup-screen t ; No startup screen
+      make-backup-files nil    ; No backup~ files
+      tooltip-delay 0.1        ; (Defaults to 0.7)
+      )
+
+;; Note that this line uses setq-default; it sets values only in buffers that
+;; do not have their own local values.
+(setq-default indent-tabs-mode nil)
 
 ;; Set repos for package manager
 (require 'package)
@@ -14,18 +25,21 @@
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
+
 (unless (package-installed-p 'package+)
   (package-install 'package+))
 
 (package-manifest 'auto-complete
                   'auto-complete-clang
                   'bind-key
+                  'c-eldoc
                   'clues-theme
                   'color-theme-sanityinc-solarized
                   'color-theme-sanityinc-tomorrow
                   'confluence
                   'diminish
                   'distinguished-theme
+                  'eldoc-extension
                   'elpy
                   'ethan-wspace
                   'expand-region
@@ -41,7 +55,7 @@
                   'haskell-mode
                   'ido-ubiquitous 'ido-vertical-mode
                   'magit
-                  'org-ac 'org-bullets 'org-jira
+                  'org-ac 'org-bullets 'org-eldoc 'org-jira
                   'package+
                   'python
                   'rubocop
@@ -53,38 +67,20 @@
                   'writegood-mode
                   'yasnippet)
 
-;;(require 'site-gentoo)
+(delete-selection-mode) ; transient mark by default
+(electric-indent-mode)
+(electric-pair-mode)
+(global-auto-complete-mode)
+(global-font-lock-mode) ; syntax highlighting
+(global-visual-line-mode)
+(show-paren-mode)
 
-;; Turn on syntax highlighting globally
-(global-font-lock-mode t)
-
-;; Shorten confirmation prompts
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-;; Don't make *.~ files
-(setq make-backup-files nil)
-
-(show-paren-mode t)
-(eldoc-mode t)
 
 ;; Removing trailing whitespace every time a file is saved.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; No tabs.  Just use spaces.
-(setq-default indent-tabs-mode nil)
-
-;; make typing overwrite text selection
-(delete-selection-mode t)
-
-;; turn on automatic bracket insertion by pairs.
-(electric-pair-mode t)
-
-(electric-indent-mode t)
-
-(global-visual-line-mode t)
-
-(setq make-backup-files nil) ; stop creating those backup~ files
-(setq auto-save-default nil) ; stop creating those #auto-save# files
+(add-hook 'prog-mode-hook 'turn-on-eldoc-mode)
 
 (require 'use-package)
 
@@ -96,6 +92,7 @@
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 (load-library "keys")
 (load-library "conf-confluence")
+(load-library "conf-eldoc")
 (load-library "conf-haskell")
 (load-library "conf-magit")
 (load-library "conf-org")
