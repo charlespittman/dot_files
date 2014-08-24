@@ -2,7 +2,7 @@
   :ensure t
   :config (progn
             (bind-keys*
-             ("<f5>" . revert-this-buffer) ;Defined below
+             ("<f5>" . revert-this-buffer)
              ("<f6>" . align)
              ("<f7>" . delete-trailing-whitespace)
              ("<f8>" . whitespace-mode)
@@ -14,6 +14,12 @@
              ("<kp-multiply>" . delete-other-windows)
              ("<kp-subtract>" . split-window-vertically)
              ("C-x C-d". duplicate-line)
+             ("C-x k" . kill-this-buffer) ;I use this way more often
+             ("C-w" . backward-kill-word)
+             ("C-x C-k" . kill-region)
+             ("C-c C-k" . kill-region)
+             ("C-x M-k" . kill-buffer)
+             ("C-c C-b" . new-empty-buffer)
              ("M-#" . query-replace-regexp)
              ("M-<f4>" . apply-macro-to-region-lines)
              ("M-SPC" . just-one-space)
@@ -25,6 +31,14 @@
 ;; Use the forward/back buttons on the mouse
 (global-set-key [mouse-8] 'previous-buffer)
 (global-set-key [mouse-9] 'next-buffer)
+
+(defun new-empty-buffer ()
+  "Open a new empty buffer."
+  (interactive)
+  (let ((buf (generate-new-buffer "untitled")))
+    (switch-to-buffer buf)
+    (funcall (and initial-major-mode))
+  (setq buffer-offer-save t)))
 
 (defun kill-this-buffer ()
   "Kills the current buffer without prompting for confirmation."
