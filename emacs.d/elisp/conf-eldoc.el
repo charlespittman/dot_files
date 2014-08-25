@@ -1,4 +1,5 @@
 (use-package eldoc
+  :init (add-hook 'prog-mode-hook 'turn-on-eldoc-mode)
   :config (progn
             (use-package eldoc-extension
               :ensure t)

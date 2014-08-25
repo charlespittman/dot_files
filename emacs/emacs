@@ -1,87 +1,68 @@
 ;; NOTE: 'site-start.el' is always loaded before '.emacs'.  'default.el' always
 ;; loads after '.emacs'.
 
+(require 'cl)
 ;; Use a separate file for customizations made through Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
 ;; Turn off mouse interface early in startup to avoid momentary display
-(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
+
+;; Set repos for package manager
+(load "package")
+(package-initialize)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")
+                         ("org" . "http://orgmode.org/elpa/")))
+
+(defvar cp/packages '(clues-theme color-theme-sanityinc-solarized
+                      color-theme-sanityinc-tomorrow
+                      distinguished-theme ethan-wspace ggtags
+                      gruvbox-theme magit rubocop use-package
+                      writegood-mode yasnippet)
+  "Default packages")
+
+(defun cp/packages-installed-p ()
+  (loop for pkg in cp/packages
+        when (not (package-installed-p pkg)) do (return nil)
+        finally (return t)))
+
+(unless (cp/packages-installed-p)
+  (message "%s" "Refreshing package database...")
+  (package-refresh-contents)
+  (dolist (pkg cp/packages)
+    (when (not (package-installed-p pkg))
+      (package-install pkg))))
 
 (setq auto-save-default nil    ; No #auto-save# files
+      echo-keystrokes 0.1
       inhibit-startup-screen t ; No startup screen
       make-backup-files nil    ; No backup~ files
       tooltip-delay 0.1        ; (Defaults to 0.7)
-      )
+      use-dialog-box nil
+      user-full-name "Charles Pittman")
 
 ;; Note that this line uses setq-default; it sets values only in buffers that
 ;; do not have their own local values.
 (setq-default indent-tabs-mode nil)
 
-;; Set repos for package manager
-(require 'package)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
-(package-initialize)
-
-(unless (package-installed-p 'package+)
-  (package-install 'package+))
-
-(package-manifest 'auto-complete
-                  'auto-complete-clang
-                  'bind-key
-                  'c-eldoc
-                  'clues-theme
-                  'color-theme-sanityinc-solarized
-                  'color-theme-sanityinc-tomorrow
-                  'confluence
-                  'diminish
-                  'distinguished-theme
-                  'eldoc-extension
-                  'elpy
-                  'ethan-wspace
-                  'expand-region
-                  'flycheck
-                  'flycheck-color-mode-line
-                  'flycheck-haskell
-                  'flycheck-pos-tip
-                  'ggtags
-                  'ghc
-                  'ghci-completion
-                  'git-timemachine
-                  'gruvbox-theme
-                  'haskell-mode
-                  'ido-ubiquitous 'ido-vertical-mode
-                  'magit
-                  'org-ac 'org-bullets 'org-eldoc 'org-jira
-                  'package+
-                  'python
-                  'rubocop
-                  'ruby-mode
-                  'smex
-                  'tuareg
-                  'use-package
-                  'w3m
-                  'writegood-mode
-                  'yasnippet)
-
-(delete-selection-mode) ; transient mark by default
-(electric-indent-mode)
-(electric-pair-mode)
-(global-auto-complete-mode)
-(global-font-lock-mode) ; syntax highlighting
-(global-visual-line-mode)
-(show-paren-mode)
+(delete-selection-mode t)
+(transient-mark-mode t)
+(electric-indent-mode t)
+(electric-pair-mode t)
+(global-auto-complete-mode t)
+(global-font-lock-mode t) ; syntax highlighting
+(global-visual-line-mode t)
+(show-paren-mode t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Removing trailing whitespace every time a file is saved.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-(add-hook 'prog-mode-hook 'turn-on-eldoc-mode)
 
 (require 'use-package)
 

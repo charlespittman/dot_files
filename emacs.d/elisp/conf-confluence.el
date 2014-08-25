@@ -1,17 +1,15 @@
 (use-package confluence
   :ensure t
   :init (setq confluence-url "http://confluence.atdesk.com/confluence/rpc/xmlrpc")
-  :config (progn
-            (global-set-key "\C-xwf" 'confluence-get-page)
-            (add-hook 'confluence-edit-mode-hook
-                      (local-set-key "\C-xw" confluence-prefix-map)
-                      (local-set-key "\M-j" 'confluence-newline-and-indent)
-                      (local-set-key "\M-;" 'confluence-list-indent-dwim))))
+  :config (add-hook 'confluence-edit-mode-hook
+                    (local-set-key "\C-xw" confluence-prefix-map)
+                    (local-set-key "\M-j" 'confluence-newline-and-indent)
+                    (local-set-key "\M-;" 'confluence-list-indent-dwim))
+  :bind ("C-x w f" . confluence-get-page))
 
 (use-package org-jira
   :ensure t
   :init (setq jiralib-url "http://jira/jira"))
-
 
 (defun open-jira-ticket-at-point ()
   "Open browser with Jira ticket at point."

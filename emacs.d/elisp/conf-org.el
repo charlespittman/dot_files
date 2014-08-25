@@ -1,13 +1,16 @@
 (use-package org
-  :init (progn (setq org-log-done t)
-               (setq org-agenda-files (list "~/org/home.org"
-                                            "~/org/work.org"
-                                            "~/org/school.org")))
-  :config (progn (use-package org-bullets
-                   :ensure t
-                   :config (add-hook 'org-mode-hook 'org-bullets-mode))
+  :init (setq org-log-done t
+              org-agenda-files (list "~/org/home.org"
+                                     "~/org/work.org"
+                                     "~/org/school.org"))
 
-                 (define-key global-map "\C-ca" 'org-agenda)
-                 (define-key global-map "\C-cb" 'org-iswitchb)
-                 (define-key global-map "\C-cc" 'org-capture)
-                 (define-key global-map "\C-cl" 'org-store-link)))
+  :config (progn (use-package org-ac
+                   :ensure t)
+                 (use-package org-bullets
+                   :ensure t
+                   :config (add-hook 'org-mode-hook 'org-bullets-mode)))
+
+  :bind (("C-c a" . org-agenda)
+         ("C-c b" . org-iswitchb)
+         ("C-c c" . org-capture)
+         ("C-c l" . org-store-link)))
