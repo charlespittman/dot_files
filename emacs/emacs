@@ -48,7 +48,8 @@
 
 ;; Note that this line uses setq-default; it sets values only in buffers that
 ;; do not have their own local values.
-(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil
+              tab-always-indent 'complete)
 
 (delete-selection-mode t)
 (transient-mark-mode t)
@@ -73,6 +74,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 (load-library "keys")
+(load-library "efuncs")
 (load-library "conf-confluence")
 (load-library "conf-eldoc")
 (load-library "conf-haskell")
