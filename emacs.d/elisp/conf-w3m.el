@@ -1,7 +1,8 @@
 (use-package w3m
+  :ensure t
   :init (setq w3m-mode-map (make-sparse-keymap))
-  :config (progn (require 'w3m-haddock)
-                 (add-hook 'w3m-display-hook 'w3m-haddock-display))
+;  :config (progn (require 'w3m-haddock)
+;                 (add-hook 'w3m-display-hook 'w3m-haddock-display))
 ;  :bind (("C-c C-d" . haskell-w3m-open-haddock)
 ;         ("RET" . w3m-view-this-url)
 ;         ("q" . bury-buffer)

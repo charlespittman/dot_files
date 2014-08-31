@@ -6,5 +6,4 @@
               :init (setq elpy-rpc-backend "jedi")
               :config (progn
                         (elpy-enable)
-                        (elpy-use-ipython)
-                        (elpy-clean-modeline)))))
+                        (elpy-use-ipython)))))

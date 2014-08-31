@@ -10,20 +10,21 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Set repos for package manager
 (load "package")
 (package-initialize)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+(setq package-archives '(("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
-                         ("org" . "http://orgmode.org/elpa/")))
+                         ("org" . "http://orgmode.org/elpa/")
+                         ("gnu" . "http://elpa.gnu.org/packages/")))
 
 (defvar cp/packages '(clues-theme color-theme-sanityinc-solarized
                       color-theme-sanityinc-tomorrow
-                      distinguished-theme ethan-wspace ggtags
-                      gruvbox-theme magit rubocop use-package
-                      writegood-mode yasnippet)
+                      distinguished-theme
+                      gruvbox-theme  use-package)
   "Default packages")
 
 (defun cp/packages-installed-p ()
@@ -37,6 +38,407 @@
   (dolist (pkg cp/packages)
     (when (not (package-installed-p pkg))
       (package-install pkg))))
+
+(require 'use-package)
+
+(add-to-list 'load-path "~/.emacs.d/elisp/")
+
+;;;; common-lisp
+(use-package cl-lib
+  :ensure t)
+
+
+;;;; auto-complete
+(use-package auto-complete
+  :ensure t
+  :config (global-auto-complete-mode t))
+
+
+;;;; flycheck
+(use-package flycheck
+  :ensure t
+  :config (progn (use-package flycheck-color-mode-line
+                   :ensure t
+                   :config (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+
+                 (use-package flycheck-pos-tip
+                   :ensure t
+                   :config (custom-set-variables '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
+
+
+;;;; confluence
+(use-package confluence
+  :ensure t
+  :init (setq confluence-url "http://confluence.atdesk.com/confluence/rpc/xmlrpc")
+  :config (add-hook 'confluence-edit-mode-hook
+                    (local-set-key "\C-xw" confluence-prefix-map)
+                    (local-set-key "\M-j" 'confluence-newline-and-indent)
+                    (local-set-key "\M-;" 'confluence-list-indent-dwim))
+  :bind ("C-x w f" . confluence-get-page))
+
+(use-package org-jira
+  :ensure t
+  :init (setq jiralib-url "http://jira/jira"))
+
+(defun open-jira-ticket-at-point ()
+  "Open browser with Jira ticket at point."
+  (interactive)
+  (let ((ticket (thing-at-point 'sexp)))
+    (if (eq nil (string-match-p "^[A-z]+-[0-9]+$" ticket))
+        (setq ticket (read-from-minibuffer
+                      "Not sure if this is a ticket: "
+                      ticket)))
+    (browse-url
+     (concat jiralib-url "/browse/" ticket))))
+
+
+;;;; eldoc
+(use-package eldoc
+  :init (add-hook 'prog-mode-hook 'turn-on-eldoc-mode)
+  :config (progn (use-package eldoc-extension
+                   :ensure t)
+
+                 (use-package c-eldoc
+                   :ensure t
+                   :config (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode))
+
+                 (use-package org-eldoc
+                   :ensure t)))
+
+
+;;;; haskell
+(use-package haskell-mode
+  :ensure t
+  :config (progn (use-package ghc)
+
+                 (use-package ghci-completion
+                   :config (add-hook 'inferior-haskell-mode-hook 'turn-on-ghci-completion))
+
+                 (use-package flycheck-haskell
+                   :config (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+
+            (add-hook 'haskell-mode-hook 'capitalized-words-mode)
+            (add-hook 'haskell-mode-hook 'turn-on-eldoc-mode)
+            (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+            (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+            (custom-set-variables '(haskell-process-suggest-remove-import-lines t)
+                                  '(haskell-process-auto-import-loaded-modules t)
+                                  '(haskell-process-log t)
+                                  '(haskell-stylish-on-save t)))
+  ;;  :bind (("C-c C-l" . haskell-process-load-or-reload)
+  ;;         ("C-`" . haskell-interactive-bring)
+  ;;         ("C-c C-t" . haskell-process-do-type)
+  ;;         ("C-c C-i" . haskell-process-do-info)
+  ;;         ("C-c C-c" . haskell-process-cabal-build)
+  ;;         ("C-c C-k" . haskell-interactive-mode-clear)
+  ;;         ("C-c c" . haskell-process-cabal)
+  ;;         ("SPC" . haskell-mode-contextual-space)))
+  )
+
+
+;;;; ido
+(use-package ido
+  :ensure t
+  :init (setq ido-enable-flex-matching t
+              ido-create-new-buffer 'always)
+  :config (progn (use-package ido-ubiquitous
+                   :ensure t)
+
+                 (use-package ido-vertical-mode
+                   :ensure t
+                   :init (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+                   :config (ido-vertical-mode t))
+
+                 (ido-mode t)))
+
+;; Listed here because smex is built on ido
+(use-package smex
+  :ensure t
+  :init (setq smex-auto-update 60)
+  :config (smex-initialize)
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)
+         ("M-s-x" . smex-show-unbound-commands)))
+
+
+;;;; magit
+(use-package magit
+  :ensure t
+  :config (progn
+            ;; full screen magit-status
+            (defadvice magit-status (around magit-fullscreen activate)
+              (window-configuration-to-register :magit-fullscreen)
+              ad-do-it
+              (delete-other-windows))
+
+            (defun magit-quit-session ()
+              "Restores the previous window configuration and kills the magit buffer"
+              (interactive)
+              (kill-buffer)
+              (jump-to-register :magit-fullscreen))
+
+            (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)))
+
+
+;;;; org-mode
+(use-package org
+  :init (setq org-log-done t
+              org-agenda-files (list "~/org/home.org"
+                                     "~/org/work.org"
+                                     "~/org/school.org"))
+
+  :config (progn (use-package org-ac
+                   :ensure t)
+                 (use-package org-bullets
+                   :ensure t
+                   :config (add-hook 'org-mode-hook 'org-bullets-mode)))
+
+  :bind (("C-c a" . org-agenda)
+         ("C-c b" . org-iswitchb)
+         ("C-c c" . org-capture)
+         ("C-c l" . org-store-link)))
+
+
+;;;; python
+(use-package python
+  :mode ("\\.py\\'" . python-mode)
+  :config (progn (use-package elpy
+                   :ensure t
+                   :init (setq elpy-rpc-backend "jedi")
+                   :config (progn (elpy-enable)
+                                  (elpy-use-ipython)))))
+
+
+;;;; slime/quicklisp
+(use-package slime
+  :ensure t
+  :load-path "~/.slime/"
+  :init (setq inferior-lisp-program "sbcl")
+  :config (progn (load (expand-file-name "~/quicklisp/slime-helper.el"))
+                 (use-package ac-slime
+                   :ensure t)))
+
+
+;;;; ocaml
+(use-package tuareg
+  :ensure t
+  :load-path ("~/.opam/system/share/emacs/site-lisp/")
+
+  :mode (("\\.ml[ily]?$" . tuareg-mode)
+         ("\\.topml$" . tuareg-mode)
+         ("\\.topscript$" . tuareg-mode))
+
+  :config (progn (use-package merlin
+                   :init (setq merlin-use-auto-complete-mode t
+                               merlin-error-after-save nil)
+
+                   :config (add-hook 'tuareg-mode-hook 'merlin-mode)
+
+                   :bind (("C-c <up>" . merlin-type-enclosing-go-up)
+                          ("C-c <down>" . merlin-type-enclosing-go-down)))
+
+                 (use-package utop
+                   :config (progn (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
+                                  (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
+
+                 (require 'ocp-indent)
+                 (ocp-setup-indent)))
+
+
+;;;; w3m
+(use-package w3m
+  :ensure t
+  :init (setq w3m-mode-map (make-sparse-keymap))
+;  :config (progn (require 'w3m-haddock)
+;                 (add-hook 'w3m-display-hook 'w3m-haddock-display))
+;  :bind (("C-c C-d" . haskell-w3m-open-haddock)
+;         ("RET" . w3m-view-this-url)
+;         ("q" . bury-buffer)
+;         ("<mouse-1>" . w3m-maybe-url)
+;         ("<f5>" . w3m-reload-this-page)
+;         ("C-c C-d" . haskell-w3m-open-haddock)
+;         ("M-<left>" . w3m-view-previous-page)
+;         ("M-<right>" . w3m-view-next-page)
+;         ("M-." . w3m-haddock-find-tag)))
+)
+
+(defun w3m-maybe-url ()
+  (interactive)
+  (if (or (equal '(w3m-anchor) (get-text-property (point) 'face))
+          (equal '(w3m-arrived-anchor) (get-text-property (point) 'face)))
+      (w3m-view-this-url)))
+
+
+;;;; misc. functions
+(defun swap-windows ()
+  "If you have 2 windows, it swaps them."
+  (interactive)
+  (cond ((not (= (count-windows) 2))
+         (message "You need exactly 2 windows to do this."))
+        (t
+         (let* ((w1 (first (window-list)))
+                (w2 (second (window-list)))
+                (b1 (window-buffer w1))
+                (b2 (window-buffer w2))
+                (s1 (window-start w1))
+                (s2 (window-start w2)))
+           (set-window-buffer w1 b2)
+           (set-window-buffer w2 b1)
+           (set-window-start w1 s2)
+           (set-window-start w2 s1)))))
+
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "sNew name: ")
+  (let ((name (buffer-name))
+	(filename (buffer-file-name)))
+    (if (not filename)
+	(message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+	(progn 	 (rename-file name new-name 1) 	 (rename-buffer new-name) 	 (set-visited-file-name new-name) 	 (set-buffer-modified-p nil))))))
+
+(defun move-buffer-file (dir)
+  "Moves both current buffer and file it's visiting to DIR."
+  (interactive "DNew directory: ")
+  (let* ((name (buffer-name))
+	 (filename (buffer-file-name))
+	 (dir
+          (if (string-match dir "\\(?:/\\|\\\\)$")
+              (substring dir 0 -1) dir))
+	 (newname (concat dir "/" name)))
+
+    (if (not filename)
+	(message "Buffer '%s' is not visiting a file!" name)
+      (progn 	(copy-file filename newname 1) 	(delete-file filename) 	(set-visited-file-name newname) 	(set-buffer-modified-p nil) 	t))))
+
+(defun new-empty-buffer ()
+  "Open a new empty buffer."
+  (interactive)
+  (let ((buf (generate-new-buffer "untitled")))
+    (switch-to-buffer buf)
+    (funcall (and initial-major-mode))
+    (setq buffer-offer-save t)))
+
+(defun kill-this-buffer ()
+  "Kills the current buffer without prompting for confirmation."
+  (interactive)
+  (kill-buffer (current-buffer)))
+
+(defun revert-this-buffer ()
+  "Reverts the current buffer from disk without prompting for confirmation."
+  (interactive)
+  (revert-buffer nil t t)
+  (message (concat "Reverted buffer " (buffer-name))))
+
+(defun duplicate-line ()
+  "Duplicate the line containing point."
+  (interactive)
+  (save-excursion
+    (let (line-text)
+      (goto-char (line-beginning-position))
+      (let ((beg (point)))
+        (goto-char (line-end-position))
+        (setq line-text (buffer-substring beg (point))))
+      (if (eobp)
+          (insert ?\n)
+        (forward-line))
+      (open-line 1)
+      (insert line-text))))
+
+(defun describe-function-in-popup ()
+  (require 'popup)
+  (interactive)
+  (let* ((thing (symbol-at-point))
+         (description (save-window-excursion
+                        (describe-function thing)
+                        (switch-to-buffer "*Help*")
+                        (buffer-string))))
+    (popup-tip description
+               :point (point)
+               :around t
+               :height 30
+               :scroll-bar t
+               :margin t)))
+
+(defun describe-thing-in-popup ()
+  (interactive)
+  (let* ((thing (symbol-at-point))
+         (help-xref-following t)
+         (description (with-temp-buffer
+                        (help-mode)
+                        (help-xref-interned thing)
+                        (buffer-string))))
+    (popup-tip description
+               :point (point)
+               :around t
+               :height 30
+               :scroll-bar t
+               :margin t)))
+
+;;;; emacs lisp
+  (defun imenu-elisp-sections ()
+(setq imenu-prev-index-position-function nil)
+(add-to-list 'imenu-generic-expression '("Sections" "^;;;; \\(.+\\)$" 1) t))
+
+(add-hook 'emacs-lisp-mode-hook 'imenu-elisp-sections)
+
+
+;;;; keybindings
+(use-package bind-key
+  :ensure t
+  :config (progn (bind-keys*
+                  ("<f5>" . revert-this-buffer)
+                  ("<f6>" . align)
+                  ("<f7>" . delete-trailing-whitespace)
+                  ("<f8>" . whitespace-mode)
+                  ("<f9>" . linum-mode)
+                  ("<f10>" . magit-status)   ;Git status of current directory
+                  ("<f11>" . follow-mode)
+                  ("<kp-add>" . split-window-horizontally)
+                  ("<kp-divide>" . delete-window)
+                  ("<kp-multiply>" . delete-other-windows)
+                  ("<kp-subtract>" . split-window-vertically)
+                  ("C-x C-d". duplicate-line)
+                  ("C-x k" . kill-this-buffer) ;I use this way more often
+                  ("C-w" . backward-kill-word)
+                  ("C-x C-k" . kill-region)
+                  ("C-c C-k" . kill-region)
+                  ("C-x M-k" . kill-buffer)
+                  ("C-c C-b" . new-empty-buffer)
+                  ("M-#" . query-replace-regexp)
+                  ("M-<f4>" . apply-macro-to-region-lines)
+                  ("M-SPC" . just-one-space)
+                  ("M-o" . other-window)
+                  )))
+
+(define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
+
+;; Use the forward/back buttons on the mouse
+(global-set-key [mouse-8] 'previous-buffer)
+(global-set-key [mouse-9] 'next-buffer)
+
+;(global-set-key (kbd "C-x C-k") 'kill-this-buffer) ;Kill buffer without prompt
+
+(global-set-key (kbd "C-z") 'repeat)    ;Repeat last command
+
+(defalias 'list-buffers 'ibuffer)
+
+(global-set-key (kbd "C-c C-SPC") 'hs-toggle-hiding)
+
+(eval-after-load "hideshow"
+  '(add-to-list 'hs-special-modes-alist
+                `(ruby-mode
+                  ,(rx (or "def" "class" "module" "{" "[")) ; Block start
+                  ,(rx (or "}" "]" "end")) ; Block end
+                  ,(rx (or "#" "=begin")) ; Comment start
+                  ruby-forward-sexp nil)))
+
+;; Indent line and create new, indented line after current one
+(global-set-key (kbd "C-<return>") (lambda () (interactive)
+                                     (end-of-line)
+                                     (reindent-then-newline-and-indent)))
+
 
 (setq auto-save-default nil    ; No #auto-save# files
       echo-keystrokes 0.1
@@ -55,33 +457,37 @@
 (transient-mark-mode t)
 (electric-indent-mode t)
 (electric-pair-mode t)
-(global-auto-complete-mode t)
 (global-font-lock-mode t) ; syntax highlighting
 (global-visual-line-mode t)
 (show-paren-mode t)
 
-(defalias 'yes-or-no-p 'y-or-n-p)
-
 ;; Removing trailing whitespace every time a file is saved.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-(require 'use-package)
 
 ;; Start mail-mode for any file with 'mutt' in the name.
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 
 (add-to-list 'auto-mode-alist '("\\zsh\\'" . shell-script-mode))
 
-(add-to-list 'load-path "~/.emacs.d/elisp/")
-(load-library "keys")
-(load-library "efuncs")
-(load-library "conf-confluence")
-(load-library "conf-eldoc")
-(load-library "conf-haskell")
-(load-library "conf-magit")
-(load-library "conf-org")
-(load-library "conf-ido")
-(load-library "conf-python")
-(load-library "conf-quicklisp")
-(load-library "conf-tuareg")
-(load-library "conf-w3m")
+
+;;;; pos-tip
+(use-package pos-tip
+  :ensure t
+  :config (progn
+            (defun my-describe-function (function)
+              "Display the full documentation of FUNCTION (a symbol) in tooltip."
+              (interactive (list (function-called-at-point)))
+              (if (null function)
+                  (pos-tip-show
+                   "** You didn't specify a function! **" '("red"))
+                (pos-tip-show
+                 (with-temp-buffer
+                   (let ((standard-output (current-buffer))
+                         (help-xref-following t))
+                     (prin1 function)
+                     (princ " is ")
+                     (describe-function-1 function)
+                     (buffer-string)))
+                 nil nil nil 0)))
+
+            (define-key emacs-lisp-mode-map (kbd "C-;") 'my-describe-function)))
