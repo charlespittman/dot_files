@@ -68,6 +68,7 @@
 
 ;;;; confluence
 (use-package confluence
+  :defer t
   :ensure t
   :init (setq confluence-url "http://confluence.atdesk.com/confluence/rpc/xmlrpc")
   :config (add-hook 'confluence-edit-mode-hook
@@ -77,6 +78,7 @@
   :bind ("C-x w f" . confluence-get-page))
 
 (use-package org-jira
+  :defer t
   :ensure t
   :init (setq jiralib-url "http://jira/jira"))
 
@@ -108,13 +110,17 @@
 
 ;;;; haskell
 (use-package haskell-mode
+  :defer t
   :ensure t
-  :config (progn (use-package ghc)
+  :config (progn (use-package ghc
+                   :ensure t)
 
                  (use-package ghci-completion
+                   :ensure t
                    :config (add-hook 'inferior-haskell-mode-hook 'turn-on-ghci-completion))
 
                  (use-package flycheck-haskell
+                   :ensure t
                    :config (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
             (add-hook 'haskell-mode-hook 'capitalized-words-mode)
@@ -163,6 +169,7 @@
 
 ;;;; magit
 (use-package magit
+  :defer t
   :ensure t
   :config (progn
             ;; full screen magit-status
@@ -201,6 +208,8 @@
 
 ;;;; python
 (use-package python
+  :defer t
+  :ensure t
   :mode ("\\.py\\'" . python-mode)
   :config (progn (use-package elpy
                    :ensure t
@@ -211,6 +220,7 @@
 
 ;;;; slime/quicklisp
 (use-package slime
+  :defer t
   :ensure t
   :load-path "~/.slime/"
   :init (setq inferior-lisp-program "sbcl")
@@ -221,6 +231,7 @@
 
 ;;;; ocaml
 (use-package tuareg
+  :defer t
   :ensure t
   :load-path ("~/.opam/system/share/emacs/site-lisp/")
 
@@ -247,6 +258,7 @@
 
 ;;;; w3m
 (use-package w3m
+  :defer t
   :ensure t
   :init (setq w3m-mode-map (make-sparse-keymap))
 ;  :config (progn (require 'w3m-haddock)
