@@ -21,10 +21,11 @@
                          ("org" . "http://orgmode.org/elpa/")
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 
-(defvar cp/packages '(clues-theme color-theme-sanityinc-solarized
+(defvar cp/packages '(ample-theme clues-theme
+                      color-theme-sanityinc-solarized
                       color-theme-sanityinc-tomorrow
-                      distinguished-theme
-                      gruvbox-theme  use-package)
+                      distinguished-theme gruvbox-theme
+                      use-package)
   "Default packages")
 
 (defun cp/packages-installed-p ()
@@ -41,6 +42,21 @@
 
 (require 'use-package)
 
+(defun depends--helper (deps body)
+  (let ((dep (if (stringp (car deps)) (pop deps) (cons 'quote (list (pop deps))))))
+    (list 'eval-after-load dep
+          (cons 'lambda (cons nil (if (not deps)
+                                      body
+                                    (list (depends--helper deps body))))))))
+
+(defmacro depends (&rest args)
+  (declare (indent defun))
+  (let ((dependencies nil))
+    (while (or (stringp (car args))
+               (symbolp (car args)))
+      (push (pop args) dependencies))
+    (depends--helper dependencies args)))
+
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 
 ;;;; common-lisp
@@ -56,31 +72,45 @@
 
 ;;;; flycheck
 (use-package flycheck
-  :ensure t
+  :init (depends "cc-mode"
+          (add-hook 'c-mode-hook 'flycheck-mode)
+          (add-hook 'c++-mode-hook 'flycheck-mode))
+
   :config (progn (use-package flycheck-color-mode-line
-                   :ensure t
-                   :config (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+                   :config (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
+                   :ensure t)
+
 
                  (use-package flycheck-pos-tip
-                   :ensure t
-                   :config (custom-set-variables '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
+                   :config (custom-set-variables
+                            '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
+                   :ensure t))
+  :defer t
+  :ensure t)
 
+
+;;;; company
+(use-package company
+  :defer t
+  :ensure t)
 
 ;;;; confluence
 (use-package confluence
-  :defer t
-  :ensure t
   :init (setq confluence-url "http://confluence.atdesk.com/confluence/rpc/xmlrpc")
+
   :config (add-hook 'confluence-edit-mode-hook
                     (local-set-key "\C-xw" confluence-prefix-map)
                     (local-set-key "\M-j" 'confluence-newline-and-indent)
                     (local-set-key "\M-;" 'confluence-list-indent-dwim))
-  :bind ("C-x w f" . confluence-get-page))
+
+  :bind ("C-x w f" . confluence-get-page)
+  :defer t
+  :ensure t)
 
 (use-package org-jira
+  :init (setq jiralib-url "http://jira/jira")
   :defer t
-  :ensure t
-  :init (setq jiralib-url "http://jira/jira"))
+  :ensure t)
 
 (defun open-jira-ticket-at-point ()
   "Open browser with Jira ticket at point."
@@ -123,14 +153,14 @@
                    :ensure t
                    :config (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
-            (add-hook 'haskell-mode-hook 'capitalized-words-mode)
-            (add-hook 'haskell-mode-hook 'turn-on-eldoc-mode)
-            (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-            (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-            (custom-set-variables '(haskell-process-suggest-remove-import-lines t)
-                                  '(haskell-process-auto-import-loaded-modules t)
-                                  '(haskell-process-log t)
-                                  '(haskell-stylish-on-save t)))
+                 (add-hook 'haskell-mode-hook 'capitalized-words-mode)
+                 (add-hook 'haskell-mode-hook 'turn-on-eldoc-mode)
+                 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+                 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+                 (custom-set-variables '(haskell-process-suggest-remove-import-lines t)
+                                       '(haskell-process-auto-import-loaded-modules t)
+                                       '(haskell-process-log t)
+                                       '(haskell-stylish-on-save t)))
   ;;  :bind (("C-c C-l" . haskell-process-load-or-reload)
   ;;         ("C-`" . haskell-interactive-bring)
   ;;         ("C-c C-t" . haskell-process-do-type)
@@ -220,13 +250,13 @@
 
 ;;;; slime/quicklisp
 (use-package slime
-  :defer t
-  :ensure t
   :load-path "~/.slime/"
   :init (setq inferior-lisp-program "sbcl")
   :config (progn (load (expand-file-name "~/quicklisp/slime-helper.el"))
                  (use-package ac-slime
-                   :ensure t)))
+                   :ensure t))
+  :defer t
+  :ensure t)
 
 
 ;;;; ocaml
@@ -258,21 +288,20 @@
 
 ;;;; w3m
 (use-package w3m
-  :defer t
-  :ensure t
   :init (setq w3m-mode-map (make-sparse-keymap))
-;  :config (progn (require 'w3m-haddock)
-;                 (add-hook 'w3m-display-hook 'w3m-haddock-display))
-;  :bind (("C-c C-d" . haskell-w3m-open-haddock)
-;         ("RET" . w3m-view-this-url)
-;         ("q" . bury-buffer)
-;         ("<mouse-1>" . w3m-maybe-url)
-;         ("<f5>" . w3m-reload-this-page)
-;         ("C-c C-d" . haskell-w3m-open-haddock)
-;         ("M-<left>" . w3m-view-previous-page)
-;         ("M-<right>" . w3m-view-next-page)
-;         ("M-." . w3m-haddock-find-tag)))
-)
+                                        ;  :config (progn (require 'w3m-haddock)
+                                        ;                 (add-hook 'w3m-display-hook 'w3m-haddock-display))
+                                        ;  :bind (("C-c C-d" . haskell-w3m-open-haddock)
+                                        ;         ("RET" . w3m-view-this-url)
+                                        ;         ("q" . bury-buffer)
+                                        ;         ("<mouse-1>" . w3m-maybe-url)
+                                        ;         ("<f5>" . w3m-reload-this-page)
+                                        ;         ("C-c C-d" . haskell-w3m-open-haddock)
+                                        ;         ("M-<left>" . w3m-view-previous-page)
+                                        ;         ("M-<right>" . w3m-view-next-page)
+                                        ;         ("M-." . w3m-haddock-find-tag)))
+  :defer t
+  :ensure t)
 
 (defun w3m-maybe-url ()
   (interactive)
@@ -358,21 +387,6 @@
       (open-line 1)
       (insert line-text))))
 
-(defun describe-function-in-popup ()
-  (require 'popup)
-  (interactive)
-  (let* ((thing (symbol-at-point))
-         (description (save-window-excursion
-                        (describe-function thing)
-                        (switch-to-buffer "*Help*")
-                        (buffer-string))))
-    (popup-tip description
-               :point (point)
-               :around t
-               :height 30
-               :scroll-bar t
-               :margin t)))
-
 (defun describe-thing-in-popup ()
   (interactive)
   (let* ((thing (symbol-at-point))
@@ -389,9 +403,9 @@
                :margin t)))
 
 ;;;; emacs lisp
-  (defun imenu-elisp-sections ()
-(setq imenu-prev-index-position-function nil)
-(add-to-list 'imenu-generic-expression '("Sections" "^;;;; \\(.+\\)$" 1) t))
+(defun imenu-elisp-sections ()
+  (setq imenu-prev-index-position-function nil)
+  (add-to-list 'imenu-generic-expression '("Sections" "^;;;; \\(.+\\)$" 1) t))
 
 (add-hook 'emacs-lisp-mode-hook 'imenu-elisp-sections)
 
@@ -425,12 +439,11 @@
                   )))
 
 (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
+(define-key emacs-lisp-mode-map (kbd "C-;") 'describe-thing-in-popup)
 
 ;; Use the forward/back buttons on the mouse
 (global-set-key [mouse-8] 'previous-buffer)
 (global-set-key [mouse-9] 'next-buffer)
-
-;(global-set-key (kbd "C-x C-k") 'kill-this-buffer) ;Kill buffer without prompt
 
 (global-set-key (kbd "C-z") 'repeat)    ;Repeat last command
 
@@ -484,22 +497,4 @@
 
 ;;;; pos-tip
 (use-package pos-tip
-  :ensure t
-  :config (progn
-            (defun my-describe-function (function)
-              "Display the full documentation of FUNCTION (a symbol) in tooltip."
-              (interactive (list (function-called-at-point)))
-              (if (null function)
-                  (pos-tip-show
-                   "** You didn't specify a function! **" '("red"))
-                (pos-tip-show
-                 (with-temp-buffer
-                   (let ((standard-output (current-buffer))
-                         (help-xref-following t))
-                     (prin1 function)
-                     (princ " is ")
-                     (describe-function-1 function)
-                     (buffer-string)))
-                 nil nil nil 0)))
-
-            (define-key emacs-lisp-mode-map (kbd "C-;") 'my-describe-function)))
+  :ensure t)
