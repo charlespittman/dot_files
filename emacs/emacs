@@ -438,8 +438,8 @@
                   ("M-o" . other-window)
                   )))
 
-(define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
-(define-key emacs-lisp-mode-map (kbd "C-;") 'describe-thing-in-popup)
+(define-key lisp-mode-map (kbd "M-.") 'find-function-at-point)
+(define-key lisp-mode-map (kbd "C-;") 'describe-thing-in-popup)
 
 ;; Use the forward/back buttons on the mouse
 (global-set-key [mouse-8] 'previous-buffer)
