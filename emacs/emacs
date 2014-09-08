@@ -511,3 +511,19 @@
 (use-package writegood-mode
   :ensure t
   :defer t)
+
+
+;;;; gnuplot
+(use-package gnuplot
+  :mode (("\\.plt$" . gnuplot-mode))
+  :ensure t
+  :defer t)
+
+
+;;;; octave
+(use-package octave-mod
+  :mode (("\\.m$" . octave-mode))
+  :config (add-hook 'octave-mode-hook
+                    (lambda ()
+                      (abbrev-mode 1)
+                      (auto-fill-mode 1)))
