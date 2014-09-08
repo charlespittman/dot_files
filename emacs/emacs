@@ -108,7 +108,7 @@
   :ensure t)
 
 (use-package org-jira
-  :init (setq jiralib-url "http://jira/jira")
+  :init (setq jiralib-url "http://jira.atdesk.com/jira")
   :defer t
   :ensure t)
 
@@ -498,3 +498,16 @@
 ;;;; pos-tip
 (use-package pos-tip
   :ensure t)
+
+
+;;;; ruby
+(use-package enh-ruby-mode
+  :mode ("\\.rb$" . enh-ruby-mode)
+  :ensure t
+  :defer t)
+
+
+;;;; writegood
+(use-package writegood-mode
+  :ensure t
+  :defer t)
