@@ -2,6 +2,7 @@
 ;; loads after '.emacs'.
 
 (require 'cl)
+
 ;; Use a separate file for customizations made through Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
@@ -527,3 +528,15 @@
                     (lambda ()
                       (abbrev-mode 1)
                       (auto-fill-mode 1))))
+
+
+;;;; ibuffer
+(use-package ibuffer
+  :config (progn (use-package ibuffer-tramp
+                   :ensure t
+                   :defer t)
+                 (use-package ibuffer-vc
+                   :ensure t
+                   :defer t))
+  :ensure t
+  :defer t)
