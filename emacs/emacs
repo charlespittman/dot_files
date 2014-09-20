@@ -173,28 +173,59 @@
 
 
 ;;;; ido
-(use-package ido
-  :ensure t
-  :init (setq ido-enable-flex-matching t
-              ido-create-new-buffer 'always)
-  :config (progn (use-package ido-ubiquitous
-                   :ensure t)
+;; (use-package ido
+;;   :ensure t
+;;   :init (setq ido-enable-flex-matching t
+;;               ido-create-new-buffer 'always)
+;;   :config (progn ;(use-package ido-ubiquitous
+;;                   ; :ensure t)
 
-                 (use-package ido-vertical-mode
-                   :ensure t
-                   :init (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
-                   :config (ido-vertical-mode t))
+;;                  (use-package ido-vertical-mode
+;;                    :ensure t
+;;                    :init (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+;;                    :config (ido-vertical-mode t))
 
-                 (ido-mode t)))
+;;                  (ido-mode t)))
 
 ;; Listed here because smex is built on ido
-(use-package smex
+;; (use-package smex
+;;   :ensure t
+;;   :init (setq smex-auto-update 60)
+;;   :config (smex-initialize)
+;;   :bind (("M-x" . smex)
+;;          ("M-X" . smex-major-mode-commands)
+;;          ("M-s-x" . smex-show-unbound-commands)))
+
+
+;;;; helm
+(use-package helm
+  :config (progn (helm-mode 1)
+                 (defalias 'occur 'helm-occur)
+                 (defalias 'apropos-command 'helm-apropos))
+  :ensure t)
+
+(use-package helm-descbinds
   :ensure t
-  :init (setq smex-auto-update 60)
-  :config (smex-initialize)
-  :bind (("M-x" . smex)
-         ("M-X" . smex-major-mode-commands)
-         ("M-s-x" . smex-show-unbound-commands)))
+  :defer t)
+
+(use-package helm-gtags
+  :config (progn (add-hook 'c-mode-hook 'helm-gtags-mode)
+                 (add-hook 'c++-mode-hook 'helm-gtags-mode)
+                 (add-hook 'asm-mode-hook 'helm-gtags-mode))
+  :ensure t
+  :defer t)
+
+(use-package helm-package
+  :ensure t
+  :defer t)
+
+(use-package helm-pydoc
+  :ensure t
+  :defer t)
+
+(use-package helm-themes
+  :ensure t
+  :defer t)
 
 
 ;;;; magit
@@ -249,41 +280,41 @@
 
 
 ;;;; slime/quicklisp
-(use-package slime
-  :load-path "~/.slime/"
-  :init (setq inferior-lisp-program "sbcl")
-  :config (progn (load (expand-file-name "~/quicklisp/slime-helper.el"))
-                 (use-package ac-slime
-                   :ensure t))
-  :defer t
-  :ensure t)
+;; (use-package slime
+;;   :load-path "~/.slime/"
+;;   :init (setq inferior-lisp-program "sbcl")
+;;   :config (progn (load (expand-file-name "~/quicklisp/slime-helper.el"))
+;;                  (use-package ac-slime
+;;                    :ensure t))
+;;   :defer t
+;;   :ensure t)
 
 
 ;;;; ocaml
-(use-package tuareg
-  :defer t
-  :ensure t
-  :load-path ("~/.opam/system/share/emacs/site-lisp/")
+;; (use-package tuareg
+;;   :defer t
+;;   :ensure t
+;;   :load-path ("~/.opam/system/share/emacs/site-lisp/")
 
-  :mode (("\\.ml[ily]?$" . tuareg-mode)
-         ("\\.topml$" . tuareg-mode)
-         ("\\.topscript$" . tuareg-mode))
+;;   :mode (("\\.ml[ily]?$" . tuareg-mode)
+;;          ("\\.topml$" . tuareg-mode)
+;;          ("\\.topscript$" . tuareg-mode))
 
-  :config (progn (use-package merlin
-                   :init (setq merlin-use-auto-complete-mode t
-                               merlin-error-after-save nil)
+;;   :config (progn (use-package merlin
+;;                    :init (setq merlin-use-auto-complete-mode t
+;;                                merlin-error-after-save nil)
 
-                   :config (add-hook 'tuareg-mode-hook 'merlin-mode)
+;;                    :config (add-hook 'tuareg-mode-hook 'merlin-mode)
 
-                   :bind (("C-c <up>" . merlin-type-enclosing-go-up)
-                          ("C-c <down>" . merlin-type-enclosing-go-down)))
+;;                    :bind (("C-c <up>" . merlin-type-enclosing-go-up)
+;;                           ("C-c <down>" . merlin-type-enclosing-go-down)))
 
-                 (use-package utop
-                   :config (progn (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
-                                  (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
+;;                  (use-package utop
+;;                    :config (progn (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
+;;                                   (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
 
-                 (require 'ocp-indent)
-                 (ocp-setup-indent)))
+;;                  (require 'ocp-indent)
+;;                  (ocp-setup-indent)))
 
 
 ;;;; w3m
@@ -436,6 +467,8 @@
                   ("M-<f4>" . apply-macro-to-region-lines)
                   ("M-SPC" . just-one-space)
                   ("M-o" . other-window)
+;                  ("C-c h" . helm-command-prefix)
+;                  ("M-x" . helm-M-x)
                   )))
 
 (define-key lisp-mode-map (kbd "M-.") 'find-function-at-point)
