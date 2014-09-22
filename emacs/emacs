@@ -224,6 +224,14 @@
   :ensure t
   :defer t)
 
+(use-package helm-package
+  :ensure t
+  :defer t)
+
+(use-package helm-pydoc
+  :ensure t
+  :defer t)
+
 (use-package helm-themes
   :ensure t
   :defer t)
