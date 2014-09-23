@@ -61,14 +61,12 @@
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 
 ;;;; common-lisp
-(use-package cl-lib
-  :ensure t)
+(use-package cl-lib :ensure t)
 
 
 ;;;; auto-complete
-(use-package auto-complete
-  :ensure t
-  :config (global-auto-complete-mode t))
+(use-package auto-complete :ensure t
+  :init (global-auto-complete-mode t))
 
 
 ;;;; flycheck
@@ -77,26 +75,24 @@
           (add-hook 'c-mode-hook 'flycheck-mode)
           (add-hook 'c++-mode-hook 'flycheck-mode))
 
-  :config (progn (use-package flycheck-color-mode-line
-                   :config (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
-                   :ensure t)
-
-
-                 (use-package flycheck-pos-tip
-                   :config (custom-set-variables
-                            '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
-                   :ensure t))
+  :config (progn )
   :defer t
   :ensure t)
+
+(use-package flycheck-color-mode-line :ensure t
+  :config (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+
+
+(use-package flycheck-pos-tip :ensure t
+  :init (custom-set-variables
+         '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
 
 
 ;;;; company
-(use-package company
-  :defer t
-  :ensure t)
+(use-package company :defer t :ensure t)
 
 ;;;; confluence
-(use-package confluence
+(use-package confluence :ensure t
   :init (setq confluence-url "http://confluence.atdesk.com/confluence/rpc/xmlrpc")
 
   :config (add-hook 'confluence-edit-mode-hook
@@ -104,12 +100,11 @@
                     (local-set-key "\M-j" 'confluence-newline-and-indent)
                     (local-set-key "\M-;" 'confluence-list-indent-dwim))
 
-  :bind ("C-x w f" . confluence-get-page)
-  :ensure t)
+  :bind ("C-x w f" . confluence-get-page))
 
-(use-package org-jira
-  :init (setq jiralib-url "http://jira.atdesk.com/jira")
-  :ensure t)
+
+(use-package org-jira :ensure t
+  :init (setq jiralib-url "http://jira.atdesk.com/jira"))
 
 (defun open-jira-ticket-at-point ()
   "Open browser with Jira ticket at point."
@@ -124,23 +119,17 @@
 
 
 ;;;; eldoc
-(use-package eldoc
-  :init (add-hook 'prog-mode-hook 'turn-on-eldoc-mode)
-  :config (progn (use-package eldoc-extension
-                   :ensure t)
+(use-package eldoc :ensure t
+  :init (add-hook 'prog-mode-hook 'turn-on-eldoc-mode))
 
-                 (use-package c-eldoc
-                   :ensure t
-                   :config (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode))
-
-                 (use-package org-eldoc
-                   :ensure t)))
+(use-package eldoc-extension :ensure t)
+(use-package org-eldoc :ensure t)
+(use-package c-eldoc :ensure t
+  :init (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode))
 
 
 ;;;; haskell
-(use-package haskell-mode
-  :defer t
-  :ensure t
+(use-package haskell-mode :ensure t :defer t
   :config (progn (use-package ghc
                    :ensure t)
 
@@ -197,46 +186,27 @@
 
 
 ;;;; helm
-(use-package helm
+(use-package helm :ensure t
   :config (progn (helm-mode 1)
                  (defalias 'occur 'helm-occur)
                  (defalias 'apropos-command 'helm-apropos))
-  :ensure t)
+  :bind (("C-c h" . helm-command-prefix)
+         ("C-x b" . helm-mini)))
 
-(use-package helm-descbinds
-  :ensure t
-  :defer t)
-
-(use-package helm-gtags
+(use-package helm-descbinds :ensure t :defer t)
+(use-package helm-package :ensure t :defer t)
+(use-package helm-pydoc :ensure t :defer t)
+(use-package helm-package :ensure t :defer t)
+(use-package helm-pydoc :ensure t :defer t)
+(use-package helm-themes :ensure t :defer t)
+(use-package helm-gtags :ensure t :defer t
   :config (progn (add-hook 'c-mode-hook 'helm-gtags-mode)
                  (add-hook 'c++-mode-hook 'helm-gtags-mode)
-                 (add-hook 'asm-mode-hook 'helm-gtags-mode))
-  :ensure t
-  :defer t)
-
-(use-package helm-package
-  :ensure t
-  :defer t)
-
-(use-package helm-pydoc
-  :ensure t
-  :defer t)
-
-(use-package helm-package
-  :ensure t
-  :defer t)
-
-(use-package helm-pydoc
-  :ensure t
-  :defer t)
-
-(use-package helm-themes
-  :ensure t
-  :defer t)
+                 (add-hook 'asm-mode-hook 'helm-gtags-mode)))
 
 
 ;;;; magit
-(use-package magit
+(use-package magit :ensure t
   :config (progn
             ;; full screen magit-status
             (defadvice magit-status (around magit-fullscreen activate)
@@ -251,8 +221,7 @@
               (jump-to-register :magit-fullscreen))
 
             (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
-  :bind ("<f10>" . magit-status)
-  :ensure t)
+  :bind ("<f10>" . magit-status))
 
 
 ;;;; org-mode
@@ -261,29 +230,23 @@
               org-agenda-files (list "~/org/home.org"
                                      "~/org/work.org"
                                      "~/org/school.org"))
-
-  :config (progn (use-package org-ac
-                   :ensure t)
-                 (use-package org-bullets
-                   :ensure t
-                   :config (add-hook 'org-mode-hook 'org-bullets-mode)))
-
   :bind (("C-c a" . org-agenda)
          ("C-c b" . org-iswitchb)
          ("C-c c" . org-capture)
          ("C-c l" . org-store-link)))
 
+(use-package org-ac :ensure t)
+(use-package org-bullets :ensure t
+  :config (add-hook 'org-mode-hook 'org-bullets-mode))
 
 ;;;; python
-(use-package python
-  :ensure t
-  :mode ("\\.py\\'" . python-mode)
-  :config (progn (use-package elpy
-                   :ensure t
-                   :init (setq elpy-rpc-backend "jedi")
-                   :config (progn (elpy-enable)
-                                  (elpy-use-ipython)))))
+(use-package python :ensure t
+  :mode ("\\.py\\'" . python-mode))
 
+(use-package elpy :ensure t
+  :init (setq elpy-rpc-backend "jedi")
+  :config (progn (elpy-enable)
+                 (elpy-use-ipython)))
 
 ;;;; slime/quicklisp
 ;; (use-package slime
@@ -442,13 +405,11 @@
 (defun imenu-elisp-sections ()
   (setq imenu-prev-index-position-function nil)
   (add-to-list 'imenu-generic-expression '("Sections" "^;;;; \\(.+\\)$" 1) t))
-
 (add-hook 'emacs-lisp-mode-hook 'imenu-elisp-sections)
 
 
 ;;;; keybindings
-(use-package bind-key
-  :ensure t
+(use-package bind-key :ensure t
   :config (progn (bind-keys*
                   ("<f5>" . revert-this-buffer)
                   ("<f6>" . align)
@@ -470,10 +431,7 @@
                   ("M-#" . query-replace-regexp)
                   ("M-<f4>" . apply-macro-to-region-lines)
                   ("M-SPC" . just-one-space)
-                  ("M-o" . other-window)
-                  ("C-c h" . helm-command-prefix)
-                  ("C-x b" . helm-mini)
-                  )))
+                  ("M-o" . other-window))))
 
 (define-key lisp-mode-map (kbd "M-.") 'find-function-at-point)
 (define-key lisp-mode-map (kbd "C-;") 'describe-thing-in-popup)
@@ -533,31 +491,25 @@
 
 
 ;;;; pos-tip
-(use-package pos-tip
-  :ensure t)
+(use-package pos-tip :ensure t)
 
 
 ;;;; ruby
-(use-package enh-ruby-mode
-  :mode ("\\.rb$" . enh-ruby-mode)
-  :ensure t)
+(use-package enh-ruby-mode :ensure t
+  :mode ("\\.rb$" . enh-ruby-mode))
 
 
 ;;;; writegood
-(use-package writegood-mode
-  :ensure t
-  :defer t)
+(use-package writegood-mode :ensure t :defer t)
 
 
 ;;;; gnuplot
-(use-package gnuplot
-  :mode (("\\.plt$" . gnuplot-mode))
-  :ensure t
-  :defer t)
+(use-package gnuplot :ensure t :defer t
+  :mode (("\\.plt$" . gnuplot-mode)))
 
 
 ;;;; octave
-(use-package octave-mod
+(use-package octave-mode
   :mode (("\\.m$" . octave-mode))
   :config (add-hook 'octave-mode-hook
                     (lambda ()
@@ -566,16 +518,9 @@
 
 
 ;;;; ibuffer
-(use-package ibuffer
-  :config (progn (use-package ibuffer-tramp
-                   :ensure t
-                   :defer t)
-                 (use-package ibuffer-vc
-                   :ensure t
-                   :defer t))
-  :ensure t
-  :defer t)
-
+(use-package ibuffer :ensure t :defer t)
+(use-package ibuffer-tramp :ensure t :defer t)
+(use-package ibuffer-vc :ensure t :defer t)
 
 ;;;; pianobar
 (use-package pianobar
