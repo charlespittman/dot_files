@@ -105,12 +105,10 @@
                     (local-set-key "\M-;" 'confluence-list-indent-dwim))
 
   :bind ("C-x w f" . confluence-get-page)
-  :defer t
   :ensure t)
 
 (use-package org-jira
   :init (setq jiralib-url "http://jira.atdesk.com/jira")
-  :defer t
   :ensure t)
 
 (defun open-jira-ticket-at-point ()
@@ -239,8 +237,6 @@
 
 ;;;; magit
 (use-package magit
-  :defer t
-  :ensure t
   :config (progn
             ;; full screen magit-status
             (defadvice magit-status (around magit-fullscreen activate)
@@ -254,7 +250,9 @@
               (kill-buffer)
               (jump-to-register :magit-fullscreen))
 
-            (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)))
+            (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
+  :bind ("<f10>" . magit-status)
+  :ensure t)
 
 
 ;;;; org-mode
@@ -278,7 +276,6 @@
 
 ;;;; python
 (use-package python
-  :defer t
   :ensure t
   :mode ("\\.py\\'" . python-mode)
   :config (progn (use-package elpy
@@ -340,7 +337,6 @@
                                         ;         ("M-<left>" . w3m-view-previous-page)
                                         ;         ("M-<right>" . w3m-view-next-page)
                                         ;         ("M-." . w3m-haddock-find-tag)))
-  :defer t
   :ensure t)
 
 (defun w3m-maybe-url ()
@@ -459,7 +455,6 @@
                   ("<f7>" . delete-trailing-whitespace)
                   ("<f8>" . whitespace-mode)
                   ("<f9>" . linum-mode)
-                  ("<f10>" . magit-status)   ;Git status of current directory
                   ("<f11>" . follow-mode)
                   ("<kp-add>" . split-window-horizontally)
                   ("<kp-divide>" . delete-window)
@@ -545,8 +540,7 @@
 ;;;; ruby
 (use-package enh-ruby-mode
   :mode ("\\.rb$" . enh-ruby-mode)
-  :ensure t
-  :defer t)
+  :ensure t)
 
 
 ;;;; writegood
@@ -581,3 +575,14 @@
                    :defer t))
   :ensure t
   :defer t)
+
+
+;;;; pianobar
+(use-package pianobar
+  :init (setq pianobar-username "chucks86@gmail.com")
+  :bind (("s-m m" . pianobar)
+         ("s-m n" . pianobar-next-song)
+         ("s-m c" . pianobar-change-station)
+         ("s-m l" . pianobar-love-current-song)
+         ("s-m h" . pianobar-ban-current-song)
+         ("s-m p" . pianobar-play-or-pause)))
