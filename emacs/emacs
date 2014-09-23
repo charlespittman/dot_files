@@ -193,13 +193,13 @@
   :bind (("C-c h" . helm-command-prefix)
          ("C-x b" . helm-mini)))
 
-(use-package helm-descbinds :ensure t :defer t)
-(use-package helm-package :ensure t :defer t)
-(use-package helm-pydoc :ensure t :defer t)
-(use-package helm-package :ensure t :defer t)
-(use-package helm-pydoc :ensure t :defer t)
-(use-package helm-themes :ensure t :defer t)
-(use-package helm-gtags :ensure t :defer t
+(use-package helm-descbinds :ensure t)
+(use-package helm-package :ensure t)
+(use-package helm-pydoc :ensure t)
+(use-package helm-package :ensure t)
+(use-package helm-pydoc :ensure t)
+(use-package helm-themes :ensure t)
+(use-package helm-gtags :ensure t
   :config (progn (add-hook 'c-mode-hook 'helm-gtags-mode)
                  (add-hook 'c++-mode-hook 'helm-gtags-mode)
                  (add-hook 'asm-mode-hook 'helm-gtags-mode)))
@@ -523,7 +523,7 @@
 (use-package ibuffer-vc :ensure t :defer t)
 
 ;;;; pianobar
-(use-package pianobar
+(use-package pianobar :ensure t
   :init (setq pianobar-username "chucks86@gmail.com")
   :bind (("s-m m" . pianobar)
          ("s-m n" . pianobar-next-song)
@@ -531,3 +531,23 @@
          ("s-m l" . pianobar-love-current-song)
          ("s-m h" . pianobar-ban-current-song)
          ("s-m p" . pianobar-play-or-pause)))
+
+
+;;;; yasnippet
+(use-package yasnippet :ensure t)
+
+
+;;;; notmuch
+(use-package nm :ensure t)
+(use-package notmuch :ensure t)
+(use-package notmuch-unread :ensure t)
+
+
+;;;; bbdb
+(use-package bbdb :ensure t)
+
+
+;;;; smart-mode-line
+(use-package smart-mode-line :ensure t
+  :init (progn (setq sml/theme 'automatic)
+               (sml/setup))
