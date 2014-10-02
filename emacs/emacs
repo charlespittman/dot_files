@@ -16,11 +16,11 @@
 ;; Set repos for package manager
 (load "package")
 (package-initialize)
-(setq package-archives '(("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
-                         ("org" . "http://orgmode.org/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")))
+                         ("org" . "http://orgmode.org/elpa/")))
 
 (defvar cp/packages '(ample-theme clues-theme
                       color-theme-sanityinc-solarized
@@ -192,12 +192,13 @@
                  (defalias 'apropos-command 'helm-apropos))
   :bind (("C-c h" . helm-command-prefix)
          ("C-x b" . helm-mini)))
-
+(use-package helm-ack :ensure t)
 (use-package helm-descbinds :ensure t)
+;(use-package helm-dictionary :ensure t)
+(use-package helm-flycheck :ensure t)
 (use-package helm-package :ensure t)
 (use-package helm-pydoc :ensure t)
-(use-package helm-package :ensure t)
-(use-package helm-pydoc :ensure t)
+(use-package helm-proc :ensure t)
 (use-package helm-themes :ensure t)
 (use-package helm-gtags :ensure t
   :config (progn (add-hook 'c-mode-hook 'helm-gtags-mode)
@@ -249,15 +250,12 @@
                  (elpy-use-ipython)))
 
 ;;;; slime/quicklisp
-;; (use-package slime
+;; (use-package slime :ensure t
 ;;   :load-path "~/.slime/"
 ;;   :init (setq inferior-lisp-program "sbcl")
-;;   :config (progn (load (expand-file-name "~/quicklisp/slime-helper.el"))
-;;                  (use-package ac-slime
-;;                    :ensure t))
-;;   :defer t
-;;   :ensure t)
+;;   :config (progn (load (expand-file-name "~/quicklisp/slime-helper.el"))))
 
+(use-package lispy :ensure t)
 
 ;;;; ocaml
 ;; (use-package tuareg
@@ -444,7 +442,7 @@
 
 (defalias 'list-buffers 'ibuffer)
 
-(global-set-key (kbd "C-c C-SPC") 'hs-toggle-hiding)
+(global-set-key (kbd "C-c C-SPC") 'hs-toggle-hidng)
 
 (eval-after-load "hideshow"
   '(add-to-list 'hs-special-modes-alist
@@ -509,7 +507,7 @@
 
 
 ;;;; octave
-(use-package octave-mode
+(use-package octave-mod
   :mode (("\\.m$" . octave-mode))
   :config (add-hook 'octave-mode-hook
                     (lambda ()
@@ -537,17 +535,20 @@
 (use-package yasnippet :ensure t)
 
 
-;;;; notmuch
+;;;; mail
 (use-package nm :ensure t)
 (use-package notmuch :ensure t)
 (use-package notmuch-unread :ensure t)
-
-
-;;;; bbdb
 (use-package bbdb :ensure t)
 
 
-;;;; smart-mode-line
+;;;; mode-line
 (use-package smart-mode-line :ensure t
   :init (progn (setq sml/theme 'automatic)
-               (sml/setup))
+               (sml/setup)))
+(use-package rich-minority :ensure t
+  :init (setq rm-blacklist '(" AC" " MRev" " hl-p")))
+(use-package nyan-mode :ensure t)
+
+
+(load "conf-mu4e")
