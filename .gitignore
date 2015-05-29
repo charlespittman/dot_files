@@ -1,6 +1,7 @@
 *~
 ~.swp
 *.local
+*.elc
 emacs.d/eshell
 emacs.d/ac-comphist.dat
 emacs.d/url
