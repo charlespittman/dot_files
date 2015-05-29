@@ -17,8 +17,8 @@
 (load "package")
 (package-initialize)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+			 ("marmalade" . "http://marmalade-repo.org/packages/")
+			 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("org" . "http://orgmode.org/elpa/")))
 
@@ -104,7 +104,9 @@
 
 
 (use-package org-jira :ensure t
-  :init (setq jiralib-url "http://jira.atdesk.com/jira"))
+  :init (setq jiralib-url "http://jira.atdesk.com/jira")
+  :bind (("s-j g i" . org-jira-get-issues)
+         ("s-j g s" . org-jira-get-subtasks)))
 
 (defun open-jira-ticket-at-point ()
   "Open browser with Jira ticket at point."
@@ -123,41 +125,9 @@
   :init (add-hook 'prog-mode-hook 'turn-on-eldoc-mode))
 
 (use-package eldoc-extension :ensure t)
-(use-package org-eldoc :ensure t)
+;(use-package org-eldoc :ensure t)
 (use-package c-eldoc :ensure t
   :init (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode))
-
-
-;;;; haskell
-(use-package haskell-mode :ensure t :defer t
-  :config (progn (use-package ghc
-                   :ensure t)
-
-                 (use-package ghci-completion
-                   :ensure t
-                   :config (add-hook 'inferior-haskell-mode-hook 'turn-on-ghci-completion))
-
-                 (use-package flycheck-haskell
-                   :ensure t
-                   :config (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
-
-                 (add-hook 'haskell-mode-hook 'capitalized-words-mode)
-                 (add-hook 'haskell-mode-hook 'turn-on-eldoc-mode)
-                 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-                 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-                 (custom-set-variables '(haskell-process-suggest-remove-import-lines t)
-                                       '(haskell-process-auto-import-loaded-modules t)
-                                       '(haskell-process-log t)
-                                       '(haskell-stylish-on-save t)))
-  ;;  :bind (("C-c C-l" . haskell-process-load-or-reload)
-  ;;         ("C-`" . haskell-interactive-bring)
-  ;;         ("C-c C-t" . haskell-process-do-type)
-  ;;         ("C-c C-i" . haskell-process-do-info)
-  ;;         ("C-c C-c" . haskell-process-cabal-build)
-  ;;         ("C-c C-k" . haskell-interactive-mode-clear)
-  ;;         ("C-c c" . haskell-process-cabal)
-  ;;         ("SPC" . haskell-mode-contextual-space)))
-  )
 
 
 ;;;; ido
@@ -206,8 +176,19 @@
                  (add-hook 'asm-mode-hook 'helm-gtags-mode)))
 
 
+;;;; folding
+(use-package yafolding :ensure t
+  :init (defvar yafolding-mode-map
+          (let ((map (make-sparse-keymap)))
+            (define-key map (kbd "<C-S-return>") #'yafolding-hide-parent-element)
+            (define-key map (kbd "<C-M-s-return>") #'yafolding-toggle-all)
+            (define-key map (kbd "<s-return>") #'yafolding-toggle-element)
+            map))
+  :config (add-hook 'prog-mode-hook (lambda () (yafolding-mode))))
+
 ;;;; magit
 (use-package magit :ensure t
+  :init (setq magit-last-seen-setup-instructions "1.4.0")
   :config (progn
             ;; full screen magit-status
             (defadvice magit-status (around magit-fullscreen activate)
@@ -242,7 +223,11 @@
 
 ;;;; python
 (use-package python :ensure t
-  :mode ("\\.py\\'" . python-mode))
+  :mode ("\\.py\\'" . python-mode)
+  :config (add-hook 'python-mode-hook
+                    (lambda ()
+                      (setq tab-width 4)
+                      (setq python-indent 4))))
 
 (use-package elpy :ensure t
   :init (setq elpy-rpc-backend "jedi")
@@ -250,38 +235,17 @@
                  (elpy-use-ipython)))
 
 ;;;; slime/quicklisp
+(use-package slime :ensure t
+  :init (progn
+           ;; Set your lisp system and, optionally, some contribs
+          (setq inferior-lisp-program "/usr/bin/sbcl")
+          (setq slime-contribs '(slime-fancy))))
 ;; (use-package slime :ensure t
 ;;   :load-path "~/.slime/"
 ;;   :init (setq inferior-lisp-program "sbcl")
 ;;   :config (progn (load (expand-file-name "~/quicklisp/slime-helper.el"))))
 
 (use-package lispy :ensure t)
-
-;;;; ocaml
-;; (use-package tuareg
-;;   :defer t
-;;   :ensure t
-;;   :load-path ("~/.opam/system/share/emacs/site-lisp/")
-
-;;   :mode (("\\.ml[ily]?$" . tuareg-mode)
-;;          ("\\.topml$" . tuareg-mode)
-;;          ("\\.topscript$" . tuareg-mode))
-
-;;   :config (progn (use-package merlin
-;;                    :init (setq merlin-use-auto-complete-mode t
-;;                                merlin-error-after-save nil)
-
-;;                    :config (add-hook 'tuareg-mode-hook 'merlin-mode)
-
-;;                    :bind (("C-c <up>" . merlin-type-enclosing-go-up)
-;;                           ("C-c <down>" . merlin-type-enclosing-go-down)))
-
-;;                  (use-package utop
-;;                    :config (progn (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
-;;                                   (add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)))
-
-;;                  (require 'ocp-indent)
-;;                  (ocp-setup-indent)))
 
 
 ;;;; w3m
@@ -399,6 +363,12 @@
                :scroll-bar t
                :margin t)))
 
+(defun split-window-and-follow ()
+  "Split screen in half horizontally, then enable follow-mode."
+  (interactive)
+  (split-window-horizontally)
+  (follow-mode))
+
 ;;;; emacs lisp
 (defun imenu-elisp-sections ()
   (setq imenu-prev-index-position-function nil)
@@ -415,7 +385,7 @@
                   ("<f8>" . whitespace-mode)
                   ("<f9>" . linum-mode)
                   ("<f11>" . follow-mode)
-                  ("<kp-add>" . split-window-horizontally)
+                  ("M-<kp-add>" . split-window-and-follow)
                   ("<kp-divide>" . delete-window)
                   ("<kp-multiply>" . delete-other-windows)
                   ("<kp-subtract>" . split-window-vertically)
@@ -442,21 +412,16 @@
 
 (defalias 'list-buffers 'ibuffer)
 
-(global-set-key (kbd "C-c C-SPC") 'hs-toggle-hidng)
-
-(eval-after-load "hideshow"
-  '(add-to-list 'hs-special-modes-alist
-                `(ruby-mode
-                  ,(rx (or "def" "class" "module" "{" "[")) ; Block start
-                  ,(rx (or "}" "]" "end")) ; Block end
-                  ,(rx (or "#" "=begin")) ; Comment start
-                  ruby-forward-sexp nil)))
 
 ;; Indent line and create new, indented line after current one
 (global-set-key (kbd "C-<return>") (lambda () (interactive)
                                      (end-of-line)
                                      (reindent-then-newline-and-indent)))
 
+;; Shortcut to save file and close client window
+(global-set-key (kbd "s-s") (lambda () (interactive)
+                              (save-buffer)
+                              (server-edit)))
 
 (setq auto-save-default nil    ; No #auto-save# files
       echo-keystrokes 0.1
@@ -472,12 +437,13 @@
               tab-always-indent 'complete)
 
 (delete-selection-mode t)
-(transient-mark-mode t)
+(desktop-save-mode 1)
 (electric-indent-mode t)
 (electric-pair-mode t)
 (global-font-lock-mode t) ; syntax highlighting
 (global-visual-line-mode t)
 (show-paren-mode t)
+(transient-mark-mode t)
 
 ;; Removing trailing whitespace every time a file is saved.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -495,7 +461,14 @@
 ;;;; ruby
 (use-package enh-ruby-mode :ensure t
   :mode ("\\.rb$" . enh-ruby-mode))
-
+(use-package yari :ensure t)
+(use-package ruby-tools :ensure t)
+(use-package rubocop :ensure t)
+(use-package robe :ensure t
+  :config (add-hook 'enh-ruby-mode-hook 'robe-mode))
+(use-package inf-ruby :ensure t
+  :config (progn (add-hook 'enh-ruby-mode 'inf-ruby)
+                 (push 'company-robe company-backends)))
 
 ;;;; writegood
 (use-package writegood-mode :ensure t :defer t)
@@ -507,12 +480,12 @@
 
 
 ;;;; octave
-(use-package octave-mod
-  :mode (("\\.m$" . octave-mode))
-  :config (add-hook 'octave-mode-hook
-                    (lambda ()
-                      (abbrev-mode 1)
-                      (auto-fill-mode 1))))
+;; (use-package octave-mod
+;;   :mode (("\\.m$" . octave-mode))
+;;   :config (add-hook 'octave-mode-hook
+;;                     (lambda ()
+;;                       (abbrev-mode 1)
+;;                       (auto-fill-mode 1))))
 
 
 ;;;; ibuffer
@@ -543,12 +516,11 @@
 
 
 ;;;; mode-line
-(use-package smart-mode-line :ensure t
-  :init (progn (setq sml/theme 'automatic)
-               (sml/setup)))
 (use-package rich-minority :ensure t
-  :init (setq rm-blacklist '(" AC" " MRev" " hl-p")))
+  :init (setq rm-blacklist '(" AC" " MRev" " Helm" "hl-p" " vl" " Wrap")))
 (use-package nyan-mode :ensure t)
 
 
 (load "conf-mu4e")
+
+;(load "/usr/share/emacs/site-lisp/emacspeak/lisp/emacspeak-setup.el")
