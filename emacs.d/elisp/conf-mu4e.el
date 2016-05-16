@@ -4,7 +4,7 @@
 
 (setq mu4e-maildir "~/.mail"
       mu4e-get-mail-command "offlineimap"
-      mu4e-update-interval 60
+      mu4e-update-interval 120
       mu4e-hide-index-messages t
       mu4e-view-show-images t
       mu4e-compose-complete-only-personal t

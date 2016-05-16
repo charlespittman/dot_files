@@ -16,13 +16,14 @@
 ;; Set repos for package manager
 (load "package")
 (package-initialize)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-			 ("marmalade" . "http://marmalade-repo.org/packages/")
-			 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+(setq package-archives '(
+                         ("gnu" . "http://elpa.gnu.org/packages/")
+;			 ("marmalade" . "http://marmalade-repo.org/packages/")
+;			 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("org" . "http://orgmode.org/elpa/")))
 
-(defvar cp/packages '(ample-theme clues-theme
+(defvar cp/packages '(clues-theme
                       color-theme-sanityinc-solarized
                       color-theme-sanityinc-tomorrow
                       distinguished-theme gruvbox-theme
@@ -78,10 +79,6 @@
   :config (progn )
   :defer t
   :ensure t)
-
-(use-package flycheck-color-mode-line :ensure t
-  :config (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
-
 
 (use-package flycheck-pos-tip :ensure t
   :init (custom-set-variables
@@ -161,7 +158,10 @@
                  (defalias 'occur 'helm-occur)
                  (defalias 'apropos-command 'helm-apropos))
   :bind (("C-c h" . helm-command-prefix)
-         ("C-x b" . helm-mini)))
+         ("C-x b" . helm-mini)
+         ("C-x f" . helm-find-files)
+         ("C-x C-f" . helm-find-files)
+         ("M-x " . helm-M-x)))
 (use-package helm-ack :ensure t)
 (use-package helm-descbinds :ensure t)
 ;(use-package helm-dictionary :ensure t)
@@ -505,13 +505,14 @@
 
 
 ;;;; yasnippet
-(use-package yasnippet :ensure t)
+(use-package yasnippet :ensure t
+  :init (yas-global-mode t))
 
 
 ;;;; mail
 (use-package nm :ensure t)
 (use-package notmuch :ensure t)
-(use-package notmuch-unread :ensure t)
+;(use-package notmuch-unread :ensure t)
 (use-package bbdb :ensure t)
 
 
@@ -520,6 +521,9 @@
   :init (setq rm-blacklist '(" AC" " MRev" " Helm" "hl-p" " vl" " Wrap")))
 (use-package nyan-mode :ensure t)
 
+
+;;;; csv
+(use-package csv-mode :ensure t)
 
 (load "conf-mu4e")
 

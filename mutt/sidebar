@@ -1,9 +1,10 @@
 # vim: filetype=muttrc
 
-set sidebar_width=36
+set sidebar_width=40
 set sidebar_visible=yes
-set sidebar_delim='║'
-color sidebar_new brightmagenta default
+set sidebar_divider_char='║'
+#color sidebar_new brightmagenta default
+color sidebar_new brightgreen default
 #color sidebar yellow default
 
 # New keybindings to move around
